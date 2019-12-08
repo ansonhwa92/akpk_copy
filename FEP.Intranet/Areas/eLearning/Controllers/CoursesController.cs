@@ -906,15 +906,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         //wawa - for my courses list
         [HasAccess(UserAccess.CourseView)]
         [HttpGet]
-        public async Task<ActionResult> MyCourses()
+        public async Task<ActionResult> MyCourses(string keyword, string sorting, bool? cashflow, bool? car, bool? house, bool? investment, bool? protection, /*bool? beginner, bool? intermediate, bool? advanced,*/ bool? english, bool? malay, bool? chinese, bool? tamil, bool? multiLanguage)
         {
+            if (keyword == null) keyword = "";
+            if (sorting == null) sorting = "default";
+            if (cashflow == null) cashflow = true;
+            if (car == null) car = true;
+            if (house == null) house = true;
+            if (investment == null) investment = true;
+            if (protection == null) protection = true;
+            //if (beginner == null) beginner = true;
+            //if (intermediate == null) intermediate = true;
+            //if (advanced == null) advanced = false;
+            if (english == null) english = false;
+            if (malay == null) malay = false;
+            if (chinese == null) chinese = false;
+            if (tamil == null) tamil = false;
+            if (multiLanguage == null) multiLanguage = false;
+
             var currentUserId = CurrentUser.UserId.Value;
 
-            var model = Enumerable.Empty<ReturnMyCoursesModel>();
+            var response = await WepApiMethod.SendApiAsync<ReturnMyCoursesModel>(HttpVerbs.Get, $"eLearning/Courses/GetMyCoursesList?id={currentUserId}&keyword={keyword}&sorting={sorting}&cashflow={cashflow}&car={car}&house={house}&investment={investment}&protection={protection}&english={english}&malay={malay}&chinese={chinese}&tamil={tamil}&multiLanguage={multiLanguage}");
 
-            var response = await WepApiMethod.SendApiAsync<IEnumerable<ReturnMyCoursesModel>>(HttpVerbs.Get, $"eLearning/Courses/GetMyCoursesList?id={currentUserId}");
+            if (!response.isSuccess)
+            {
+                return HttpNotFound();
+            }
 
-            model = response.Data;
+            var model = response.Data;
 
             return View(model);
         }

@@ -276,7 +276,7 @@ namespace FEP.Model.eLearning
         [Display(Name = "Certain modules must be completed")]
         ActivityCompletion,
 
-        [Display(Name = "Perentage of modules must be completed")]
+        [Display(Name = "Parentage of modules must be completed")]
         PercentageCompletion,
 
         [Display(Name = "Tests passed")]

@@ -1,83 +1,170 @@
 ﻿
-@model List<ReturnMyCoursesModel>
+@model FEP.WebApiModel.eLearning.ReturnMyCoursesModel
+@*@model ReturnMyCoursesModel*@
 
 @{
-        ViewBag.Title = "eLearning";
-        Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+    ViewBag.Title = "eLearning";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 @section Nav{
-
-    <div class="header-col-left">
-        <div id="breadcrumb">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", routeValues:null)">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-                </ol>
-            </nav>
-        </div>
-        <h1 class="page-title text-white">Browse E-Learning</h1>
-        <div class="header-text">Browse and purchase courses</div>
-    </div>
-}
-
-<main id="landing-inner" class="rellax" data-rellax-speed="0">
-    <!-- =====================
-        Landing Content
-    ========================-->
-    <!--   <section id="main-content">
-    =====================
-             Search Dropdown
-         ========================
-        <div id="search-dropdown">
+    <div class="title_header">
+        <div class="title-header-container">
             <div class="container">
-                <div id="search-dropdown">
-                    <div class="container">
-                        <div class="search-dropdown-wrapper">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <select class="select2" name="module">
-                                        <option value="e-Learning">e-Learning</option>
-                                        <option value="e-Events">e-Events</option>
-                                        <option value="Research">Research</option>
-                                        <option value="Publications">Publications</option>
-                                    </select>
-                                </div>
-                                <input type="text" class="form-control" placeholder="Search for online courses, instructor name, etc.." name="search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                                </div>
-                            </div>
-                        </div>
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Home" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">My Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
                     </div>
+                    <h1 class="page-title text-white">List of My Courses</h1>
+                    <div class="header-text">Enrolled, Assigned and Invited Courses.</div>
                 </div>
             </div>
         </div>
-        <div class="empty_6"></div>
-        </section>-->
-    <!-- =====================
-       Searching Result
-    ========================-->
+    </div>
+}
+
+
+<main id="landing-inner" class="rellax" data-rellax-speed="0">
     <section id="search-result" class="elearning">
         <div class="container">
             <div class="row">
-
-                <div class="col-lg-12">
-                    <div class="search-col-right">
-                        @*<div class="top-filter-wrap">
-                                <div class="showing-result">Showing 1 - @Model.LastIndex of @Model.ItemCount courses</div>
-                                <div class="sorting-wrap">
-                                    <div class="sorting-dropdown">
-                                        <select class="select2 form-control" name="sorting" id="selectSorting">
-                                            <option value="default" @ViewBag.DefaultSorting>Default Sorting</option>
-                                            <option value="title" @ViewBag.TitleSorting>Publication Title</option>
-                                            <option value="added" @ViewBag.AddedSorting>Date Added</option>
-                                        </select>
+                <div class="col-lg-3">
+                    <div class="search-col-left">
+                        <div class="input-keyword mb-5">
+                            <input type="text" class="form-control form-control-rounded" placeholder="Type keyword here..." value="@Model.Keyword" name="keyword" id="textKeyword">
+                            <div class="input-group-append">
+                                <button class="btn btn-circle" type="button" id="buttonSearch"><i class="fas fa-search text-white"></i></button>
+                            </div>
+                        </div>
+                        <!-- Listing Filter -->
+                        <div class="listing_filter dropdown dd-side">
+                            <div class="dropdown-menu">
+                                <div class="listing-filter-inner">
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Categories</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkAll" @ViewBag.TypeAll>
+                                            <label class="custom-control-label" for="checkAll" id="labelAll">All</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkCashFlow" @ViewBag.TypeCashflow>
+                                            <label class="custom-control-label" for="checkCashFlow" id="labelCashflow">Cash Flow</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkCar" @ViewBag.TypeCar>
+                                            <label class="custom-control-label" for="checkCar" id="labelCar">Car</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkHouse" @ViewBag.TypeHouse>
+                                            <label class="custom-control-label" for="checkHouse" id="labelHouse">House</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkInvestment" @ViewBag.TypeInvestment>
+                                            <label class="custom-control-label" for="checkInvestment" id="labelInvestment">Investment</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkProtection" @ViewBag.TypeProtection>
+                                            <label class="custom-control-label" for="checkProtection" id="labelProtection">Protection</label>
+                                        </div>
                                     </div>
 
+                                    @*SKILL LEVEL - TAKDE DALAM COURSE*@
+                                    @*<div class="filter-type">
+                                <h4 class="color-darkblue">Skill Level</h4>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkBeginner" @ViewBag.LevelBeginner>
+                                    <label class="custom-control-label" for="checkBeginner">Beginner</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkIntermediate" @ViewBag.LevelIntermediate>
+                                    <label class="custom-control-label" for="checkIntermediate">Intermediate</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkAdvanced" @ViewBag.LevelAdvanced>
+                                    <label class="custom-control-label" for="checkAdvanced">Advanced</label>
+                                </div>
+
+                            </div>*@
+
+                                    @*<div class="filter-type">
+                                <h4 class="color-darkblue">Duration</h4>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                    <label class="custom-control-label" for="customCheck5">0-2 Hours</label>
+                                    <span class="filter-counter">(13)</span>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
+                                    <label class="custom-control-label" for="customCheck6">3-6 Hours</label>
+                                    <span class="filter-counter">(30)</span>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                    <label class="custom-control-label" for="customCheck7">7-16 Hours</label>
+                                    <span class="filter-counter">(63)</span>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck8">
+                                    <label class="custom-control-label" for="customCheck8">Longer than 16 Hours</label>
+                                    <span class="filter-counter">(1099)</span>
                                 </div>
                             </div>*@
+
+                                    @*LANGUAGE*@
+                                    <div class="filter-type">
+                                        <h4 class="color-darkblue">Language</h4>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkEnglish" @ViewBag.LanguageEnglish>
+                                            <label class="custom-control-label" for="checkEnglish" id="labelEnglish">English</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkMalay" @ViewBag.LanguageMalay>
+                                            <label class="custom-control-label" for="checkMalay" id="labelMalay">Malay</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkChinese" @ViewBag.LanguageChinese>
+                                            <label class="custom-control-label" for="checkChinese" id="labelChinese">Chinese</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkTamil" @ViewBag.LanguageTamil>
+                                            <label class="custom-control-label" for="checkTamil" id="labelTamil">Tamil</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkMultiLanguage" @ViewBag.LanguageMultiLanguage>
+                                            <label class="custom-control-label" for="checkMultiLanguage" id="labelMultilanguage">Multi Language</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-rounded" id="buttonReset">Clear Filter</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="search-col-right">
+                        <div class="top-filter-wrap">
+                            <div class="showing-result">Showing 1 - @Model.LastIndex of @Model.ItemCount courses</div>
+                            <div class="sorting-wrap">
+                                <div class="sorting-dropdown">
+                                    <select class="select2 form-control" name="sorting" id="selectSorting">
+                                        <option value="default" @ViewBag.DefaultSorting>Default Sorting</option>
+                                        <option value="title" @ViewBag.TitleSorting>Publication Title</option>
+                                        @*<option value="year" @ViewBag.YearSorting>Publication Year</option>*@
+                                        <option value="added" @ViewBag.AddedSorting>Date Added</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="empty_3"></div>
                         <!-- Filter result -->
                         <div class="some-list">
@@ -88,7 +175,7 @@
                                     var coverpic2 = "";
                                     var authorpic = "";
                                 }
-                                @foreach (var item in Model)
+                                @foreach (var item in Model.CoursesList)
                                 {
                                     var imgFile = item.IntroImageFileName;
 
@@ -141,7 +228,7 @@
     </section>
     <hr>
 
-    @Html.Partial("_NewsArticle")
+    @*@Html.Partial("_NewsArticle")*@
 
 </main>
 
@@ -207,14 +294,14 @@
 
             $('#buttonSearch').click(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearning", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
 
             $('#selectSorting').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
@@ -236,7 +323,7 @@
                     $('#checkProtection').prop('checked', false);
                 }
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 console.log("Param - ", params)
                 return false;
@@ -244,35 +331,35 @@
 
             $('#checkCashFlow').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
 
             $('#checkCar').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
 
             $('#checkHouse').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
 
             $('#checkInvestment').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
 
             $('#checkProtection').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });
@@ -300,7 +387,7 @@
 
             $('#checkEnglish').change(function (event) {
                 var params = compileOptions();
-                var myurl = '@Url.Action("BrowseElearnings", "Home", new { area = "eLearning" })' + params;
+                var myurl = '@Url.Action("MyCourses", "Courses", new { area = "eLearning" })' + params;
                 window.location = myurl;
                 return false;
             });

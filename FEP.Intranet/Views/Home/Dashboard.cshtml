@@ -30,177 +30,182 @@
 
 }
 
-@for (var i = 0; i < Model.DashboardModuleByRole.AvailableModule.Count; i++)
+@if (Model != null)
 {
-    if(i != 0)
+
+
+    for (var i = 0; i < Model.DashboardModuleByRole.AvailableModule.Count; i++)
     {
-       @("|");
+        if (i != 0)
+        {
+           @("|");
+        }
+        <a href="@Url.Action("Dashboard", "Home", new { module = Model.DashboardModuleByRole.AvailableModule[i] })">@Model.DashboardModuleByRole.AvailableModule[i].GetDisplayName()</a>
     }
-    <a href="@Url.Action("Dashboard", "Home", new { module = Model.DashboardModuleByRole.AvailableModule[i] })">@Model.DashboardModuleByRole.AvailableModule[i].GetDisplayName()</a>
-}
 
 
-<div class="row">
-    <!-- End content leftbar -->
-    <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
-        <form>
-            <div class="row">
-                @if (Model.ModuleName == DashboardModule.KMC)
-                {
-                    @Html.Partial("../../Areas/KMC/Views/Shared/_AdminDashboardKMC", Model)
-                }
-                else
-                {
-                    @Html.Partial("_DashboardList", Model)
-                }
-            </div>
-        </form>
+    <div class="row">
+        <!-- End content leftbar -->
+        <div class="col-xl-12 col-md-12 col-sm-8 mt-2 pb-5">
+            <form>
+                <div class="row">
+                    @if (Model.ModuleName == DashboardModule.KMC)
+                    {
+                        @Html.Partial("../../Areas/KMC/Views/Shared/_AdminDashboardKMC", Model)
+                    }
+                    else
+                    {
+                        @Html.Partial("_DashboardList", Model)
+                    }
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
-@if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.PublicEvent)
-{
-        @Html.Partial("../../Areas/eEvent/Views/Shared/_PublicEventList", new FEP.WebApiModel.PublicEvent.ListPublicEventModel())
+    if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.PublicEvent)
+    {
+            @Html.Partial("../../Areas/eEvent/Views/Shared/_PublicEventList", new FEP.WebApiModel.PublicEvent.ListPublicEventModel())
 
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
-                    initTable();
-                    ActionBox()
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
+                        initTable();
+                        ActionBox()
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input').val()
-                        $('#Filter_EventStatus').val(currentStatusVal);
-                        $('.tabledata').DataTable().ajax.reload()
-                        $('#Filter_EventStatus').val('');
-                    });
-                })
-            </script>
-        }
-}
-else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Courses)
-{
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input').val()
+                            $('#Filter_EventStatus').val(currentStatusVal);
+                            $('.tabledata').DataTable().ajax.reload()
+                            $('#Filter_EventStatus').val('');
+                        });
+                    })
+                </script>
+            }
+    }
+    else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Courses)
+    {
 
-        @Html.Partial("../../Areas/eLearning/Views/Shared/_CoursesList", new FEP.WebApiModel.eLearning.ReturnListCourseModel())
+            @Html.Partial("../../Areas/eLearning/Views/Shared/_CoursesList", new FEP.WebApiModel.eLearning.ReturnListCourseModel())
 
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
-                    initTable();
-                    ActionBox();
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
+                        initTable();
+                        ActionBox();
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input').val()
-                        $('#Filters_Status').val(currentStatusVal);
-                        $('.tabledata').DataTable().ajax.reload()
-                        $('#Filters_Status').val('');
-                    });
-                })
-            </script>
-        }
-}
-else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.MediaInterview)
-{
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input').val()
+                            $('#Filters_Status').val(currentStatusVal);
+                            $('.tabledata').DataTable().ajax.reload()
+                            $('#Filters_Status').val('');
+                        });
+                    })
+                </script>
+            }
+    }
+    else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.MediaInterview)
+    {
 
-        @Html.Partial("../../Areas/eEvent/Views/Shared/_MediaInterviewList", new FEP.WebApiModel.MediaInterview.ListMediaInterviewRequestApi())
+            @Html.Partial("../../Areas/eEvent/Views/Shared/_MediaInterviewList", new FEP.WebApiModel.MediaInterview.ListMediaInterviewRequestApi())
 
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
-                    initTable();
-                    ActionBox();
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
+                        initTable();
+                        ActionBox();
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input').val()
-                        $('#Filter_MediaStatus').val(currentStatusVal);
-                        $('.tabledata').DataTable().ajax.reload()
-                        $('#Filter_MediaStatus').val('');
-                    });
-                })
-            </script>
-        }
-}
-else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Exhibition)
-{
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input').val()
+                            $('#Filter_MediaStatus').val(currentStatusVal);
+                            $('.tabledata').DataTable().ajax.reload()
+                            $('#Filter_MediaStatus').val('');
+                        });
+                    })
+                </script>
+            }
+    }
+    else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Exhibition)
+    {
 
-        @Html.Partial("../../Areas/eEvent/Views/Shared/_ExhibitionRoadshowRequestList", new FEP.WebApiModel.eEvent.ListExhibitionRoadshowRequestModel())
+            @Html.Partial("../../Areas/eEvent/Views/Shared/_ExhibitionRoadshowRequestList", new FEP.WebApiModel.eEvent.ListExhibitionRoadshowRequestModel())
 
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
-                    initTable();
-                    ActionBox();
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
+                        initTable();
+                        ActionBox();
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input').val()
-                        $('#Filter_ExhibitionStatus').val(currentStatusVal);
-                        $('.tabledata').DataTable().ajax.reload()
-                        $('#Filter_ExhibitionStatus').val('');
-                    });
-                })
-            </script>
-        }
-}
-else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.KMC)
-{
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input').val()
+                            $('#Filter_ExhibitionStatus').val(currentStatusVal);
+                            $('.tabledata').DataTable().ajax.reload()
+                            $('#Filter_ExhibitionStatus').val('');
+                        });
+                    })
+                </script>
+            }
+    }
+    else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.KMC)
+    {
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input').val();
-                        window.location.href = currentStatusVal;
-                    });
-                })
-            </script>
-        }
-}
-else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Publication)
-{
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input').val();
+                            window.location.href = currentStatusVal;
+                        });
+                    })
+                </script>
+            }
+    }
+    else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Publication)
+    {
 
-        @Html.Partial("../../Areas/RnP/Views/Shared/_PublicationList", new FEP.WebApiModel.RnP.ReturnListPublicationModel())
+            @Html.Partial("../../Areas/RnP/Views/Shared/_PublicationList", new FEP.WebApiModel.RnP.ReturnListPublicationModel())
 
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
-                    initTable();
-                    ActionBox();
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
+                        initTable();
+                        ActionBox();
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input.statusValue').val()
-                        var currentApprovalLevel = $(e.currentTarget).find('input.approvalLevelValue').val()
-                        $('#Filters_Status').val(currentStatusVal);
-                        $('#Filters_ApprovalLevel').val(currentApprovalLevel);
-                        $('.tabledata').DataTable().ajax.reload()
-                        $('#Filters_Status').val('');
-                        $('#Filters_ApprovalLevel').val('');
-                    });
-                })
-            </script>
-        }
-}
-else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Survey)
-{
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input.statusValue').val()
+                            var currentApprovalLevel = $(e.currentTarget).find('input.approvalLevelValue').val()
+                            $('#Filters_Status').val(currentStatusVal);
+                            $('#Filters_ApprovalLevel').val(currentApprovalLevel);
+                            $('.tabledata').DataTable().ajax.reload()
+                            $('#Filters_Status').val('');
+                            $('#Filters_ApprovalLevel').val('');
+                        });
+                    })
+                </script>
+            }
+    }
+    else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Survey)
+    {
 
-        @Html.Partial("../../Areas/RnP/Views/Shared/_SurveyList", new FEP.WebApiModel.RnP.ReturnListSurveyModel())
+            @Html.Partial("../../Areas/RnP/Views/Shared/_SurveyList", new FEP.WebApiModel.RnP.ReturnListSurveyModel())
 
-        @section ContentScript{
-            <script>
-                $(document).ready(function () {
-                    initTable();
-                    ActionBox();
+            @section ContentScript{
+                <script>
+                    $(document).ready(function () {
+                        initTable();
+                        ActionBox();
 
-                    $('.statusItem').on('click', function (e) {
-                        var currentStatusVal = $(e.currentTarget).find('input').val()
-                        var currentApprovalLevel = $(e.currentTarget).find('input.approvalLevelValue').val()
-                        $('#Filters_Status').val(currentStatusVal);
-                        $('#Filters_ApprovalLevel').val(currentApprovalLevel);
-                        $('.tabledata').DataTable().ajax.reload()
-                        $('#Filters_Status').val('');
-                        $('#Filters_ApprovalLevel').val('');
-                    });
-                })
-            </script>
-        }
+                        $('.statusItem').on('click', function (e) {
+                            var currentStatusVal = $(e.currentTarget).find('input').val()
+                            var currentApprovalLevel = $(e.currentTarget).find('input.approvalLevelValue').val()
+                            $('#Filters_Status').val(currentStatusVal);
+                            $('#Filters_ApprovalLevel').val(currentApprovalLevel);
+                            $('.tabledata').DataTable().ajax.reload()
+                            $('#Filters_Status').val('');
+                            $('#Filters_ApprovalLevel').val('');
+                        });
+                    })
+                </script>
+            }
+    }
 }

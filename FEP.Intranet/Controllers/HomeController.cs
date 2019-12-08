@@ -52,7 +52,7 @@ namespace FEP.Intranet.Controllers
             }
 
             var response = await WepApiMethod.SendApiAsync<DashboardList>(HttpVerbs.Get, $"Home/Dashboard/GetDashbordList?userid={userid}&module={module}");
-
+            
 
 
             if (response.isSuccess)
@@ -62,7 +62,7 @@ namespace FEP.Intranet.Controllers
                 return View(model);
             }
 
-            return new HttpStatusCodeResult(404);
+            return View(new DashboardList());
 
         }
 

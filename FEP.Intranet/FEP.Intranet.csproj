@@ -1120,6 +1120,9 @@
     <Content Include="css\fonts\TheInboxSt.ttf" />
     <Content Include="css\fonts\ZiGzAgEo-Reg-FFP.ttf" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Invitation.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\AdditionalInput.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\AdditionalInput.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\Questions.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseFeedback\_View.cshtml" />
     <Content Include="Areas\eEvent\Views\Shared\_PublicEventList.cshtml" />
     <Content Include="Areas\eLearning\Views\Shared\_CoursesList.cshtml" />
@@ -1782,6 +1785,15 @@
     <Folder Include="Data\images\publication\" />
     <Folder Include="Data\images\research\" />
     <Folder Include="img\avatar\" />
+    <Folder Include="img\banner\about-us\" />
+    <Folder Include="img\banner\banking\" />
+    <Folder Include="img\banner\banner\" />
+    <Folder Include="img\banner\calculator\" />
+    <Folder Include="img\banner\introduction\" />
+    <Folder Include="img\banner\publications\" />
+    <Folder Include="img\banner\public\" />
+    <Folder Include="img\banner\services\" />
+    <Folder Include="img\banner\stats\" />
     <Folder Include="img\kmc-thumbnail\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>

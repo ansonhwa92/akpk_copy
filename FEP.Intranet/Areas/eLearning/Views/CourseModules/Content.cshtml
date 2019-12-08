@@ -187,7 +187,7 @@
                                         <div>
                                             <div class="row">
                                                 <div class="col-sm-8">
-                                                    <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span></div>
+                                                    <div class="pr-3"><i class="la @icon la-2x" data-toggle="tooltip" title=@title></i><span class="pb-1">@content.Title</span><br/>@if (content.CompletionType == ContentCompletionType.AnswerQuestion) { <a href="@Url.Action($"Questions", "CourseContents", new { area = "eLearning", id = content.Id, courseid = content.CourseId, moduleid = content.CourseModuleId })" data-toggle="tooltip" data-placement="top" title="Edit Quiz for this Content">Edit Quiz for this Content</a> }</div>
                                                 </div>
                                                 @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
                                                               (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||

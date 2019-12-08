@@ -1,0 +1,187 @@
+﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentQuizModel
+
+@{
+    ViewBag.Title = "Edit Quiz";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    var name = Model.PageTitle;
+}
+
+<div class="loading">
+    <div class="loader"></div>
+
+</div>
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5">
+
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-outline-primary text-white">
+                        <span class="align-middle">
+                            <i class="la la-long-arrow-left">&nbsp;</i>
+                        </span>
+                        Back
+                    </a>
+                </div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Courses">Courses</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId">Module</a></li>
+                                <li class="breadcrumb-item"><a href="#">Content</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">@name : Edit Quiz</h1>
+                    <div class="header-text">Edit Quiz.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+    <form action="@BaseURL/CourseContents/Questions" name="formQuiz" id="formQuiz" method="post" onsubmit="return validateForm()">
+
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(m => m.CourseId)
+        @Html.HiddenFor(m => m.CourseModuleId)
+        @Html.HiddenFor(m => m.ContentId)
+        @*@Html.HiddenFor(m => m.Id)*@
+        @Html.HiddenFor(m => m.PageTitle)
+        <input type="hidden" id="Id" name="Id" class="form-control" value="@Model.Id" />
+        <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;">@Model.Contents</textarea>
+        <input id="WebApiURL" value="@WebApiURL" hidden />
+
+        <div class="row">
+
+            <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                <div id="page-nav" class="sidebar-left page-nav">
+                    <div data-perfect-scrollbar class="ps">
+                        <div class="page-section">
+                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course Content</h6>
+                            <ul class="nav page-nav__menu">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">Quiz</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                <div class="border-form rounded-top">
+                    <div class="form-container" style="max-width:840px;">
+                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                            <div class="">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div id="surveyContainer">
+                            <div id="creatorElement"></div>
+                        </div>
+                        <div id="testdiv"></div>
+                    </div>
+                </div>
+
+                <div class="border-left border-right border-bottom p-3 rounded-bottom">
+                    <a href="~/eLearning/CourseContents/Edit/@Model.ContentId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                       title="Back to Content Editing">@Language.General.ButtonBack</a>
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top"
+                       title="Return to Content Listing">Done</a>
+                </div>
+            </div>
+        </div>
+        @* } *@
+    </form>
+
+<style>
+    .form-container {
+        max-width: none !important;
+    }
+</style>
+
+@section ContentScript {
+
+    <link href="https://surveyjs.azureedge.net/1.1.6/survey-creator.css" type="text/css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+    <script src="https://surveyjs.azureedge.net/1.1.6/survey.ko.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://surveyjs.azureedge.net/1.1.6/survey-creator.js"></script>
+    @*<script type="text/javascript" src="@BaseURL/js/survey-builder-init.js"></script>*@
+
+    <script>
+
+        SurveyCreator
+            .StylesManager
+            .applyTheme("bootstrap");
+
+        var creatorOptions = {
+            showEmbededSurveyTab: false,
+            showTestSurveyTab: true,
+            showPropertyGrid: false,
+            showOptions: false,
+            isAutoSave: true,
+            showState: true
+        };
+        var surveyCreator = new SurveyCreator.SurveyCreator("creatorElement", creatorOptions);
+
+        var curLocale = SurveyCreator.localization.currentLocale;
+        var curStrings = SurveyCreator.localization.getLocale("");
+        curStrings.ed.designer = "Quiz Designer";
+        curStrings.ed.testSurvey = "Test Quiz";
+        curStrings.ed.jsonEditor = "Text Editor";
+
+        var editorDefinition = SurveyCreator.SurveyQuestionEditorDefinition.definition["selectbase"];
+        if (!editorDefinition.tabs) editorDefinition.tabs = [];
+        if (!editorDefinition.properties) editorDefinition.properties = [];
+        editorDefinition.tabs.push({ name: "correctAnswer", index: 12 });
+
+        $(document).ready(function () {
+
+            $('.loading').hide();
+
+            var scontent = $('#Contents').val();
+            surveyCreator.text = scontent;
+
+            surveyCreator.saveSurveyFunc = function (saveNo, callback) {
+                $('#Contents').val(surveyCreator.text);
+                //$('#testdiv').text($('#Contents').val());
+                var form = $('#formQuiz');
+                //var test = form.serialize();
+                //alert(test);
+                $.ajax({
+                    url: "@Url.Action("Questions", "CourseContents", new { area = "eLearning" })",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //$('#testdiv').text(data);
+                        //callback(saveNo, data.isSuccess);
+                    }
+                    /*,
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        callback(saveNo, false);
+                        alert(thrownError);
+                    }
+                    */
+                });
+            };
+
+        });
+    </script>
+
+}

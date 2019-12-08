@@ -16,6 +16,10 @@
                         <li class="nav-item">
                             <a href="@Url.Action("EditRules", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Rules And Path </a>
                         </li>
+                        <!-- firus -->
+                        <li class="nav-item">
+                            <a href="@Url.Action("AdditionalInput", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Additional Input </a>
+                        </li>
                         <li class="nav-item">
                             <a href="@Url.Action("Trainers", "Courses", new { area = "eLearning", id = @Model.Id })" class="nav-link">Instructors</a>
                         </li>
@@ -27,11 +31,11 @@
                         </li>
 
                         @if (Model.Status == CourseStatus.Published)
-                        {
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index", "CourseEvents", new { area = "eLearning", @courseId = @Model.Id })" class="nav-link">Sessions</a>
-                            </li>
-                        }
+    {
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index", "CourseEvents", new { area = "eLearning", @courseId = @Model.Id })" class="nav-link">Sessions</a>
+                    </li>
+}
                     </ul>
                 </div>
             </div>

@@ -119,7 +119,14 @@
                     </div>
                 </div>
 
-                <div class="border-left border-right border-bottom p-3 rounded-bottom">
+            <!-- firus -->
+            @*<div class="border-left border-right border-bottom p-3 rounded-bottom">
+                <button type="button" class="btn btn-default" id="btnEditQuestions" name="btnEditQuestions" value="EditQuestions">
+                    <i class="la la-edit font-icon" style="font-size: 1.5rem;"></i>Edit Questions
+                </button>
+            </div>*@
+
+            <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
                     <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
                        title="Back">@Language.General.ButtonBack</a>
@@ -283,6 +290,12 @@
 
                 }
             }
+
+            $('#btnEditQuestions').click(function (event) {
+                var url = '@Html.Raw(@Url.Action($"Questions", "CourseContents", new { area = "eLearning", courseid = Model.CourseId, moduleid = Model.CourseModuleId, id = Model.Id }))';
+                window.location = url;
+            });
+
 
         });
     </script>

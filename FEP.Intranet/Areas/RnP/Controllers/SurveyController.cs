@@ -28,6 +28,16 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View();
         }
 
+        // GET: RnP/Survey
+        [HasAccess(UserAccess.RnPSurveyView)]
+        [HttpPost]
+        public async Task<ActionResult> Index(FilterSurveyModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"RnP/Survey/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
+        }
+
         //menu
         [ChildActionOnly]
         public ActionResult _Menu()
@@ -40,6 +50,15 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         public ActionResult List()
         {
             return View();
+        }
+
+        [HasAccess(UserAccess.RnPSurveyView)]
+        [HttpPost]
+        public async Task<ActionResult> List(FilterSurveyModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"RnP/Survey/GetPublished", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
         }
 
         // Show select survey type form
@@ -127,6 +146,42 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
+            if (model.CoverPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.CoverPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("CoverPictures", "Survey picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.AuthorPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.AuthorPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("AuthorPictures", "Author picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.ProofOfApprovalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfApprovalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfApproval", "Proof of Approval document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
+            }
 
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={null}&title={model.Title}");
 
@@ -191,22 +246,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
                     string newid = resparray[0];
                     string title = resparray[1];
 
-                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
-                    }
-                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles.First(), null);
-                    }
-                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UploadImageFiles(int.Parse(newid), null, model.AuthorPictureFiles.First());
-                    }
-                    else
-                    {
-                        await UploadImageFiles(int.Parse(newid), null, null);
-                    }
+                    await UploadImageFiles(int.Parse(newid), model.CoverPictureFiles, model.AuthorPictureFiles);
 
                     await LogActivity(Modules.RnP, "Create New Survey: " + title);
 
@@ -305,6 +345,42 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             {
                 ModelState.AddModelError("ProofOfApproval", "Please upload at least one (1) Proof Of Approval");
             }
+            if (model.CoverPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.CoverPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("CoverPictures", "Survey picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.AuthorPictureFiles.Count() > 0)
+            {
+                foreach (var myfile in model.AuthorPictureFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("AuthorPictures", "Author picture must be in png, jpg, jpeg, or gif format");
+                    }
+                }
+            }
+            if (model.ProofOfApprovalFiles.Count() > 0)
+            {
+                foreach (var myfile in model.ProofOfApprovalFiles)
+                {
+                    string myext = System.IO.Path.GetExtension(myfile.FileName);
+                    myext = myext.ToLower();
+                    if ((myext != ".txt") && (myext != ".pdf") && (myext != ".doc") && (myext != ".docx") && (myext != ".xls") && (myext != ".xlsx") && (myext != ".ppt") && (myext != ".pptx") && (myext != ".png") && (myext != ".gif") && (myext != ".jpg") && (myext != ".jpeg"))
+                    {
+                        ModelState.AddModelError("ProofOfApproval", "Proof of Approval document must be in txt, pdf, doc, docx, xls, xlsx, ppt, pptx, png, gif, jpg, or jpeg format");
+                    }
+                }
+            }
 
             var dupTitleResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/TitleExists?id={model.ID}&title={model.Title}");
 
@@ -366,24 +442,9 @@ namespace FEP.Intranet.Areas.RnP.Controllers
 
                 if (response.isSuccess)
                 {
-                    /*
-                    if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), model.AuthorPictureFiles.First());
-                    }
-                    else if ((model.CoverPictureFiles.Count() > 0) && (model.AuthorPictureFiles.Count() <= 0))
-                    {
-                        await UpdateImageFiles(model.ID, model.CoverPictureFiles.First(), null);
-                    }
-                    else if ((model.CoverPictureFiles.Count() <= 0) && (model.AuthorPictureFiles.Count() > 0))
-                    {
-                        await UpdateImageFiles(model.ID, null, model.AuthorPictureFiles.First());
-                    }
-                    else
-                    {
-                        await UpdateImageFiles(model.ID, null, null);
-                    }
-                    */
+                    await UpdateImageFileCover(model.ID, model.CoverPictureFiles, model.CoverPictures);
+
+                    await UpdateImageFileAuthor(model.ID, model.AuthorPictureFiles, model.AuthorPictures);
 
                     await LogActivity(Modules.RnP, "Edit Survey: " + response.Data, model);
 
@@ -496,9 +557,32 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return View(model);
         }
 
+        // Save build form (remain on build form) (called by surveyjs)
+        // POST: Survey/SaveForm
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SaveForm(UpdateSurveyContentsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/Build", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
+        }
+
         // Process save template form
         // After editing build, user can save it as template (this is called via ajax).
         // POST: Survey/SaveTemplate/5
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveTemplate(UpdateSurveyTemplateModel model)
@@ -521,6 +605,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+        */
+
+        // Save template form
+        // POST: Survey/SaveTemplate/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SaveTemplate(UpdateSurveyTemplateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SaveTemplate", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
         }
 
         // Show review form
@@ -1390,6 +1497,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process survey answers (testing) submission
         // Redirects to thank you page?
         // POST: Survey/SubmitAnswers/5
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitTest(UpdateSurveyResponseModel model)
@@ -1418,6 +1526,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+        */
+
+        // Save survey answers (testing) submission
+        // POST: Survey/SubmitTest
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SubmitTest(UpdateSurveyResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitTest", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
         }
 
         // Show answer form
@@ -1480,6 +1611,7 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         // Process survey answers (actual) submission
         // Redirects to thank you page?
         // POST: Survey/SubmitAnswers/5
+        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SubmitAnswers(UpdateSurveyResponseModel model)
@@ -1508,6 +1640,29 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             }
 
             return View(model);
+        }
+        */
+
+        // Save survey answers (actual) submission
+        // POST: Survey/SubmitAnswers
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SubmitAnswers(UpdateSurveyResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"RnP/Survey/SubmitAnswers", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
         }
 
         // Survey results
@@ -1631,10 +1786,22 @@ namespace FEP.Intranet.Areas.RnP.Controllers
         }
 
         // Upload picture files
-        private async Task<int> UploadImageFiles(int surveyid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        private async Task<int> UploadImageFiles(int surveyid, IEnumerable<HttpPostedFileBase> coverfiles, IEnumerable<HttpPostedFileBase> authorfiles)
         {
-            string coverpath = UploadCoverFile(coverfile);
-            string authorpath = UploadAuthorFile(authorfile);
+            string coverpath = "";
+            string authorpath = "";
+
+            if (coverfiles.Count() > 0)
+            {
+                HttpPostedFileBase coverfile = coverfiles.First();
+                coverpath = UploadCoverFile(coverfile);
+            }
+
+            if (authorfiles.Count() > 0)
+            {
+                HttpPostedFileBase authorfile = authorfiles.First();
+                authorpath = UploadAuthorFile(authorfile);
+            }
 
             var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UploadImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
 
@@ -1647,21 +1814,65 @@ namespace FEP.Intranet.Areas.RnP.Controllers
             return 0;
         }
 
-        // Update picture files
-        private async Task<int> UpdateImageFiles(int surveyid, HttpPostedFileBase coverfile, HttpPostedFileBase authorfile)
+        // Update cover file
+        private async Task<int> UpdateImageFileCover(int surveyid, IEnumerable<HttpPostedFileBase> coverfiles, IEnumerable<WebApiModel.FileDocuments.Attachment> covers)
         {
-            string coverpath = UploadCoverFile(coverfile);
-            string authorpath = UploadAuthorFile(authorfile);
-
-            var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImages?surveyid={surveyid}&coverpic={coverpath}&authorpic={authorpath}");
-
-            if (response.isSuccess)
+            if (covers.Count() <= 0)
             {
-                var oldid = response.Data;
-                return oldid;
+                string coverpath = "";
+
+                if (coverfiles.Count() > 0)
+                {
+                    HttpPostedFileBase coverfile = coverfiles.First();
+                    coverpath = UploadCoverFile(coverfile);
+                }
+
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImagesCover?surveyid={surveyid}&coverpic={coverpath}");
+
+                if (response.isSuccess)
+                {
+                    var oldid = response.Data;
+                    return oldid;
+                }
+
             }
 
             return 0;
+        }
+
+        // Update author file
+        private async Task<int> UpdateImageFileAuthor(int surveyid, IEnumerable<HttpPostedFileBase> authorfiles, IEnumerable<WebApiModel.FileDocuments.Attachment> authors)
+        {
+            if (authors.Count() <= 0)
+            {
+                string authorpath = "";
+
+                if (authorfiles.Count() > 0)
+                {
+                    HttpPostedFileBase authorfile = authorfiles.First();
+                    authorpath = UploadAuthorFile(authorfile);
+                }
+
+                var response = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Get, $"RnP/Survey/UpdateImagesAuthor?surveyid={surveyid}&authorpic={authorpath}");
+
+                if (response.isSuccess)
+                {
+                    var oldid = response.Data;
+                    return oldid;
+                }
+
+            }
+
+            return 0;
+        }
+
+        // Download
+
+        // File download
+        [HttpGet]
+        public async Task<ActionResult> Download(int id)
+        {
+            return await FileMethod.DownloadFile(id);
         }
 
         // General SLA reminder

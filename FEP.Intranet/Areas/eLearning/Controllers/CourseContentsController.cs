@@ -22,6 +22,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string GetAllDocument = "eLearning/CourseContents/GetAllDocument";
 
         public const string CreateFeedback = "eLearning/Feedback/CreateNewFeedback";
+
+        // firus
+        public const string GetQuiz = "eLearning/CourseContents/GetQuiz";
     }
 
     public class CourseContentsController : FEPController
@@ -373,6 +376,73 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
+        // firus - id is contentid
+        [HasAccess(UserAccess.CourseEdit)]
+        public async Task<ActionResult> Questions(int? id, int? courseid, int? moduleid)
+        {
+            if ((id == null) || (courseid == null) || (moduleid == null))
+            {
+                TempData["ErrorMessage"] = "Could not find the content or related course/module.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            var contentmodel = await TryGetContent(id.Value);
+
+            if (contentmodel == null)
+            {
+                TempData["ErrorMessage"] = "Could not find the content.";
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            var model = await GetQuiz(id.Value, courseid.Value, moduleid.Value, contentmodel.Title);
+
+            return View(model);
+        }
+
+        // firus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> Questions(CreateOrEditContentQuizModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/CourseContents/SaveQuiz", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
+        }
+
+        // firus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SubmitAnswers(CreateOrEditContentAnswersModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/CourseContents/SubmitAnswers", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
+        }
+
         [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Delete(int? id)
         {
@@ -442,6 +512,29 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
+        // firus
+        private async Task<CreateOrEditContentQuizModel> GetQuiz(int id, int courseid, int moduleid, string contenttitle)
+        {
+            var responseQuiz = await WepApiMethod.SendApiAsync<CreateOrEditContentQuizModel>(HttpVerbs.Get, ContentApiUrl.GetQuiz + $"?id={id}&courseid={courseid}&moduleid={moduleid}&contenttitle={contenttitle}");
+
+            if (responseQuiz.isSuccess)
+                return responseQuiz.Data;
+            else
+            {
+                var newquiz = new CreateOrEditContentQuizModel
+                {
+                    CourseId = courseid,
+                    CourseModuleId = moduleid,
+                    ContentId = id,
+                    Title = "",
+                    Contents = "",
+                    PageTitle = contenttitle
+                };
+
+                return newquiz;
+            }
+        }
+
         private async Task GetAllAudio(int courseId, int selectedId = -1)
         {
             // this should be queried from webapi
@@ -505,7 +598,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
 
                 // check if user is enrolled. If not enrolled cannot see content
-                if ((content.Status == CourseStatus.Published && IsUserEnrolled) || 
+                if ((content.Status == CourseStatus.Published && IsUserEnrolled) ||
                     (content.Status != CourseStatus.Published && CurrentUser.HasAccess(UserAccess.CourseNonLearnerView)))
                 {
                     switch (content.ContentType)
@@ -522,6 +615,14 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         default:
                             break;
                     }
+
+                    // firus
+                    var quizmodel = await GetQuiz(content.Id, content.CourseId, content.CourseModuleId, content.Title);
+                    ViewBag.Id = 0;
+                    ViewBag.QuizId = quizmodel.Id;
+                    ViewBag.UserId = CurrentUser.UserId;
+                    ViewBag.QuizContents = quizmodel.Contents;
+                    ViewBag.QuizTitle = quizmodel.Title;
 
                     return View(content);
                 }
@@ -554,6 +655,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return newUrl;
+        }
+
+        // firus
+        public async Task<bool> QuizCompleted(int quizid, int userid)
+        {
+            var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Get, $"RnP/Survey/ContentQuizCompleted?quizid={quizid}&userid={userid}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return false;
         }
 
         protected override void Dispose(bool disposing)

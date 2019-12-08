@@ -325,7 +325,7 @@
                             <div class="card__body">
                                 @foreach (var digitalfile in Model.DigitalPublications)
                                 {
-                                    <span style="font-size:17px;font-weight:bold;color:green;">Already Purchased</span><br /><span style="font-size:17px;font-weight:bold;"><a href="@Html.Raw(WebApiURL)System/File/Download?id=@digitalfile.Id" id="downloadFile" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Publication</a></span>
+                                    <span style="font-size:17px;font-weight:bold;color:green;">Already Purchased</span><br /><span style="font-size:17px;font-weight:bold;"><a href="@Url.Action("Download", "Publication", new { area = "RnP", id = digitalfile.Id})" id="downloadFile" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Publication</a></span>
                                 }
                             </div>
                         </div>
@@ -350,7 +350,7 @@
                                 {
                                     foreach (var digitalfile in Model.DigitalPublications)
                                     {
-                                        <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-digital.svg" alt="image" data-toggle="tooltip" title="Digital copy" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2><span style="font-size:17px;font-weight:bold;"><a href="@Html.Raw(WebApiURL)System/File/Download?id=@digitalfile.Id" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Now</a></span>
+                                        <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-digital.svg" alt="image" data-toggle="tooltip" title="Digital copy" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2><span style="font-size:17px;font-weight:bold;"><a href="@Url.Action("Download", "Publication", new { area = "RnP", id = digitalfile.Id})" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Now</a></span>
                                     }
                                 }
                                 else
@@ -364,7 +364,7 @@
                                 {
                                     foreach (var digitalfile in Model.DigitalPublications)
                                     {
-                                        <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image" data-toggle="tooltip" title="Promotion (1 Hard copy + 1 Digital copy)" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2><span style="font-size:17px;font-weight:bold;"><a href="@Html.Raw(WebApiURL)System/File/Download?id=@digitalfile.Id" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Now</a></span>
+                                        <h2 class="color-darkblue mb-0"><img src="~/img/publications/icon-1-plus-1-promo.svg" alt="image" data-toggle="tooltip" title="Promotion (1 Hard copy + 1 Digital copy)" style="width:24px;height:24px;"><span style="color:green;"> Free!</span></h2><span style="font-size:17px;font-weight:bold;"><a href="@Url.Action("Download", "Publication", new { area = "RnP", id = digitalfile.Id})" data-toggle="tooltip" title="Download File"><i class="fa fa-file-download"></i> Download Now</a></span>
                                     }
                                 }
                                 else
@@ -409,7 +409,8 @@
 
             $('#downloadFile').click(function () {
                 @*var myurl = '@Url.Action("IncrementDownload", "Home", new { area = "RnP" })' + '?id=' + @Model.ID;*@
-                var myurl = '@(WebApiURL)RnP/Publication/IncrementDownload?id=' + @Model.ID + '&userid=' + @CurrentUser.UserId.Value;
+                @*var myurl = '@(WebApiURL)RnP/Publication/IncrementDownload?id=' + @Model.ID + '&userid=' + @CurrentUser.UserId.Value;*@
+                var myurl = '@Url.Action("IncrementDownload", "Publication", new { area = "RnP" })' + '?id=' + @Model.ID  + '&userid=' + @CurrentUser.UserId.Value;
                 $.ajax({
                     url: myurl,
                     type: "GET",

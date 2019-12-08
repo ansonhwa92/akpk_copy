@@ -147,6 +147,26 @@ namespace FEP.Model.eLearning
         }
     }
 
+
+    // firus
+    public class CourseAdditionalInput
+    {
+        public int Id { get; set; }
+        public int? CourseId { get; set; }
+        public string Contents { get; set; }
+    }
+
+
+    // firus
+    public class CourseAdditionalInputResponses
+    {
+        public int Id { get; set; }
+        public int InputId { get; set; }
+        public int UserId { get; set; }
+        public string Answers { get; set; }
+    }
+
+
     public enum SkillLevel
     {
         All,

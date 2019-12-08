@@ -1828,16 +1828,34 @@ namespace FEP.WebApi.Api.RnP
             return surveyimages.ID;
         }
 
-        // GET: api/RnP/Survey/UpdateImages
-        [Route("api/RnP/Survey/UpdateImages")]
+        // GET: api/RnP/Survey/UpdateImagesCover
+        [Route("api/RnP/Survey/UpdateImagesCover")]
         [HttpGet]
-        public int UpdateImages(int surveyid, string coverpic, string authorpic)
+        public int UpdateImagesCover(int surveyid, string coverpic)
         {
             var surveyimages = db.SurveyImages.Where(pi => pi.SurveyID == surveyid).FirstOrDefault();
 
             if (surveyimages != null)
             {
                 surveyimages.CoverPicture = coverpic;
+                db.Entry(surveyimages).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return surveyimages.ID;
+            }
+
+            return 0;
+        }
+
+        // GET: api/RnP/Survey/UpdateImagesAuthor
+        [Route("api/RnP/Survey/UpdateImagesAuthor")]
+        [HttpGet]
+        public int UpdateImagesAuthor(int surveyid, string authorpic)
+        {
+            var surveyimages = db.SurveyImages.Where(pi => pi.SurveyID == surveyid).FirstOrDefault();
+
+            if (surveyimages != null)
+            {
                 surveyimages.AuthorPicture = authorpic;
                 db.Entry(surveyimages).State = EntityState.Modified;
                 db.SaveChanges();
@@ -2623,6 +2641,23 @@ namespace FEP.WebApi.Api.RnP
             }
 
             return null;
+        }
+
+        // eLearning
+
+        // Function to check if a certain quiz has been done by user
+        [Route("api/RnP/Survey/ContentQuizCompleted")]
+        [HttpGet]
+        public bool ContentQuizCompleted(int quizid, int userid)
+        {
+            if (db.CourseContentAnswers.Any(cc => cc.QuizId == quizid && cc.UserId == userid))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // Targeted Groups lookup

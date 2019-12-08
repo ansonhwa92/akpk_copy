@@ -38,6 +38,10 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string IsUserEnrolled = "eLearning/Courses/IsUserEnrolled";
 
         public const string IsUserCompleted = "eLearning/Courses/IsUserCompleted";
+
+        // firus
+        public const string GetAdditionalInput = "eLearning/Courses/GetAdditionalInput";
+        public const string SaveAdditionalInput = "eLearning/Courses/SaveAdditionalInput";
     }
 
     public class CoursesController : FEPController
@@ -616,6 +620,96 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             TempData["ErrorMessage"] = "Cannot update course's rule.";
 
             return View(model);
+        }
+
+        // firus
+        [HasAccess(UserAccess.CourseCreate)]
+        public async Task<ActionResult> AdditionalInput(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var course = await TryGetCourse(id.Value);
+
+            if (course == null)
+            {
+                TempData["ErrorMessage"] = "No such course.";
+
+                return RedirectToAction("Index", "Courses");
+            }
+
+            var model = await GetAdditionalInput(id.Value, course.Title);
+            //ViewBag.Id = 0;
+            //ViewBag.InputId = model.Id;
+            //ViewBag.UserId = CurrentUser.UserId;
+            //ViewBag.InputContents = model.Contents;
+
+            return View(model);
+        }
+
+        // firus
+        [HasAccess(UserAccess.CourseEdit)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> AdditionalInput(CourseAdditionalInputModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, CourseApiUrl.SaveAdditionalInput, model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
+        }
+
+        // firus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<string> SubmitResponse(CourseAdditionalInputResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/Courses/SubmitResponse", model);
+
+                if (response.isSuccess)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "error";
+                }
+            }
+            return "invalid";
+        }
+
+        // firus
+        private async Task<CourseAdditionalInputModel> GetAdditionalInput(int id, string coursetitle)
+        {
+            var responseInput = await WepApiMethod.SendApiAsync<CourseAdditionalInputModel>(HttpVerbs.Get, CourseApiUrl.GetAdditionalInput + $"?id={id}&coursetitle={coursetitle}");
+
+            if (responseInput.isSuccess)
+                return responseInput.Data;
+            else
+            {
+                var newinput = new CourseAdditionalInputModel
+                {
+                    CourseId = id,
+                    Contents = "",
+                    PageTitle = coursetitle,
+                };
+
+                return newinput;
+            }
         }
 
         public static async Task<CreateOrEditCourseModel> TryGetCourse(int id)

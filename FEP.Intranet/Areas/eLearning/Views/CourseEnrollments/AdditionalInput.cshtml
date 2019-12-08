@@ -1,0 +1,126 @@
+﻿@using FEP.Model.eLearning
+@model FEP.WebApiModel.eLearning.CourseAdditionalInputModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Additional Information";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+}
+
+@section Nav{
+    <div class="title_header">
+        <div class="title-header-container">
+            <div class="container">
+                <!-- if have button -->
+                <div class="header-col-right float-right mt-5"><a href="~/eLearning/Courses" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-left">
+                    <div id="breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="~/eLearning/Home">eLearning</a></li>
+                                <li class="breadcrumb-item"><a href="#">Courses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="page-title text-white">Additional Enrollment Information </h1>
+                    @*<div class="header-text">Course details.</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="d-flex align-items-center">
+    <div class="title">
+        <span class="title">
+            @*Course: @Model.CourseTitle*@
+            Additional Enrollment Information
+        </span>
+    </div>
+</div>
+<hr>
+
+<div class="row">
+    <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+        <div class="border-form rounded-top">
+            <div class="form-container tab-content">
+
+                <div id="surveyContainer"></div>
+                <div id="surveyResult"></div>
+                <div id="testdiv"></div>
+                <textarea id="Questions" name="Questions" class="form-control" rows="3" style="display:none;">@Model.Contents</textarea>
+
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formresponse", id = "formresponse" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" name="Id" class="form-control" value="0" />
+                    <input type="hidden" name="InputId" id="InputId" class="form-control" value="@Model.Id" />
+                    <input type="hidden" name="UserId" id="UserId" class="form-control" value="@CurrentUser.UserId" />
+                    <input type="hidden" name="CourseId" id="CourseId" class="form-control" value="@ViewBag.courseId" />
+                    <input type="hidden" name="EnrollmentCode" id="EnrollmentCode" class="form-control" value="@ViewBag.enrollmentCode" />
+                    <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
+                    <textarea id="Answers" name="Answers" class="form-control" rows="3" style="display:none;"></textarea>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .form-container {
+        max-width: 100% !important
+    }
+</style>
+
+@section ContentScript {
+
+    @*<link href="~/css/elearn.css" rel="stylesheet" />
+        <script src="~/Scripts/jquery.truncate.js"></script>
+        <script src="~/js/elearn.js"></script>*@
+
+    <link href="https://surveyjs.azureedge.net/1.1.8/survey.css" type="text/css" rel="stylesheet">
+    <script src="https://surveyjs.azureedge.net/1.1.8/survey.jquery.min.js"></script>
+    <script type="text/javascript" src="@BaseURL/js/survey-tester-init.js"></script>
+    @*<script src="@BaseURL/js/main.js"></script>*@
+
+    <script>
+
+        $(document).ready(function () {
+
+            var surveyJSON = @Html.Raw(Model.Contents);
+            var survey = new Survey.Model(surveyJSON);
+
+            $("#surveyContainer").Survey({
+                model: survey,
+                onComplete: sendDataToServer
+            });
+
+            function sendDataToServer(survey) {
+                var givenanswers = survey.data;
+                var answerstring = JSON.stringify(givenanswers);
+                $('#Answers').val(answerstring);
+                var form = $('#formresponse');
+                $.ajax({
+                    url: "@Url.Action("AdditionalInput", "CourseEnrollments", new { area = "eLearning" })",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //$('#testdiv').text(data);
+                        //callback(saveNo, data.isSuccess);
+                    },
+                    error: function (xhr, status, error) {
+                        //alert(xhr.responseText);
+                    }
+                });
+            }
+
+        });
+
+    </script>
+}

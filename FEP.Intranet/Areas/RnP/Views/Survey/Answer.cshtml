@@ -159,7 +159,8 @@
                 // ajax
                 var form = $('#formresponse');
                 $.ajax({
-                    url: "@(WebApiURL)RnP/Survey/SubmitAnswers",
+                    @*url: "@(WebApiURL)RnP/Survey/SubmitAnswers",*@
+                    url: "@Url.Action("SubmitAnswers", "Survey", new { area = "RnP" })",
                     type: "POST",
                     data: form.serialize(),
                     success: function (data) {

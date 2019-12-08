@@ -51,6 +51,7 @@ namespace FEP.Model.Migrations
             }
 
             //promotion codes
+            /*
             if (!db.PromotionCode.Any())
             {
                 db.PromotionCode.Add(new PromotionCode {
@@ -69,6 +70,7 @@ namespace FEP.Model.Migrations
                     Used = false
                 });
             }
+            */
 
             //targeted group cities
             if (!db.TargetedGroupCities.Any())

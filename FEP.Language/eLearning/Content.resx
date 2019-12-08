@@ -144,6 +144,9 @@
   <data name="IFrame" xml:space="preserve">
     <value>IFrame Url</value>
   </data>
+  <data name="QuestionsTitle" xml:space="preserve">
+    <value>Questions Title</value>
+  </data>
   <data name="RichText" xml:space="preserve">
     <value>Text</value>
   </data>

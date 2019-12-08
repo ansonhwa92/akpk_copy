@@ -19,6 +19,11 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
         public const string GetEnrollment = "eLearning/CourseEnrollments/GetEnrollment";
         public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
+
+        // firus
+        public const string GetAdditionalInput = "eLearning/Courses/GetAdditionalInput";
+        public const string SaveAdditionalInputResponse = "eLearning/Courses/SaveAdditionalInputResponse";
+
         public const string RequestWithdraw = "eLearning/CourseEnrollments/RequestWithdraw";
     }
 
@@ -195,7 +200,20 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         await LogError(Modules.Learning, $"Error Sending Email For Facilitator When A Student Enrolled. Course Id : {courseId}");
                     }
 
-                    return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
+                    // firus start
+                    var responseInput = await WepApiMethod.SendApiAsync<CourseAdditionalInputModel>(HttpVerbs.Get, CourseApiUrl.GetAdditionalInput + $"?id={courseId}&coursetitle=");
+                    if (responseInput.isSuccess)
+                    {
+                        var inputmodel = responseInput.Data;
+                        return RedirectToAction("AdditionalInput", "CourseEnrollments", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
+                    }
+                    else
+                    {
+                        return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
+                    }
+                    // firus end
+
+                    //return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
                 }
             }
 
@@ -205,6 +223,66 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             TempData["ErrorMessage"] = "Error enrolling to the course." + enrollResponse.Data.Message;
 
             return RedirectToAction("View", "Courses", new { area = "eLearning", id = courseId, enrollmentCode = enrollmentCode });
+        }
+
+        // firus
+        [Authorize]
+        public async Task<ActionResult> AdditionalInput(int? id, string enrollmentCode = "")
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var responseInput = await WepApiMethod.SendApiAsync<CourseAdditionalInputModel>(HttpVerbs.Get, CourseApiUrl.GetAdditionalInput + $"?id={id}&coursetitle=");
+            if (responseInput.isSuccess)
+            {
+                if (responseInput.Data == null)
+                {
+                    TempData["ErrorMessage"] = "Additional registration information input not found.";
+
+                    return RedirectToAction("View", "Courses", new { area = "eLearning", id = id, enrollmentCode = enrollmentCode });
+                }
+
+                ViewBag.courseId = id;
+                ViewBag.enrollmentCode = enrollmentCode;
+
+                var model = responseInput.Data;
+
+                return View(model);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Unable to retrieved additional registration information input.";
+
+                return RedirectToAction("View", "Courses", new { area = "eLearning", id = id, enrollmentCode = enrollmentCode });
+            }
+        }
+
+        // firus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AdditionalInput(CourseAdditionalInputResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, CourseEnrollmentApiUrl.SaveAdditionalInputResponse, model);
+
+                if (response.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Additional enrollment information saved successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Unable to save additional enrollment information.";
+                }
+
+                return RedirectToAction("View", "Courses", new { area = "eLearning", id = model.CourseId, enrollmentCode = model.EnrollmentCode });
+            }
+
+            TempData["ErrorMessage"] = "Unable to save additional enrollment information.";
+
+            return RedirectToAction("View", "Courses", new { area = "eLearning", id = model.CourseId, enrollmentCode = model.EnrollmentCode });
         }
 
         [HasAccess(UserAccess.CourseEdit)]

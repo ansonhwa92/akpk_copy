@@ -87,7 +87,27 @@
 
                 @Html.Partial($"_view{Model.ContentType.ToString()}", Model)
 
+                <!-- survey start -->
+                <hr />
+                <div class="form-group">
+                    <h4>@ViewBag.QuizTitle</h4>
+                </div>
+                <div id="surveyContainer"></div>
+                <div id="surveyResult"></div>
+                <div id="testdiv"></div>
+                <textarea id="Questions" name="Questions" class="form-control" rows="3" style="display:none;">@ViewBag.QuizContents</textarea>
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formresponse", id = "formresponse" }))
+                {
+                    @Html.AntiForgeryToken()
 
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" name="Id" class="form-control" value="@ViewBag.Id" />
+                    <input type="hidden" name="QuizId" id="QuizId" class="form-control" value="@ViewBag.QuizId" />
+                    <input type="hidden" name="UserId" id="UserId" class="form-control" value="@CurrentUser.UserId" />
+                    <textarea id="Contents" name="Contents" class="form-control" rows="3" style="display:none;"></textarea>
+                    <textarea id="Answers" name="Answers" class="form-control" rows="3" style="display:none;"></textarea>
+                }
+                <!-- survey end -->
 
                 <hr />
 
@@ -121,6 +141,13 @@
 </style>
 
 @section ContentScript {
+
+    <!-- Survey -->
+    <link href="https://surveyjs.azureedge.net/1.1.8/survey.css" type="text/css" rel="stylesheet">
+    <script src="https://surveyjs.azureedge.net/1.1.8/survey.jquery.min.js"></script>
+    <script type="text/javascript" src="@BaseURL/js/survey-tester-init.js"></script>
+    @*<script src="@BaseURL/js/main.js"></script>*@
+
     <script src="~/Scripts/tinymce/tinymce.min.js"></script>
 
 <script type="text/javascript">
@@ -345,112 +372,105 @@
                 autosave_retention: "2m",
                 image_advtab: true,
                 branding: false,
+            });
 
-                importcss_append: true,
-                file_picker_types: 'file image media',
-                file_picker_callback: function (callback, value, meta) {
-                    /* Provide file and text for the link dialog */
-                    if (meta.filetype === 'file') {
-                        callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
-                    }
+            // survey portion
 
-                    /* Provide image and alt text for the image dialog */
-                    if (meta.filetype === 'image') {
-                        callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
-                    }
+            @*var completiontype = @Json.Encode(Model.CompletionType);*@
 
-                    /* Provide alternative source and posted for the media dialog */
-                    if (meta.filetype === 'media') {
-                        // callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+            //var surveyJSON = $('#Questions').val();
+            //var survey = new Survey.Model(surveyJSON);
 
-                        // Trigger click on file element
-                        jQuery("#fileupload").trigger("click");
-                        $("#fileupload").unbind('change');
-                        // File selection
-                        jQuery("#fileupload").on("change", function () {
-                            var file = this.files[0];
-                            var reader = new FileReader();
+            var surveyJSON = @Html.Raw(ViewBag.QuizContents);
+            var survey = new Survey.Model(surveyJSON);
 
-                            // FormData
-                            var fd = new FormData();
-                            var files = file;
-                            fd.append("file", files);
-                            fd.append('filetype', meta.filetype);
+            $("#surveyContainer").Survey({
+                model: survey,
+                onComplete: sendDataToServer
+            });
 
-                            var filename = "";
+            //survey.onValidateQuestion.add(function (s, options) {
+            //    if (options.name == 'animalwater') {
+            //        if (options.value != 'Whale') {
+            //            options.error = "The answer is not correct. Please give another answer";
+            //        }
+            //    }
+            //});
 
-                            // AJAX
-                            var url = '@BaseURL/elearning/File/EditorUpload';
-                            console.log('url - ', url);
-
-                            jQuery.ajax({
-                                url: url,
-                                type: "post",
-                                data: fd,
-                                contentType: false,
-                                processData: false,
-                                async: false,
-                                success: function (response) {
-                                    //console.log('filename-', response);
-                                    filename = response.location;
-                                    alert(response.location);
-                                }
-                            });
-
-                            reader.onload = function (e) {
-                                callback(filename);
-                            };
-                            reader.readAsDataURL(file);
-                        });
-                    }
-                },
-
-                width: 720,
-                height: 240,
-                image_caption: true,
-                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-                noneditable_noneditable_class: "mceNonEditable",
-                toolbar_drawer: 'sliding',
-                contextmenu: "link image imagetools table",
-                images_upload_url: '@BaseURL/elearning/File/EditorUpload',
-                images_upload_base_path: '@BaseURL/eLearning',
-                images_upload_credentials: true,
-                relative_urls: false,
-                remove_script_host: false,
-                convert_urls: true,
-
-                init_instance_callback: function (editor) {
-
-                    editor.on('BeforeSetContent', function (e) {
-                        console.log(e.content);
-
-                        if (e.content.indexOf("video ") > 0) {
-                            if (e.content.indexOf(".pdf") > 0) {
-                                e.content = e.content.replace("<video", "<div");
-
-                                var width = e.content.match("width=\"(.*)\" height");
-                                var height = e.content.match("height=\"(.*)\" controls");
-                               console.log('width - ', width, ' height - ', height);
-
-                                e.content = e.content.replace("controls=\"controls\"", "");
-
-                                e.content = e.content.replace("<source", "<object");
-                                e.content = e.content.replace("src=", "data=");
-                                console.log('middle - ', e.content);
-
-                                e.content = e.content.replace("</video", "</div");
-                                e.content = e.content.replace("/>", "type=\"application/pdf\" width=\"" + width[1] + "\" height=\"" + height[1] + "\"  ></object>");
+            function sendDataToServer(survey) {
+                var givenanswers = survey.data;
+                var answerstring = JSON.stringify(givenanswers);
+                var correctcount = survey.getCorrectedAnswerCount();
+                var incorrectcount = survey.getInCorrectedAnswerCount();
+                var totalcount = correctcount + incorrectcount;
+                var wronganswers = "The following answers were incorrect:<br/>";
+                if (incorrectcount > 0) {
+                    var qs = survey.getAllQuestions();
+                    qs.forEach(function (q) {
+                        if (q.correctAnswer != undefined) {
+                            var correctans = q.correctAnswer;
+                            var givenans = q.value;
+                            if (correctans != givenans) {
+                                wronganswers = wronganswers + "- " + givenans + "<br/>";
                             }
-
-                            console.log('after - ', e.content);
                         }
                     });
-                },
+                    $('#surveyResult').css('color', 'red');
+                    $('#surveyResult').html("<b>You only answered " + correctcount + " out of " + totalcount + " questions correctly. Please try again!</b><br/>" + wronganswers);
+                    survey.clear();
+                    survey.render();
+                    return false;
+                }
+                else {
+                    $('#surveyResult').css('color', 'green');
+                    $('#surveyResult').html("<b>You have answered " + correctcount + " out of " + totalcount + " questions correctly. Congratulations!</b><br/>");
+                }
+
+                $('#Answers').val(answerstring);
+                var form = $('#formresponse');
+                $.ajax({
+                    url: "@Url.Action("SubmitAnswers", "CourseContents", new { area = "eLearning" })",
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (data) {
+                        //$('#testdiv').text(data);
+                        //callback(saveNo, data.isSuccess);
+                    },
+                    error: function (xhr, status, error) {
+                        //alert(xhr.responseText);
+                    }
+                });
+            }
+
+            //$('#btnComplete,#btnTimerComplete,#btnAnswerComplete').click(function (event) {
+            $('#btnAnswerComplete').click(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var quizid = $('#QuizId').val();
+                //alert(quizid);
+                if (quizid != 0) {
+                    var userid = $('#UserId').val();
+                    $.ajax({
+                        url: "@Url.Action("QuizCompleted", "CourseContents", new { area = "eLearning" })" + "?quizid=" + quizid + "&userid=" + userid,
+                        type: "GET",
+                        success: function (data) {
+                            //alert(data);
+                            if (data == "False") {
+                                $('#surveyResult').css('color', 'red');
+                                $('#surveyResult').html("<b>You must first answer all of this Content's Questions correctly before you can proceed to the next Content!</b><br/>");
+                                return false;
+                            }
+                            else {
+                                $('#formCompletion').submit();
+                            }
+                        }
+                    });
+                }
+                else {
+                    $('#formCompletion').submit();
+                }
             });
-        }*@
+        });
 
-
-</script>
-
-@*<script type="text/javascript" src="~/js/tinymce_cfg.js" id="tmscript" baseUrl="@(BaseURL)"></script>*@
+    </script>
 }

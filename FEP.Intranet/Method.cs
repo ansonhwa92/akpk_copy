@@ -421,6 +421,160 @@ namespace FEP.Intranet
 
     }
 
+    public static class CBSMethod
+    {
+        //public class CBSRecord
+        //{
+        //    public string name { get; }
+        //    public string emailaddress { get; }
+        //    public string contactno { get; }
+        //}
+
+        private class CBSRecordRow
+        {
+            public dynamic ValidationErrors { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalRows { get; set; }
+            public int PageSize { get; set; }
+            public bool IsAuthenicated { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string ContactNo { get; set; }
+            public bool ReturnStatus { get; set; }
+            public dynamic ReturnMessage { get; set; }
+        }
+
+        private class CBSMainResponse
+        {
+            public dynamic ValidationErrors { get; set; }
+            public int TotalPages { get; set; }
+            public int TotalRows { get; set; }
+            public int PageSize { get; set; }
+            public bool IsAuthenicated { get; set; }
+            public List<CBSRecordRow> Content { get; set; }
+            public int CurrentPage { get; set; }
+            public int TotalRecords { get; set; }
+            public bool ReturnStatus { get; set; }
+            public dynamic ReturnMessage { get; set; }
+        }
+
+        public static async Task<List<string>> GetEmails(string agefrom, string ageto, string gender, string salaryfrom, string salaryto, string delinquent, string dmpstatus, string employmenttype, string state, string city, string pageno="1", string pagesize="100")
+        {
+
+            var url = GetWebApiUrl();
+
+            var res = new List<string>();
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return res;
+            }
+
+            var requestURI = "FE/GetDMPcustomerdetails";
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    string result;
+
+                    client.BaseAddress = new Uri(url);
+                    client.DefaultRequestHeaders.Accept.Clear();
+
+                    HttpResponseMessage response = null;
+
+                    string AgeRange = "AgeRange=";
+                    string Gender = "Gender=" + gender;
+                    string SalaryRange = "SalaryRange=";
+                    string Delinquent = "Delinquent=" + delinquent;
+                    string DMPStatus = "DMPStatus=0";
+                    string EmploymentType = "EmploymentType=0";
+                    string State = "State=0";
+                    string City = "City=0";
+                    string PageNo = "PageNo=" + pageno;
+                    string PageSize = "PageSize=" + pagesize;
+
+                    if ((agefrom != "") && (ageto != ""))
+                    {
+                        AgeRange = AgeRange + "AgeFrom=" + agefrom + "AgeTo=" + ageto;
+                    }
+                    else if ((agefrom != "") && (ageto == ""))
+                    {
+                        AgeRange = AgeRange + "AgeFrom=" + agefrom + "AgeTo=200";
+                    }
+                    else if ((agefrom == "") && (ageto != ""))
+                    {
+                        AgeRange = AgeRange + "AgeFrom=0AgeTo=" + ageto;
+                    }
+
+                    if ((salaryfrom != "") && (salaryto != ""))
+                    {
+                        SalaryRange = SalaryRange + "SalaryFrom=" + salaryfrom + "SalaryTo=" + salaryto;
+                    }
+                    else if ((salaryfrom != "") && (salaryto == ""))
+                    {
+                        SalaryRange = SalaryRange + "SalaryFrom=" + salaryfrom + "SalaryTo=1000000.00";
+                    }
+                    else if ((salaryfrom == "") && (salaryto != ""))
+                    {
+                        SalaryRange = SalaryRange + "SalaryFrom=0.00SalaryTo=" + salaryto;
+                    }
+
+                    if (dmpstatus != "")
+                    {
+                        DMPStatus = "DMPStatus=" + dmpstatus;
+                    }
+
+                    if (employmenttype != "")
+                    {
+                        EmploymentType = "EmploymentType=" + employmenttype;
+                    }
+
+                    if (state != "")
+                    {
+                        State = "State=" + state;
+                    }
+
+                    if (city != "")
+                    {
+                        City = "City=" + city;
+                    }
+
+                    response = await client.GetAsync(requestURI + $"?AgeRange={AgeRange}&Gender={Gender}&SalaryRange={SalaryRange}&Delinquent={Delinquent}&DMPStatus={DMPStatus}&EmploymentType={EmploymentType}&State={State}&City={City}&PageNo={PageNo}&PageSize={PageSize}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+
+                        CBSMainResponse resobj = JsonConvert.DeserializeObject<CBSMainResponse>(result);
+
+                        foreach (CBSRecordRow myrow in resobj.Content)
+                        {
+                            res.Add(myrow.Email);
+                        }
+                        return res;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return res;
+            }
+
+            return res;
+
+        }
+
+        private static string GetWebApiUrl()
+        {
+            return WebConfigurationManager.AppSettings["CBSApiURL"] != null ? WebConfigurationManager.AppSettings["CBSApiURL"].ToString() : "";
+        }
+
+
+    }
+
     //public static class EmailMethod
     //{
 

@@ -566,7 +566,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
 
                 // check if user is enrolled. If not enrolled cannot see content
-                if ((content.Status == CourseStatus.Published && IsUserEnrolled) || 
+                if ((content.Status == CourseStatus.Published && IsUserEnrolled) ||
                     (content.Status != CourseStatus.Published && CurrentUser.HasAccess(UserAccess.CourseNonLearnerView)))
                 {
                     switch (content.ContentType)
@@ -584,15 +584,16 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             break;
                     }
 
-                // firus
-                var quizmodel = await GetQuiz(content.Id, content.CourseId, content.CourseModuleId, content.Title);
-                ViewBag.Id = 0;
-                ViewBag.QuizId = quizmodel.Id;
-                ViewBag.UserId = CurrentUser.UserId;
-                ViewBag.QuizContents = quizmodel.Contents;
-                ViewBag.QuizTitle = quizmodel.Title;
+                    // firus
+                    var quizmodel = await GetQuiz(content.Id, content.CourseId, content.CourseModuleId, content.Title);
+                    ViewBag.Id = 0;
+                    ViewBag.QuizId = quizmodel.Id;
+                    ViewBag.UserId = CurrentUser.UserId;
+                    ViewBag.QuizContents = quizmodel.Contents;
+                    ViewBag.QuizTitle = quizmodel.Title;
 
-                return View(content);
+                    return View(content);
+                }
             }
             else
             {

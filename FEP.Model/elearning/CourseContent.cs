@@ -62,6 +62,10 @@ namespace FEP.Model.eLearning
         public int? Height { get; set; } = 100;
         [Range(5, 5000)]
         public int? Width { get; set; } = 100;
+
+        public int? FeedbackId { get; set; }
+
+        public bool? FeedbackEnable { get; set; }
     }
 
     public enum ShowIFrameAs

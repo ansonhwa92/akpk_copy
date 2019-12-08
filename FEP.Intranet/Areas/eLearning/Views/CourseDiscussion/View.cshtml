@@ -21,8 +21,7 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = "" })">@Language.eLearning.CourseDiscussion.Home</a></li>
                                 <li class="breadcrumb-item"><a href="@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })">@Language.eLearning.CourseDiscussion.TitleList</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#">@Model.Discussion.Name<12
-    /a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#">@Model.Discussion.Name</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -57,7 +56,15 @@
                             <a onclick="showDelete(this, @item.Id , @i, '@HttpUtility.JavaScriptStringEncode(item.Name)')" title="@Language.General.ButtonDelete" data-toggle="tooltip"><i class="la la-trash-o text-muted"></i></a>*@
                     </div>
                     <div class="pull-left text-center" style="margin-right:15px;">
-                        <img src="~/dist/assets/images/people/50/guy-6.jpg">
+                        @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
+                        {
+                            <img src="@BaseURL/img/avatar/@Model.Post[0].Avatar" alt="Avatar" class="rounded-sm rounded-color" width="55">
+                            // <img src="@BaseURL/img/avatar/@CurrentUser.Avatar" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                        }
+                        else
+                        {
+                            <img src="@BaseURL/img/no-photo.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                        }
                     </div>
                     <div>
                         <div>
@@ -106,7 +113,15 @@
                                 <div>
                                     <div>
                                         <div class="pull-left text-center" style="margin-right:15px;">
-                                            <img src="~/dist/assets/images/people/50/guy-6.jpg">
+                                            @if (!String.IsNullOrEmpty(Model.Post[p].Avatar))
+                                            {
+                                                <img src="@BaseURL/img/avatar/@Model.Post[p].Avatar" alt="Avatar" class="rounded-sm rounded-color" width="55">
+                                                // <img src="@BaseURL/img/avatar/@CurrentUser.Avatar" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                                            }
+                                            else
+                                            {
+                                                <img src="@BaseURL/img/no-photo.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40">
+                                            }
                                         </div>
 
                                         <div class="tl-reply-info">
@@ -115,14 +130,17 @@
                                             @{
                                                 if (Model.Post[p].UpdatedDate.HasValue)
                                                 {
-                                            <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
+                                                    <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @Model.Post[p].UpdatedDate.Value.ToLongDateString()
                                                 }
                                                 else
                                                 {
                                                     @Model.Post[p].CreatedDate.ToLongDateString()
                                                 }
                                             }
-
+                                            @if (Model.Post[p].UserId == CurrentUser.UserId.Value)
+                                            {
+                                                <span class="label pull-right"> <a href="#" id="btnDiscard" onclick="editthis(this, @Model.Post[p].Id, '@Model.Post[p].Message');">edit</a> • <a href="#"  onclick="deletethis(this, @Model.Post[p].Id);">delete</a> @*• <a href="#">report</a>*@</span>
+                                            }
                                         </div>
                                         <h4>&nbsp;&nbsp;</h4>
                                         <div>
@@ -155,12 +173,16 @@
                                                         @{
                                                             if (x.UpdatedDate.HasValue)
                                                             {
-                                                        <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @x.UpdatedDate.Value.ToLongDateString()
+                                                                <i>@Language.eLearning.CourseDiscussion.EditedOn </i> @x.UpdatedDate.Value.ToLongDateString()
                                                             }
                                                             else
                                                             {
                                                                 @x.CreatedDate.ToLongDateString()
                                                             }
+                                                        }
+                                                        @if (Model.Post[p].UserId == CurrentUser.UserId.Value)
+                                                        {
+                                                            <span class="label pull-right"> <a href="#" onclick="editthis(this, @x.Id, '@x.Message');">edit</a> • <a href="#" onclick="deletethis(this, @x.Id);">delete</a> @*• <a href="#">report</a>*@</span>
                                                         }
                                                         <div>
                                                             <div>@x.Message</div>
@@ -211,12 +233,123 @@
     </div>
 </div>
 
-  @*  </div>*@
+<div class="modal fade" id="modalConfirmEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Edit this message
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-lg-center">
+                <textarea name="editMsg" id="editMsg" class="small"></textarea>
+            </div>
+            <div class="divider-border"></div>
+            <div class="m-4 text-center">
+                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" id="btnEditConfirm" data-discussion="@Model.Discussion.Id" data-value="">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Edit this message
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-lg-center">
+                <p class="small">Are you sure you want to delete this discussion post?</p>
+            </div>
+            <div class="divider-border"></div>
+            <div class="m-4 text-center">
+                <button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close">Cancel</button>
+                <button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" id="btnDeleteConfirm" data-discussion="@Model.Discussion.Id" data-value="">Yes, delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*  </div>*@
 
 
 
 @section ContentScript{
     <script type="text/javascript">
+        function editthis(event, id, msg) {
+            $("#modalConfirmEdit").modal();
+            $("#modalConfirmEdit #editMsg").val(msg);
+            $('#modalConfirmEdit #btnEditConfirm').data('value', id);
+            return false;
+        }
+
+        $('#btnEditConfirm').click(function () {
+            var pid = $(this).data('value');
+            var gid = $(this).data('discussion');
+            var iid = $("#editMsg").val();
+              $.ajax({
+                type: 'post',
+                  url: '@Url.Action("_EditMessage", "CourseDiscussion", new { area = "eLearning" })?id=' + pid + '&DiscussionId=' + gid + '&input=' + iid,
+                success: function (data) {
+                    var url = '@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })?id=' + gid;
+                window.location = url;
+                },
+                error: function (xhr, status, error) {
+                    var url = '@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })';
+                window.location = url;
+                }
+            });
+                @*var pid = $(this).data('surveyid');
+                var url = '@Url.Action("Discard", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;*@
+        });
+
+        function deletethis(event, id) {
+            $("#modalConfirmDelete").modal();
+            $('#modalConfirmDelete #btnDeleteConfirm').data('value', id);
+            return false;
+        }
+
+        $('#btnDeleteConfirm').click(function () {
+            var pid = $(this).data('value');
+            var gid = $(this).data('discussion');
+            //var iid = $("#editMsg").val();
+              $.ajax({
+                type: 'post',
+                  url: '@Url.Action("_DeleteMessage", "CourseDiscussion", new { area = "eLearning" })?id=' + pid,
+                success: function (data) {
+                    var url = '@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })?id=' + gid;
+                window.location = url;
+                },
+                error: function (xhr, status, error) {
+                    var url = '@Url.Action("List", "CourseDiscussion", new { area = "eLearning" })';
+                window.location = url;
+                }
+            });
+                @*var pid = $(this).data('surveyid');
+                var url = '@Url.Action("Discard", "Survey", new { area = "RnP" })?id=' + pid;
+                window.location = url;*@
+        });
+
+        $('#btnDiscard').click(function (event, id) {
+            $("#modalConfirmDelete").modal();
+             $.ajax({
+                type: 'get',
+                url: '@Url.Action("_Subscribe", "CourseGroup", new { area = "eLearning" })?id=' + id + '&GroupId=' + gid,
+                success: function (data) {
+                    $('#PartialViewLocation').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#detail').html('');
+                }
+            });
+            return false;
+        });
 
         function callCustomer(el) {
             $("#CommentArea_" +el).html("");

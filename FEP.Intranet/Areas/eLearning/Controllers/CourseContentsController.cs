@@ -20,6 +20,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         public const string GetAllAudio = "eLearning/CourseContents/GetAllAudio";
         public const string GetAllDocument = "eLearning/CourseContents/GetAllDocument";
+
+        public const string CreateFeedback = "eLearning/Feedback/CreateNewFeedback";
     }
 
     public class CourseContentsController : FEPController
@@ -57,6 +59,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 FileDocument = new FileDocument(),
                 CreateContentFrom = createContentFrom,
                 CourseId = courseId.Value,
+                IsFeedbackOn = 0,
             };
 
             if (createContentFrom == CreateContentFrom.Module)
@@ -98,6 +101,19 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 string contentId = null;
 
                 model.File = null;
+
+                if (model.IsFeedbackOn > 0)
+                {
+                    FeedbackCreateModel _new = new FeedbackCreateModel();
+                    _new.CreatedBy = model.CreatedBy;
+                    _new.Created = model.CreatedDate;
+
+                    var _createFeedback = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, ContentApiUrl.CreateFeedback, _new);
+                    if (_createFeedback.isSuccess)
+                    {
+                        model.FeedbackId = _createFeedback.Data;
+                    }
+                }
 
                 // check slideshare url and change to embed code
                 if (model.ContentType == CourseContentType.Document)
@@ -268,6 +284,22 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         if (!model.Url.Contains("embed_code"))
                         {
                             model.Url = await SlideshareHelper.GetEmbedCode(model.Url);
+                        }
+                    }
+                }
+
+                if (model.IsFeedbackOn > 0)
+                {
+                    if (model.FeedbackId == null)
+                    {
+                        FeedbackCreateModel _new = new FeedbackCreateModel();
+                        _new.CreatedBy = model.CreatedBy;
+                        _new.Created = model.CreatedDate;
+
+                        var _createFeedback = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, ContentApiUrl.CreateFeedback, _new);
+                        if (_createFeedback.isSuccess)
+                        {
+                            model.FeedbackId = _createFeedback.Data;
                         }
                     }
                 }

@@ -65,6 +65,8 @@
     @Html.HiddenFor(m => m.VideoType)
     @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
     @Html.HiddenFor(m => m.CompletionType)
+    @Html.HiddenFor(m => m.IsFeedbackOn)
+    @Html.HiddenFor(m => m.FeedbackId)
 
     <input id="WebApiURL" value="@WebApiURL" hidden />
     <div class="row">
@@ -110,9 +112,14 @@
 
                     <input type='file' name='fileupload' id='fileupload' style='display: none;'>
 
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input feedbacktoggle" name="feedback" id="feedbacktoggle">
+                        <label class="custom-control-label" for="feedback" onclick="checkthis()" id="labelIsFeedbackOn">Turn on Feedback?</label>
+                    </div>
                     <hr />
 
                     @Html.Partial($"_create{Model.ContentType.ToString()}", Model)
+
                 </div>
             </div>
 
@@ -157,7 +164,7 @@
 
     <script src="~/Scripts/tinymce/tinymce.min.js"></script>
     <!-- tinyMce Config -->
-    <script type="text/javascript" src="~/js/tinymce_cfg.js" id="tmscript" baseUrl="@(BaseURL)"></script>
+    @*<script type="text/javascript" src="~/js/tinymce_cfg.js" id="tmscript" baseUrl="@(BaseURL)"></script>*@
 
     <script>
 
@@ -168,6 +175,16 @@
         var getSlideShareUrl = '@(BaseURL)/eLearning/CourseContents/GetSlideshare';
         var getDocUrl = '@(BaseURL)/eLearning/File/GetDoc';
 
+        function checkthis() {
+            if ($('input[id=feedbacktoggle]').prop("checked")) {
+                $('#feedbacktoggle').prop("checked", false);
+                $("#IsFeedbackOn").val(0);
+            }
+            else {
+                $('#feedbacktoggle').prop("checked", true);
+                $("#IsFeedbackOn").val(1);
+            }
+        }
 
         $(document).ready(function () {
 
@@ -176,7 +193,10 @@
             $('#Timer').prop("disabled", true);
             $('#ContentQuestionId').prop("disabled", true);
 
+
+
             $('input[name=CompletionType]').val("ClickButton");
+            $('input[name=IsFeedbackOn]').val("feedbacktoggle");
 
             var contentType = $('#ContentType').val();
             console.log(contentType);
@@ -248,6 +268,9 @@
                 }
             }
 
+
+
+         
         });
     </script>
 

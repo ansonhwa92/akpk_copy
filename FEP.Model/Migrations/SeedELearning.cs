@@ -32,7 +32,11 @@ namespace FEP.Model.Migrations
 
             DefaultSLAReminder(db);
             DefaultParameterGroup(db);
+
             // DefaultTemplate(db);
+
+            DefaultFeedbackView(db);
+            DefaultFeedback(db);
         }
 
         private static Course AddCourse(DbEntities db, string title, int courseId, CourseStatus courseStatus = CourseStatus.Draft)
@@ -103,7 +107,8 @@ namespace FEP.Model.Migrations
         {
             var courseExist = db.Courses.Find(2);
 
-            if (courseExist != null) return;
+            if (courseExist != null)
+                return;
 
             int i = 2;
             while (i <= 5)
@@ -236,7 +241,8 @@ namespace FEP.Model.Migrations
             var courseEvent = db.CourseEvents.Where(x => x.CourseId == courseId)
                     .OrderByDescending(x => x.CreatedDate).FirstOrDefault();
 
-            if (courseEvent == null) return;
+            if (courseEvent == null)
+                return;
 
             var enrollment = db.Enrollments.Where(x => x.CourseEventId == courseEvent.Id);
 
@@ -296,31 +302,41 @@ namespace FEP.Model.Migrations
             // Seed Role and Access
             AddRoleAndAccess(db, RoleNames.eLearningTrainer, "Default Trainer",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
-                UserAccess.CourseDiscussionGroupCreate, UserAccess.CourseGroupCreate,
-                UserAccess.CourseAddDocument);
+                UserAccess.CourseFeedbackView, UserAccess.CourseFeedbackPostDelete,
+                UserAccess.CourseGroupCreate, UserAccess.CourseAddDocument);
             AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, 
                 UserAccess.CourseCreate, UserAccess.CourseEdit,
+                UserAccess.CourseGroupCreate, UserAccess.CourseGroupEdit, UserAccess.CourseGroupView,
+                UserAccess.CourseFeedbackView, UserAccess.CourseFeedbackPostDelete,
+                UserAccess.CourseDiscussionCreate, UserAccess.CourseDiscussionViewAll,
                 UserAccess.CoursePublish, UserAccess.CoursePublish);
             AddRoleAndAccess(db, RoleNames.eLearningVerifier, "Verifier eLearning",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.CourseGroupView, UserAccess.CourseDiscussionViewAll,
+                UserAccess.CourseFeedbackView,
                 UserAccess.CourseVerify);
             AddRoleAndAccess(db, RoleNames.eLearningApprover1, "Approver eLearning 1",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.CourseGroupView,
                 UserAccess.CourseApproval1);
             AddRoleAndAccess(db, RoleNames.eLearningApprover2, "Approver eLearning 2",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.CourseGroupView,
                 UserAccess.CourseApproval2);
             AddRoleAndAccess(db, RoleNames.eLearningApprover3, "Approver eLearning 3",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.CourseGroupView,
                 UserAccess.CourseApproval3);
             AddRoleAndAccess(db, RoleNames.eLearningLearner, "Learner",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
                 UserAccess.CourseEnroll);
-
             AddRoleAndAccess(db, RoleNames.eLearningFacilitator, "Facilitator",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseDiscussionGroupCreate,
-                UserAccess.CourseGroupCreate, UserAccess.CourseAddDocument, UserAccess.CourseDiscussionCreate,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu,
+                UserAccess.CourseGroupCreate, UserAccess.CourseGroupEdit, UserAccess.CourseGroupView, 
+                UserAccess.CourseDiscussionCreate, UserAccess.CourseFeedbackPostDelete, UserAccess.CourseDiscussionViewAll,
+                UserAccess.CourseFeedbackView,
+                UserAccess.CourseAddDocument, 
                 UserAccess.CourseEnroll);
         }
 
@@ -773,7 +789,8 @@ namespace FEP.Model.Migrations
                     Description = "Question 1"
                 };
 
-                if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
+                if (module.ModuleContents == null)
+                    module.ModuleContents = new List<CourseContent>();
 
                 module.ModuleContents.Add(content);
                 module.UpdateTotals();
@@ -794,7 +811,8 @@ namespace FEP.Model.Migrations
 
                 content2.QuestionId = question2.Id;
 
-                if (module.ModuleContents == null) module.ModuleContents = new List<CourseContent>();
+                if (module.ModuleContents == null)
+                    module.ModuleContents = new List<CourseContent>();
 
                 module.ModuleContents.Add(content2);
 
@@ -1094,6 +1112,23 @@ namespace FEP.Model.Migrations
                     User = user,
                     Display = true
                 });
+        }
+
+        public static void DefaultFeedbackView(DbEntities db)
+        {
+            db.FeedbackView.AddOrUpdate(s => s.View,
+              new FeedbackView {  View = "Instructor and me only"},
+              new FeedbackView {  View = "Everybody"}
+
+          );
+        }
+
+        public static void DefaultFeedback(DbEntities db)
+        {
+            db.Feedback.AddOrUpdate(s => s.Header,
+              new Feedback { CreatedBy = 1, CreatedDate = DateTime.Now, Header = "Header", Template = "Template" }
+
+          );
         }
     }
 }

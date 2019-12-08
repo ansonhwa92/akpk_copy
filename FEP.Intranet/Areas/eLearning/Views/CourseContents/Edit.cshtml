@@ -48,87 +48,94 @@
     </div>
 }
 
-<form action="@BaseURL/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form action="@BaseURL/CourseContents/Edit" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    @Html.HiddenFor(m => m.CourseId)
-    @Html.HiddenFor(m => m.CourseModuleId)
-    @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.ContentType)
-    @Html.HiddenFor(m => m.PageTitle)
-    @Html.HiddenFor(m => m.VideoType)
-    @Html.HiddenFor(m => m.VideoType)
-    @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
-    @Html.HiddenFor(m => m.CompletionType)
-    <input id="WebApiURL" value="@WebApiURL" hidden />
+        @Html.HiddenFor(m => m.CourseId)
+        @Html.HiddenFor(m => m.CourseModuleId)
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ContentType)
+        @Html.HiddenFor(m => m.PageTitle)
+        @Html.HiddenFor(m => m.VideoType)
+        @Html.HiddenFor(m => m.VideoType)
+        @Html.HiddenFor(m => m.CreatedBy, new { Value = CurrentUser.UserId })
+        @Html.HiddenFor(m => m.CompletionType)
+        @Html.HiddenFor(m => m.IsFeedbackOn)
+        @Html.HiddenFor(m => m.FeedbackId)
+        <input id="WebApiURL" value="@WebApiURL" hidden />
 
-    <div class="row">
+        <div class="row">
 
-        <div class="col-xl-3 col-md-3 col-sm-4 my-2">
-            <div id="page-nav" class="sidebar-left page-nav">
-                <div data-perfect-scrollbar class="ps">
-                    <div class="page-section">
-                        <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
-                        <ul class="nav page-nav__menu">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">@Model.ContentType</a>
-                            </li>
-                        </ul>
+            <div class="col-xl-3 col-md-3 col-sm-4 my-2">
+                <div id="page-nav" class="sidebar-left page-nav">
+                    <div data-perfect-scrollbar class="ps">
+                        <div class="page-section">
+                            <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course</h6>
+                            <ul class="nav page-nav__menu">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">@Model.ContentType</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
-            <!-- Start Form -->
-            <div class="border-form rounded-top">
-                <div class="form-container">
+            <div class="col-xl-9 col-md-9 col-sm-8 mt-2 pb-5">
+                <!-- Start Form -->
+                <div class="border-form rounded-top">
+                    <div class="form-container">
 
-                    <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
-                        <div class="">
-                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        <h6 class="font-weight-normal">Information marked with (<span class="text-danger">*</span>) is mandatory.</h6>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label " })<span class="text-danger">*</span>
+                            <div class="">
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
 
-                    <input type='file' name='fileupload' id='fileupload' style='display: none;'>
+                        <input type='file' name='fileupload' id='fileupload' style='display: none;'>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
-                        <div class="">
-                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control editor" })
-                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label " })
+                            <div class="">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control editor" })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
                         </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input feedbacktoggle" name="feedback" id="feedbacktoggle">
+                            <label class="custom-control-label" for="feedback" onclick="checkthis()" id="labelIsFeedbackOn">Turn on Feedback?</label>
+                        </div>
+                        <hr />
+
+                        @Html.Partial($"_edit{Model.ContentType.ToString()}", Model)
+
                     </div>
-                    <hr />
+                </div>
 
-                    @Html.Partial($"_edit{Model.ContentType.ToString()}", Model)
+                <div class="border-left border-right border-bottom p-3 rounded-bottom">
 
+                    <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                       title="Back">@Language.General.ButtonBack</a>
+
+                    <button type="submit" class="btn btn-default pull-right  ml-2" id="btnSaveAndView" name="SubmitType" value="SaveAndView">
+                        <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save And View
+                    </button>
+
+                    <button type="submit" class="btn btn-default pull-right" id="btnSave" name="SubmitType" value="Save">
+                        <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
+                    </button>
                 </div>
             </div>
-
-            <div class="border-left border-right border-bottom p-3 rounded-bottom">
-
-                <a href="~/eLearning/CourseModules/Content/@Model.CourseModuleId" class="btn btn-default" data-toggle="tooltip" data-placement="top"
-                   title="Back">@Language.General.ButtonBack</a>
-
-                <button type="submit" class="btn btn-default pull-right  ml-2" id="btnSaveAndView" name="SubmitType" value="SaveAndView">
-                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save And View
-                </button>
-
-                <button type="submit" class="btn btn-default pull-right" id="btnSave" name="SubmitType" value="Save">
-                    <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Save
-                </button>
-            </div>
         </div>
-    </div>
-    @* } *@
-</form>
+        @* } *@
+    </form>
 
 <style>
     /*.questionWrapper,
@@ -162,9 +169,26 @@
         var getSlideShareUrl = '@(BaseURL)/eLearning/CourseContents/GetSlideshare';
         var getDocUrl = '@(BaseURL)/eLearning/File/GetDoc';
 
+        function checkthis() {
+            if ($('input[id=feedbacktoggle]').prop("checked")) {
+                $('#feedbacktoggle').prop("checked", false);
+                $("#IsFeedbackOn").val(0);
+            }
+            else {
+                $('#feedbacktoggle').prop("checked", true);
+                $("#IsFeedbackOn").val(1);
+            }
+        }
+
         $(document).ready(function () {
 
             $('.loading').hide();
+
+            var feedbackstatus = $('#IsFeedbackOn').val();
+
+            if (feedbackstatus == 1) {
+                $("#feedbacktoggle").prop("checked", true);
+            }
 
             var completionType = $('#CompletionType').val();
 

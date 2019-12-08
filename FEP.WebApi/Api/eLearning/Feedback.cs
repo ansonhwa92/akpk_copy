@@ -14,8 +14,8 @@ using System.Web.Http;
 
 namespace FEP.WebApi.Api.eLearning
 {
-    [Route("api/eLearning/CourseDiscussion")]
-    public class CourseDiscussionController : ApiController
+    [Route("api/eLearning/Feedback")]
+    public class FeedbackController : ApiController
     {
         private DbEntities db = new DbEntities();
 
@@ -28,6 +28,121 @@ namespace FEP.WebApi.Api.eLearning
             base.Dispose(disposing);
         }
 
+
+        [ValidationActionFilter]
+        public IHttpActionResult Post([FromBody]FeedbackCreateModel model)
+        {
+            try
+            {
+                using (DbEntities _db = new DbEntities())
+                {
+                    Feedback _new = new Feedback();
+
+                    _new.Header = model.Header;
+                    _new.Template = model.Template;
+                    _new.CreatedBy = model.CreatedBy;
+                    _new.CreatedDate = model.Created;
+                    _new.UpdatedBy = model.CreatedBy;
+
+                    _db.Feedback.Add(_new);
+                    _db.SaveChanges();
+
+                    return Ok(_new.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Debug.WriteLine(ex.Message);
+                return Ok();
+                //return ex.InnerException.Message.ToString();
+            }
+        }
+
+
+        [Route("api/eLearning/Feedback/CreateNewFeedback")]
+        [HttpPost]
+        public IHttpActionResult CreateNewFeedback(FeedbackCreateModel model)
+        {
+            try
+            {
+                using (DbEntities _db = new DbEntities())
+                {
+                    Feedback _new = new Feedback();
+
+                    _new.Header = model.Header;
+                    _new.Template = model.Template;
+                    _new.CreatedBy = model.CreatedBy;
+                    _new.CreatedDate = model.Created;
+                    _new.UpdatedBy = model.CreatedBy;
+
+                    _db.Feedback.Add(_new);
+                    _db.SaveChanges();
+
+                    return Ok(_new.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Debug.WriteLine(ex.Message);
+                return Ok();
+                //return ex.InnerException.Message.ToString();
+            }
+        }
+
+        [Route("api/eLearning/Feedback/PostNew")]
+        [HttpPost]
+        public IHttpActionResult PostNew(FeedbackModel model)
+        {
+            try
+            {
+                using (DbEntities _db = new DbEntities())
+                {
+                    FeedbackContent _new = new FeedbackContent();
+                    _new.ViewId = model.NewPost.Visibility;
+                    _new.CreatedBy = model.NewPost.UserId;
+                    _new.CreatedDate = model.NewPost.Created;
+                    _new.FeedbackId = model.NewPost.FeedbackId.Value;
+                    _new.Content = model.NewPost.Post;
+
+                    _db.FeedbackContent.Add(_new);
+                    _db.SaveChanges();
+
+                    FeedbackModel _toView = new FeedbackModel();
+                    _toView.id = model.NewPost.FeedbackId.Value;
+                    _toView.Children = GenerateFeedbackContent(model.NewPost.FeedbackId.Value);
+                    _toView.Visibilities = new List<System.Web.Mvc.SelectListItem>();
+
+                    return Ok(_toView);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Debug.WriteLine(ex.Message);
+                return Ok();
+                //return ex.InnerException.Message.ToString();
+            }
+        }
+
+
+        [Route("api/eLearning/Feedback/GetVisibility")]
+        [HttpGet]
+        public IHttpActionResult GetVisibility()
+        {
+            using (DbEntities _db = new DbEntities())
+            {
+                List<FeedbackVisibility> categories = _db.FeedbackView.Select(c => new FeedbackVisibility() { Id = c.Id, Type = c.View.ToString() }).ToList();
+                return Ok(categories);
+            }
+        }
+
+        private List<FeedbackVisibility> GetVisibilities()
+        {
+            using (DbEntities _db = new DbEntities())
+            {
+                List<FeedbackVisibility> categories = _db.FeedbackView.Select(c => new FeedbackVisibility() { Id = c.Id, Type = c.View.ToString() }).ToList();
+                return categories;
+            }
+        }
 
         public IHttpActionResult Get()
         {
@@ -60,7 +175,7 @@ namespace FEP.WebApi.Api.eLearning
 
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetAll")]
+        [Route("api/eLearning/Feedback/GetAll")]
         [HttpPost]
         public IHttpActionResult GetAll(FilterDiscussionModel request)
         {
@@ -168,249 +283,178 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetAllGroup")]
-        [HttpPost]
-        public IHttpActionResult GetAllGroup(FilterDiscussionModel request, int? id)
-        {
-            if (id != null)
-            {
-                var _checkuser = db.User.Find(id.Value);
-                if (_checkuser == null)
-                {
-                    return NotFound();
-                }
-
-                var groupid = db.GroupMembers.Where(m => m.UserId == _checkuser.Id).Select(m=>m.GroupId).ToList();
-                if (groupid.Count <= 0)
-                {
-                    return NotFound();
-                }
-
-                var query = db.Discussions.Where(x => (String.IsNullOrEmpty(request.Name) || x.Name.Contains(request.Name)) &&
-                x.IsDeleted != true && x.DiscussionVisibility == DiscussionVisibility.GroupOnly && groupid.Contains(x.GroupId.Value));
-
-                var totalCount = query.Count();
-
-                //quick search
-                if (!string.IsNullOrEmpty(request.search.value))
-                {
-                    var value = request.search.value.Trim();
-                    query = query.Where(p => p.Name.Contains(value));
-                }
-
-                var filteredCount = query.Count();
-
-                //order
-                if (request.order != null)
-                {
-                    string sortBy = request.columns[request.order[0].column].data;
-                    bool sortAscending = request.order[0].dir.ToLower() == "asc";
-
-                    switch (sortBy)
-                    {
-                        case "Name":
-
-                            if (sortAscending)
-                            {
-                                query = query.OrderBy(o => o.Name);
-                            }
-                            else
-                            {
-                                query = query.OrderByDescending(o => o.Name);
-                            }
-
-                            break;
-
-                        //case "Code":
-
-                        //    if (sortAscending)
-                        //    {
-                        //        query = query.OrderBy(o => o.Code);
-                        //    }
-                        //    else
-                        //    {
-                        //        query = query.OrderByDescending(o => o.Code);
-                        //    }
-
-                        //    break;
-
-                        //case "Status":
-
-                        //    if (sortAscending)
-                        //    {
-                        //        query = query.OrderBy(o => o.Status);
-                        //    }
-                        //    else
-                        //    {
-                        //        query = query.OrderByDescending(o => o.Status);
-                        //    }
-
-                        //    break;
-
-                        default:
-                            query = query.OrderByDescending(o => o.Id);
-                            break;
-                    }
-                }
-                else
-                {
-                    query = query.OrderByDescending(o => o.Id);
-                }
-
-                //var data = query.Skip(request.start).Take(request.length)
-                //    .Select(s => new CourseDiscussionModel
-                //    {
-                //        Id = s.Id,
-                //        Name = s.Name,
-                //        CreatedBy = s.CreatedBy,
-                //        CreatedByName = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
-                //        CreatedOn = s.CreatedDate,
-                //        UpdatetedOn = s.UpdatedDate,
-                //        DiscussionVisibility = s.DiscussionVisibility,
-                //        FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
-                //        FirstPostId = s.FirstPost
-                //    }).ToList();
-
-                var data = query.Skip(request.start).Take(request.length)
-                   .Select(s => new CourseDiscussionListDataTableModel
-                   {
-                       Id = s.Id,
-                       Name = s.Name,
-                       CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name,
-                       FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message,
-                       DisplayDateTime = new DateTimeModel() { CreatedOn = s.CreatedDate, UpdatedOn = s.Posts.Where(m => m.DiscussionId == s.Id).OrderByDescending(m => m.CreatedDate).FirstOrDefault().CreatedDate },
-                       DiscussionCard = new DiscussionCardModel() { Id = s.Id, Name = s.Group.Name + " - " + s.Name, CreatedBy = db.User.Where(m => m.Id == s.CreatedBy).FirstOrDefault().Name, FirstPost = s.Posts.Where(m => m.Id == s.FirstPost).FirstOrDefault().Message }
-                   }).ToList();
-
-                return Ok(new DataTableResponse
-                {
-                    draw = request.draw,
-                    recordsTotal = totalCount,
-                    recordsFiltered = filteredCount,
-                    data = data.ToArray()
-                });
-            }
-            return NotFound();
-        }
-
-        private void HasAccess(UserAccess courseDiscussionCreate)
-        {
-            throw new NotImplementedException();
-        }
-
+        [Route("api/eLearning/Feedback/GetFeedback")]
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult GetFeedback(int id)
         {
-            var category = db.Discussions.Where(u => u.Id == id && u.IsDeleted != true).Select(s => new CourseDiscussionModel
+            using (DbEntities _db = new DbEntities())
             {
-                Id = s.Id,
-                Name = s.Name
-            }).FirstOrDefault();
+                var _get = _db.Feedback.Find(id);
+                if (_get != null)
+                {
+                    FeedbackModel _toView = new FeedbackModel();
+                    _toView.id = id;
+                    _toView.Visibilities = new List<System.Web.Mvc.SelectListItem>(); //(IEnumerable<System.Web.Mvc.SelectListItem>)GetVisibilities().ToList();
+                    _toView.Children = GenerateFeedbackContent(id);
 
-            if (category != null)
-            {
-                return Ok(category);
+                    return Ok(_toView);
+                }
             }
-
             return NotFound();
         }
 
-
-        [ValidationActionFilter]
-        public IHttpActionResult Post([FromBody]CreateCourseDiscussionModel model)
+        [Route("api/eLearning/Feedback/DeletePost")]
+        [HttpGet]
+        public IHttpActionResult DeletePost(int id, int UpdateId)
         {
-            // create new entry for discussion
-
-            // create new entry for post
-
-            // create new link from post to attachment if any
-            try
+            using (DbEntities _db = new DbEntities())
             {
-                using (DbEntities _db = new DbEntities())
+                var _get = _db.FeedbackContent.Find(id);
+                if (_get != null)
                 {
-                    DateTime _now = DateTime.Now;
-                    Discussion _discussion = new Discussion()
-                    {
-                        Name = model.Name,
-                        CreatedBy = model.UserId,
-                        UpdatedBy = model.UserId,
-                        UserId = model.UserId,
-                        CreatedDate = _now,
-                        DiscussionVisibility = model.DiscussionVisibility,
-                        Pinned = false,
-                        IsDeleted = false,
-                        FirstPost = 0,
-                    };
+                    _get.IsDeleted = true;
+                    _get.UpdatedBy = UpdateId;
+                    _get.UpdatedDate = DateTime.Now;
 
-                    if (model.DiscussionVisibility == DiscussionVisibility.Everybody)
-                    {
-
-                    }
-                    else if (model.DiscussionVisibility == DiscussionVisibility.GroupOnly)
-                    {
-                        _discussion.GroupId = model.GroupId;
-                    }
-
-                    _db.Discussions.Add(_discussion);
+                    _db.FeedbackContent.Attach(_get);
+                    _db.Entry(_get).Property(m => m.IsDeleted).IsModified = true;
+                    _db.Entry(_get).Property(m => m.UpdatedBy).IsModified = true;
+                    _db.Entry(_get).Property(m => m.UpdatedDate).IsModified = true;
+                    _db.Configuration.ValidateOnSaveEnabled = false;
                     _db.SaveChanges();
 
-                    DiscussionPost _post = new DiscussionPost()
-                    {
-                        DiscussionId = _discussion.Id,
-                        ParentId = null,
-                        Topic = model.Name,
-                        Message = model.Post.Message,
-                        IsDeleted = false,
-                        UserId = model.Post.UserId.Value,
-                        CreatedBy = model.Post.UserId.Value,
-                        CreatedDate = _now,
-                        UpdatedBy = model.Post.UserId.Value,
-                        UpdatedDate = _now
-                    };
+                    FeedbackModel _toView = new FeedbackModel();
+                    _toView.id = _get.FeedbackId;
+                    _toView.Visibilities = new List<System.Web.Mvc.SelectListItem>(); //(IEnumerable<System.Web.Mvc.SelectListItem>)GetVisibilities().ToList();
+                    _toView.Children = GenerateFeedbackContent(_get.FeedbackId);
 
-                    _db.DiscussionPosts.Add(_post);
-                    _db.SaveChanges();
-
-                    if (model.Post.GotAttachment.HasValue)
-                    {
-                        if (model.Post.GotAttachment.Value && (model.AttachmentId != null))
-                        {
-                            DiscussionAttachment _attachment = new DiscussionAttachment()
-                            {
-                                AttachmentId = model.AttachmentId.Value,
-                                PostId = _post.Id,
-                            };
-
-                            _db.DiscussionAttachment.Add(_attachment);
-                            _db.SaveChanges();
-                        }
-                    }
-
-                    //var updateFirstPost
-
-                    var _toUpdateFirstPost = _db.Discussions.Find(_discussion.Id);
-                    if (_toUpdateFirstPost != null)
-                    {
-                        _toUpdateFirstPost.FirstPost = _post.Id;
-
-                        db.Discussions.Attach(_toUpdateFirstPost);
-                        db.Entry(_toUpdateFirstPost).Property(m => m.FirstPost).IsModified = true;
-                        db.Configuration.ValidateOnSaveEnabled = false;
-
-                        db.SaveChanges();
-                    }
-                    return Ok(_discussion.Id);
+                    return Ok(_toView);
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return Ok();
-                //return ex.InnerException.Message.ToString();
-            }
+            return NotFound();
         }
 
-        [Route("api/eLearning/CourseDiscussion/CreateAttachment")]
+        private List<FeedbackContentModel> GenerateFeedbackContent(int _feedbackId)
+        {
+            List<FeedbackContentModel> result = new List<FeedbackContentModel>();
+            using (DbEntities _db = new DbEntities())
+            {
+                var _getChild = _db.FeedbackContent.Where(m => m.FeedbackId == _feedbackId && m.IsDeleted == false).Select(c => new FeedbackContentModel()
+                {
+                    Avatar = c.User.UserAccount.Avatar,
+                    Id = c.Id,
+                    Created = c.CreatedDate,
+                    UserId = c.User.Id,
+                    Name = c.User.Name,
+                    Updated = c.UpdatedDate,
+                    Post = c.Content,
+                    Visibility = c.FeedbackView.Id
+                }).ToList();
+
+                if (_getChild.Count > 0)
+                {
+                    result = _getChild;
+                }
+            }
+            return result;
+        }
+
+
+        //[ValidationActionFilter]
+        //public IHttpActionResult Post([FromBody]CreateCourseDiscussionModel model)
+        //{
+        //    // create new entry for discussion
+
+        //    // create new entry for post
+
+        //    // create new link from post to attachment if any
+        //    try
+        //    {
+        //        using (DbEntities _db = new DbEntities())
+        //        {
+        //            DateTime _now = DateTime.Now;
+        //            Discussion _discussion = new Discussion()
+        //            {
+        //                Name = model.Name,
+        //                CreatedBy = model.UserId,
+        //                UpdatedBy = model.UserId,
+        //                UserId = model.UserId,
+        //                CreatedDate = _now,
+        //                DiscussionVisibility = model.DiscussionVisibility,
+        //                Pinned = false,
+        //                IsDeleted = false,
+        //                FirstPost = 0,
+        //            };
+
+        //            if (model.DiscussionVisibility == DiscussionVisibility.Everybody)
+        //            {
+
+        //            }
+        //            else if (model.DiscussionVisibility == DiscussionVisibility.GroupOnly)
+        //            {
+        //                _discussion.GroupId = model.GroupId;
+        //            }
+
+        //            _db.Discussions.Add(_discussion);
+        //            _db.SaveChanges();
+
+        //            DiscussionPost _post = new DiscussionPost()
+        //            {
+        //                DiscussionId = _discussion.Id,
+        //                ParentId = null,
+        //                Topic = model.Name,
+        //                Message = model.Post.Message,
+        //                IsDeleted = false,
+        //                UserId = model.Post.UserId.Value,
+        //                CreatedBy = model.Post.UserId.Value,
+        //                CreatedDate = _now,
+        //                UpdatedBy = model.Post.UserId.Value,
+        //                UpdatedDate = _now
+        //            };
+
+        //            _db.DiscussionPosts.Add(_post);
+        //            _db.SaveChanges();
+
+        //            if (model.Post.GotAttachment.HasValue)
+        //            {
+        //                if (model.Post.GotAttachment.Value && (model.AttachmentId != null))
+        //                {
+        //                    DiscussionAttachment _attachment = new DiscussionAttachment()
+        //                    {
+        //                        AttachmentId = model.AttachmentId.Value,
+        //                        PostId = _post.Id,
+        //                    };
+
+        //                    _db.DiscussionAttachment.Add(_attachment);
+        //                    _db.SaveChanges();
+        //                }
+        //            }
+
+        //            //var updateFirstPost
+
+        //            var _toUpdateFirstPost = _db.Discussions.Find(_discussion.Id);
+        //            if (_toUpdateFirstPost != null)
+        //            {
+        //                _toUpdateFirstPost.FirstPost = _post.Id;
+
+        //                db.Discussions.Attach(_toUpdateFirstPost);
+        //                db.Entry(_toUpdateFirstPost).Property(m => m.FirstPost).IsModified = true;
+        //                db.Configuration.ValidateOnSaveEnabled = false;
+
+        //                db.SaveChanges();
+        //            }
+        //            return Ok(_discussion.Id);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex.Message);
+        //        return Ok();
+        //        //return ex.InnerException.Message.ToString();
+        //    }
+        //}
+
+        [Route("api/eLearning/Feedback/CreateAttachment")]
         [ValidationActionFilter]
         public IHttpActionResult CreateAttachment(CreateCourseDiscussionAttachmentModel attachment)
         {
@@ -447,7 +491,7 @@ namespace FEP.WebApi.Api.eLearning
 
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetParentPost")]
+        [Route("api/eLearning/Feedback/GetParentPost")]
         [ValidationActionFilter]
         [HttpGet]
         public IHttpActionResult GetParentPost(int id)
@@ -470,7 +514,7 @@ namespace FEP.WebApi.Api.eLearning
             return NotFound();
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetDiscussion")]
+        [Route("api/eLearning/Feedback/GetDiscussion")]
         [ValidationActionFilter]
         [HttpGet]
         public IHttpActionResult GetDiscussion(int id)
@@ -521,7 +565,7 @@ namespace FEP.WebApi.Api.eLearning
             return Ok();
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetPost")]
+        [Route("api/eLearning/Feedback/GetPost")]
         [ValidationActionFilter]
         [HttpGet]
         public IHttpActionResult GetPost(int id)
@@ -560,7 +604,7 @@ namespace FEP.WebApi.Api.eLearning
             return Ok();
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetAttachment")]
+        [Route("api/eLearning/Feedback/GetAttachment")]
         [ValidationActionFilter]
         [HttpGet]
         public IHttpActionResult GetAttachment(int id)
@@ -611,7 +655,7 @@ namespace FEP.WebApi.Api.eLearning
 
         }
 
-        [Route("api/eLearning/CourseDiscussion/IsNameExist")]
+        [Route("api/eLearning/Feedback/IsNameExist")]
         [HttpGet]
         public IHttpActionResult IsNameExist(int? id, string name)
         {
@@ -629,7 +673,7 @@ namespace FEP.WebApi.Api.eLearning
             return NotFound();
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetDiscussionCategory")]
+        [Route("api/eLearning/Feedback/GetDiscussionCategory")]
         [HttpGet]
         public IHttpActionResult ViewCategory()
         {
@@ -638,7 +682,7 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(categories);
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetCourse")]
+        [Route("api/eLearning/Feedback/GetCourse")]
         [HttpGet]
         public IHttpActionResult ViewCourse(int UserId)
         {
@@ -647,7 +691,7 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(courses);
         }
 
-        [Route("api/eLearning/CourseDiscussion/GetGroup")]
+        [Route("api/eLearning/Feedback/GetGroup")]
         [HttpGet]
         public IHttpActionResult ViewGroup(int id)
         {
@@ -656,7 +700,7 @@ namespace FEP.WebApi.Api.eLearning
             return Ok(groups);
         }
 
-        [Route("api/eLearning/CourseDiscussion/AddDiscussionReply")]
+        [Route("api/eLearning/Feedback/AddDiscussionReply")]
         [ValidationActionFilter]
         public IHttpActionResult AddDiscussionReply([FromBody]DiscussionPost model)
         {
@@ -681,7 +725,7 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
-        [Route("api/eLearning/CourseDiscussion/AddAttachmentToDisccusion")]
+        [Route("api/eLearning/Feedback/AddAttachmentToDisccusion")]
         [ValidationActionFilter]
         public IHttpActionResult AddAttachmentToDisccusion(int pid, int aid)
         {
@@ -704,7 +748,7 @@ namespace FEP.WebApi.Api.eLearning
             return NotFound();
         }
 
-        [Route("api/eLearning/CourseDiscussion/EditMessage")]
+        [Route("api/eLearning/Feedback/EditMessage")]
         [HttpPost]
         public IHttpActionResult EditMessage(int id, string input)
         {
@@ -731,7 +775,7 @@ namespace FEP.WebApi.Api.eLearning
             return NotFound();
         }
 
-        [Route("api/eLearning/CourseDiscussion/DeleteMessage")]
+        [Route("api/eLearning/Feedback/DeleteMessage")]
         [HttpPost]
         public IHttpActionResult DeleteMessage(int id)
         {

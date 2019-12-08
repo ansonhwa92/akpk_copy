@@ -183,6 +183,7 @@
     <Compile Include="Areas\eLearning\Controllers\CourseCategoryController.cs" />
     <Compile Include="Areas\eLearning\Controllers\ContentCompletionsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseContentsController.cs" />
+    <Compile Include="Areas\eLearning\Controllers\CourseFeedbackController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseDiscussionController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseEnrollmentsController.cs" />
     <Compile Include="Areas\eLearning\Controllers\CourseGroupController.cs" />
@@ -604,6 +605,7 @@
     <Content Include="img\survey-cover-2.jpg" />
     <Content Include="img\survey-cover-3.jpg" />
     <Content Include="img\survey-cover-4.jpg" />
+    <Content Include="js\coursefeedback.js" />
     <Content Include="js\elearn-course.js" />
     <Content Include="js\elearn.js" />
     <Content Include="js\index.js" />
@@ -1115,6 +1117,7 @@
     <Content Include="css\fonts\TheInboxSt.ttf" />
     <Content Include="css\fonts\ZiGzAgEo-Reg-FFP.ttf" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Invitation.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseFeedback\_View.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

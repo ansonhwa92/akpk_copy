@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    bool editEnable = CurrentUser.HasAccess(UserAccess.CourseGroupEdit);
 }
 @section ContentScript {
 }
@@ -27,8 +28,16 @@
                 @Html.LabelFor(m => m.Name, @Language.eLearning.CourseGroup.GroupName, new { htmlAttributes = new { @class = "form-label" } })
             </div>
             <div class="col-10 col-md-10 col-xs-md-5 px-0">
-                @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Group Name" } })
-                @Html.ValidationMessageFor(m => m.Name)
+                @if (editEnable)
+                {
+                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Group Name" } })
+                    @Html.ValidationMessageFor(m => m.Name)
+                }
+                else
+                {
+                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @disabled = "true", @placeholder = "Group Name" } })
+                    @Html.ValidationMessageFor(m => m.Name)
+                }
             </div>
         </div>
         <div class="row divTd" style="padding: 15px;">
@@ -36,8 +45,16 @@
                 @Html.LabelFor(m => m.Description, @Language.eLearning.CourseGroup.Description, new { htmlAttributes = new { @class = "form-label" } })
             </div>
             <div class="col-10 col-md-10 col-xs-md-5 px-0">
-                @Html.TextAreaFor(m => m.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Group Description" } })
-                @Html.ValidationMessageFor(m => m.Description)
+                @if (editEnable)
+                {
+                    @Html.TextAreaFor(m => m.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Group Description" } })
+                    @Html.ValidationMessageFor(m => m.Description)
+                }
+                else
+                {
+                    @Html.TextAreaFor(m => m.Description, (object)new { disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Description)
+                }
             </div>
         </div>
         <div class="row divTd" style="padding: 15px;">
@@ -45,17 +62,29 @@
                 @Html.LabelFor(m => m.EnrollmentCode, @Language.eLearning.CourseGroup.GroupCode, new { htmlAttributes = new { @class = "form-label" } })
             </div>
             <div class="col-10 col-md-10 col-xs-md-5 px-0">
-                @Html.EditorFor(m => m.EnrollmentCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enrollment Code" } })
-                @Html.ValidationMessageFor(m => m.EnrollmentCode)
+                @if (editEnable)
+                {
+                    @Html.EditorFor(m => m.EnrollmentCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enrollment Code" } })
+                    @Html.ValidationMessageFor(m => m.EnrollmentCode)
+                }
+                else
+                {
+                    @Html.EditorFor(m => m.EnrollmentCode, new { htmlAttributes = new { @class = "form-control", @disabled = "true", @placeholder = "Enrollment Code" } })
+                    @Html.ValidationMessageFor(m => m.EnrollmentCode)
+                }
+
             </div>
         </div>
-        <div class="row divTd" style="padding: 15px;">
-            <div class="col px-0 text-right">
-                <div class="icon-action">
-                    <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonEdit</button>
-                    <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+        @if (editEnable)
+        {
+            <div class="row divTd" style="padding: 15px;">
+                <div class="col px-0 text-right">
+                    <div class="icon-action">
+                        <button type="submit" class="btn btn-secondary btn-sm mw-auto mr-2">@Language.General.ButtonEdit</button>
+                        <button type="button" onclick="clearForm()" class="btn btn-default btn-sm mw-auto">@Language.General.ButtonCancel</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 }

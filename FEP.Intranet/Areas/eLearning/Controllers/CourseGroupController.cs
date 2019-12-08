@@ -86,7 +86,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         {
             var model = new JoinCourseGroupModel();
             model.EnrollmentCode = "";
-            model.LearnerId = CurrentUser.UserId.Value;
+            model.UserId = CurrentUser.UserId.Value;
             return View(model);
         }
 

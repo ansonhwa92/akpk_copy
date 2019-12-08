@@ -422,6 +422,47 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> _EditMessage(int? id, int? DiscussionId, string input)
+        {
+            if (id != null && DiscussionId != null && input != null)
+            {
+                var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/CourseDiscussion/EditMessage?id={id}&input={input}");
+
+                if (nameResponse.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Success edit message";
+                    return Json(1);
+                    //return RedirectToAction("View", new { id = DiscussionId });
+                }
+            }
+
+            TempData["ErrorMessage"] = "Failed edit message";
+            return Json(0);
+           // return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> _DeleteMessage(int? id)
+        {
+            if (id != null)
+            {
+                var nameResponse = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eLearning/CourseDiscussion/DeleteMessage?id={id}");
+
+                if (nameResponse.isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Message has been deleted";
+                    return Json(1);
+                    //return RedirectToAction("View", new { id = DiscussionId });
+                }
+            }
+
+            TempData["ErrorMessage"] = "Failed delete message";
+            return Json(0);
+            // return RedirectToAction("List");
+        }
+
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> _Edit(EditCourseDiscussionModel model)
         {

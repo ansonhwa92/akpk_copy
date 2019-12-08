@@ -56,6 +56,7 @@
     <Compile Include="Access.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
+    <Compile Include="elearning\Feedback.cs" />
     <Compile Include="KMC.cs" />
     <Compile Include="Migrations\201912081622227_x.cs" />
     <Compile Include="Migrations\201912081622227_x.designer.cs">

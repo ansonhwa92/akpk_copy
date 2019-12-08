@@ -299,7 +299,13 @@
             var url = '';
 
             if (usertype == 1) {
-                url = '@Url.Action("AddLearner", "CourseEvents", new { area = "eLearning" })';
+                url = '@Url.Action("_AddIndividual", "CourseEvents", new { area = "eLearning" })';
+            }
+             else if (usertype == 2) {
+                url = '@Url.Action("_AddCompany", "CourseEvents", new { area = "eLearning" })';
+            }
+            else if (usertype == 3) {
+                url = '@Url.Action("_AddStaff", "CourseEvents", new { area = "eLearning" })';
             }
 
             if (url != '') {

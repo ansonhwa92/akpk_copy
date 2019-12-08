@@ -41,7 +41,7 @@ namespace FEP.WebApi.Api.eLearning
             base.Dispose(disposing);
         }
 
-        [Route("api/eLearning/CourseEvents/Get")]
+        [Route("api/eLearning/CourseEvents/")]
         [HttpGet]
         public async Task<IHttpActionResult> Get(int? id)
         {
@@ -183,6 +183,114 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+        /// For use in Invitation page, to list all invited users
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/eLearning/CourseEvents/GetInvitationByCourseEventId")]
+        [HttpPost]
+        public IHttpActionResult GetInvitationByCourseEventId(FilterCourseInvitationModel request)
+        {
+            var query = db.CourseInvitations
+                .Where(x => x.CourseEventId == request.CourseEventId);
+
+            if (!String.IsNullOrEmpty(request.Email))
+                query = query.Where(x => x.Emails.ToLower().Contains(request.Email.ToLower()));
+
+            var totalCount = query.Count();
+
+            query = query.OrderBy(x => x.CreatedDate);
+
+            //quick search,  and hide course where ViewCategory.Public and Status = Private
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+                query = query.Where(p => p.Emails.Contains(value));
+            }
+
+            
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(x => new ReturnBriefCourseInvitationModel
+                {
+                    CourseEventId = x.Id,
+                    Name = "",
+                    Email = x.Emails,
+                    Status = EnrollmentStatus.Invited,
+                });
+
+            var tempData = data.ToList();
+
+            foreach (var item in tempData)
+            {
+                var learner = db.Enrollments.FirstOrDefault(x => x.CourseEventId == item.CourseEventId &&
+                    x.Learner.User.Email == request.Email);
+
+                if (learner != null)
+                {
+                    item.Name = learner.Learner.User.Name;
+                    item.Status = learner.Status;
+                }
+                else
+                {
+                    item.Status = EnrollmentStatus.Invited;
+                }
+            }
+
+            data = tempData.AsQueryable();          
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.Email);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.Email);
+                        }
+
+                        break;
+
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            data = data.OrderBy(o => o.Name);
+                        }
+                        else
+                        {
+                            data = data.OrderByDescending(o => o.Name);
+                        }
+
+                        break;
+
+                    default:
+                        data = data.OrderBy(o => o.Email).OrderBy(o => o.Email);
+                        break;
+                }
+            }
+            else
+            {
+                data = data.OrderBy(o => o.Email).OrderBy(o => o.Email);
+            }
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+        }
+
         [Route("api/eLearning/CourseEvents/GetEventByCourseId")]
         [HttpGet]
         public async Task<IHttpActionResult> GetEventByCourseId(int? id)
@@ -228,9 +336,10 @@ namespace FEP.WebApi.Api.eLearning
                         CourseId = entity.Id,
                         Status = CourseEventStatus.Trial,
                         Start = DateTime.Now,
-                        EnrollmentCode = $"TRIAL({entity.Code}-{DateTime.Now.Ticks}",
+                        EnrollmentCode = $"TRIAL({entity.Code}-{DateTime.Now.Ticks})",
                         ViewCategory = ViewCategory.Private,
-                        CreatedBy = createdBy
+                        CreatedBy = createdBy,
+                        IsTrial = true
                     };
 
                     db.CourseEvents.Add(newEvent);
@@ -586,6 +695,381 @@ namespace FEP.WebApi.Api.eLearning
             });
         }
 
+
+        //Get Individual user that has learner role
+        [Route("api/eLearning/CourseEvents/GetAllIndividuals")]
+        [HttpPost]
+        public IHttpActionResult GetAllLearners(FilterIndividualModel request)
+        {
+            var users = db.UserRole.Where(u => u.UserAccount.User.Display &&
+                u.Role.Name == RoleNames.eLearningLearner).Select(x => x.UserAccount.User);
+
+            if (users == null)
+                return NotFound();
+
+            var totalCount = users.Count();
+
+            //advance search
+            var query = users.Where(s => (request.Name == null || s.Name.Contains(request.Name))
+               && (request.ICNo == null || s.ICNo.Contains(request.ICNo))
+               && (request.Email == null || s.Email.Contains(request.Email))
+               && (request.MobileNo == null || s.MobileNo.Contains(request.MobileNo))
+               );
+
+            //quick search
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+
+                query = query.Where(p => p.Name.Contains(value)
+                || p.ICNo.Contains(value)
+                || p.Email.Contains(value)
+                || p.MobileNo.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Name);
+                        }
+
+                        break;
+
+                    case "ICNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.ICNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.ICNo);
+                        }
+
+                        break;
+
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Email);
+                        }
+
+                        break;
+
+                    case "MobileNo":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.MobileNo);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.MobileNo);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.Name);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.Name);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new IndividualModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Email = s.Email,
+                    ICNo = s.ICNo,
+                    MobileNo = s.MobileNo,
+                    Status = s.UserAccount.IsEnable
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+        }
+
+        //Get Agency/Company user that has learners role
+        [Route("api/eLearning/CourseEvents/GetAllAgency")]
+        [HttpPost]
+        public IHttpActionResult Post(FilterCompanyModel request)
+        {
+            var query = db.UserRole.Where(u => u.UserAccount.User.Display && u.UserAccount.User.UserType == UserType.Company &&
+                u.Role.Name == RoleNames.eLearningLearner).Select(x => x.UserAccount.User.CompanyProfile);
+
+            //var query = db.CompanyProfile.Where(u => u.User.Display && u.User.UserType == UserType.Company);
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(s => (request.CompanyName == null || s.CompanyName.Contains(request.CompanyName))
+               && (request.Email == null || s.User.Email.Contains(request.Email))
+               && (request.Type == null || s.Type == request.Type)
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+
+                query = query.Where(p => p.CompanyName.Contains(value)
+                || p.CompanyRegNo.Contains(value)
+                || p.Sector.Name.Contains(value)
+                || p.User.Email.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "CompanyName":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.CompanyName);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.CompanyName);
+                        }
+
+                        break;
+
+                    case "TypeDesc":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Type);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Type);
+                        }
+
+                        break;
+
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Email);
+                        }
+
+                        break;
+
+                    case "Sector":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Sector.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Sector.Name);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.CompanyName);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.CompanyName);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new CompanyModel
+                {
+                    Id = s.UserId,
+                    CompanyName = s.CompanyName,
+                    Email = s.User.Email,
+                    Type = s.Type,
+                    Status = s.User.UserAccount != null ? s.User.UserAccount.IsEnable : false
+                }).ToList();
+
+            data.ForEach(s => s.TypeDesc = s.Type.GetDisplayName());
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
+        //Get staff user that has learners role
+        [Route("api/eLearning/CourseEvents/GetAllStaff")]
+        [HttpPost]
+        public IHttpActionResult Post(FilterStaffModel request)
+        {
+            var query = db.UserRole.Where(u => u.UserAccount.User.Display && u.UserAccount.User.UserType == UserType.Staff &&
+               u.Role.Name == RoleNames.eLearningLearner).Select(x => x.UserAccount.User.StaffProfile);
+
+            //var query = db.StaffProfile.Where(u => u.User.Display && u.User.UserType == UserType.Staff);
+
+            var totalCount = query.Count();
+
+            //advance search
+            query = query.Where(s => (request.Name == null || s.User.Name.Contains(request.Name))
+               && (request.BranchId == null || s.BranchId == request.BranchId)
+               && (request.Email == null || s.User.Email.Contains(request.Email))
+               && (request.DepartmentId == null || s.DepartmentId == request.DepartmentId)
+               );
+
+            //quick search 
+            if (!string.IsNullOrEmpty(request.search.value))
+            {
+                var value = request.search.value.Trim();
+
+                query = query.Where(p => p.User.Name.Contains(value)
+                || p.User.Email.Contains(value)
+                || p.Branch.Name.Contains(value)
+                || p.Department.Name.Contains(value)
+                );
+            }
+
+            var filteredCount = query.Count();
+
+            //order
+            if (request.order != null)
+            {
+                string sortBy = request.columns[request.order[0].column].data;
+                bool sortAscending = request.order[0].dir.ToLower() == "asc";
+
+                switch (sortBy)
+                {
+                    case "Name":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Name);
+                        }
+
+                        break;
+
+                    case "Branch":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Branch.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Branch.Name);
+                        }
+
+                        break;
+
+                    case "Department":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.Department.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.Department.Name);
+                        }
+
+                        break;
+
+                    case "Email":
+
+                        if (sortAscending)
+                        {
+                            query = query.OrderBy(o => o.User.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(o => o.User.Email);
+                        }
+
+                        break;
+
+                    default:
+                        query = query.OrderByDescending(o => o.User.Name);
+                        break;
+                }
+
+            }
+            else
+            {
+                query = query.OrderByDescending(o => o.User.Name);
+            }
+
+            var data = query.Skip(request.start).Take(request.length)
+                .Select(s => new StaffModel
+                {
+                    Id = s.User.Id,
+                    Name = s.User.Name,
+                    Email = s.User.Email,
+                    Branch = s.Branch.Name,
+                    Department = s.Department.Name,
+                    Status = s.User.UserAccount.IsEnable
+                }).ToList();
+
+            return Ok(new DataTableResponse
+            {
+                draw = request.draw,
+                recordsTotal = totalCount,
+                recordsFiltered = filteredCount,
+                data = data.ToArray()
+            });
+
+        }
+
         [Route("api/eLearning/CourseEvents/AddLearner")]
         [HttpPost]
         public async Task<IHttpActionResult> AddLearner(UpdateLearnerEnrollmentModel model)
@@ -768,6 +1252,16 @@ namespace FEP.WebApi.Api.eLearning
                 await db.SaveChangesAsync();
             }
 
+            //sum total content - added by wawar
+
+            var totalContent = db.CourseContents.Where(x => x.CourseId == id);
+            entity.TotalContents = totalContent.Count();
+
+            var totalModule = db.CourseModules.Where(x => x.CourseId == id);
+            entity.TotalModules = totalContent.Count();
+
+            //end sum
+
             entity.Status = CourseStatus.Published;
 
             if (entity.CourseApprovalLog == null)
@@ -815,7 +1309,9 @@ namespace FEP.WebApi.Api.eLearning
                 }
 
                 var courseEvent = _mapper.Map<CourseEvent>(model);
-                courseEvent.Status = CourseEventStatus.AvailableToPrivate;
+
+                courseEvent.Status = entity.ViewCategory == ViewCategory.Private ?
+                    CourseEventStatus.AvailableToPrivate : CourseEventStatus.AvailableToPublic;
 
                 try
                 {
@@ -836,8 +1332,10 @@ namespace FEP.WebApi.Api.eLearning
                         CourseId = model.CourseId,
                         EnrollmentCode = model.EnrollmentCode,
                         CreatedBy = model.CreatedBy,
-                        Description = model.Name,
+                        UpdatedBy = model.CreatedBy,
+                        Description = model.Description,
                         IsVisible = true,
+                        Name = model.Name,
                     };
 
                     try
@@ -889,14 +1387,19 @@ namespace FEP.WebApi.Api.eLearning
                 if (String.IsNullOrEmpty(model.LearnerEmails))
                     return BadRequest("No emails found.");
 
-                db.CourseInvitations.Add(new CourseInvitation
+                var emails = model.LearnerEmails.Split(',');
+
+                foreach (var email in emails)
                 {
-                    CourseId = model.CourseId,
-                    CourseEventId = model.CourseEventId,
-                    NotificationType = NotificationType.Course_Invitation,
-                    CreatedBy = int.Parse(model.CreatedBy),
-                    Emails = model.LearnerEmails,
-                });
+                    db.CourseInvitations.Add(new CourseInvitation
+                    {
+                        CourseId = model.CourseId,
+                        CourseEventId = model.CourseEventId,
+                        NotificationType = NotificationType.Course_Invitation,
+                        CreatedBy = int.Parse(model.CreatedBy),
+                        Emails = email,
+                    });
+                }
                 await db.SaveChangesAsync();
             }
             return Ok();

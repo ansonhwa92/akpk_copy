@@ -4,7 +4,7 @@
 <div class="col-xl-3 col-md-3 col-sm-4 my-2">
     <div id="page-nav" class="sidebar-left page-nav">
 
-        @if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+        @if (CurrentUser.HasAccess(UserAccess.CourseCreate) && Model.Status != CourseStatus.Cancelled)
         {
             <div data-perfect-scrollbar class="ps">
                 <div class="page-section">
@@ -100,11 +100,10 @@
                                 Submit For Approval
                             </a>
                         </p>
-                        @*<p>
-                            <a href="@Url.Action("View", "Course", new { area = "eLearning", id = @Model.Id })" class="btn btn-default btn-block mb-2">
-                                View
-                            </a>
-                        </p>*@
+
+                        <form method="post" id="formCancelCourse">
+                            <p><button class="btn btn-warning btn-block mb-2" id="btnCancelCourse" type="button" onclick="confirmCancel()">Cancel Course Creation</button></p>
+                        </form>
 
                     }
 

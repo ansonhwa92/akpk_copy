@@ -36,11 +36,11 @@
     </div>
 }
 <div class="d-flex align-items-center">
-        <div class="title">
-            <span class="title">
-                @name
-            </span>
-        </div>
+    <div class="title">
+        <span class="title">
+            @name
+        </span>
+    </div>
 </div>
 <hr>
 
@@ -63,10 +63,10 @@
 
                     <div class="row">
                         @*<div class="col-sm-9">
-                            <span class="title">
-                                @name
-                            </span>
-                        </div>*@
+                                <span class="title">
+                                    @name
+                                </span>
+                            </div>*@
                         <div class="col-sm-12">
                             @if (Model.Status != CourseStatus.Published)
                             {
@@ -103,23 +103,46 @@
                         </div>
 
                         <div>
+                            @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
+                            {
+                                if (!String.IsNullOrEmpty(Model.EnrollmentCode))
+                                {
+                                    <label class="control-label" for="EnrollmentCode" value="Enrollment Code">Enrollment Code </label>
+                                    <input class="form-control" value="@Model.EnrollmentCode" />
+                                    <br />
+                                }
+                            }
+
                             <div class="row">
-                                @if (Model.Status == CourseStatus.Published && !Model.IsUserEnrolled)
+                                @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
                                 {
-                                    @*<button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>*@
-
+                                    <button class="btn btn-secondary m-2 col-sm-2" onclick="checkLogin()">Enroll </button>
                                 }
-                                <!-- allow to start course in trial or in published but already enrolled -->
-                                @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
+
+                                @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled && @ViewBag.InProgress))
+                                {<!-- allow to continue the course - already enrolled -->
+                                    <a class="btn btn-secondary m-2" href="~/eLearning/CourseContents/View/@ViewBag.ProgressCourseContentId">Continue</a>
+                                }
+                                else if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
                                 {
+                                    <!-- allow to start course in trial or in published but already enrolled -->
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
-
                                 }
+
+                                @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed)
+                                {
+                                    <button class="btn btn-secondary m-2" id="btnWithdraw" type="button" onclick="withdraw()">Withdraw</button>
+                                }
+
+                                @if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
+                                {
+                                    <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">View as Learner</a>
+                                }
+
                                 @if (@ViewBag.EnrollmentStatus == EnrollmentStatus.Completed)
                                 {
                                     <div><a href="@Url.Action("ViewCertificate", "Courses", new { area = "eLearning", enrollID = @ViewBag.EnrollmentId })" class="btn btn-secondary m-2">View Certificate</a></div>
                                 }
-
                             </div>
                         </div>
                         <hr />
@@ -132,39 +155,60 @@
                         <div id="draggable-module">
                             @{
 
-                                    var modules = Model.Modules.OrderBy(x => x.Order).ToList();
+                                var modules = Model.Modules.OrderBy(x => x.Order).ToList();
 
                                 for (int i = 0; i < modules.Count(); i++)
                                 {
                                     var module = modules[i];
 
-                                    <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
-                                        <div class="row  mb-2">
-                                            <div class="col-sm-2">
-                                                <span class="moduleTitle">MODULE @i</span>
-                                            </div>
+                                    if (Model.IsUserEnrolled || CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                    {
+                                        <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
+                                            <div class="row  mb-2">
 
-                                            <div class="col-sm-10">
-                                                <span class="moduleTitle">@module.Title</span>
-
-                                                @*<a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>*@
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div>
-                                                @Html.Raw(@module.Description)
-
-                                                <div class="row pl-2">
-                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
-                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
-                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                <div class="col-sm-10">
+                                                    <span class="moduleTitle">@module.Title</span>
                                                 </div>
                                             </div>
+
+                                            <div>
+                                                <div>
+                                                    @Html.Raw(@module.Description)
+
+                                                    <div class="row pl-2">
+                                                        <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                        <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                        <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
                                         </div>
-                                        <div class="divider"></div>
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="module-box" data-id="@module.Order">
+                                            <div class="row  mb-2">
+
+                                                <div class="col-sm-10">
+                                                    <span class="moduleTitle">@module.Title</span>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div>
+                                                    @Html.Raw(@module.Description)
+
+                                                    <div class="row pl-2">
+                                                        <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                        <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                        <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                        </div>
+                                    }
                                 }
                             }
                         </div>
@@ -177,6 +221,28 @@
         @Html.Partial("_detailsSidebar")
     </div>
 </form>
+
+<!-- Alert Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="alertBox">
+    <input id="forAction" hidden />
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnYes">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     .form-container {
@@ -244,5 +310,36 @@
                 window.location = url;
             }
         }
+
+        function withdraw() {
+            showAlertBox("withdraw", "Withdraw From Course", "Are you sure you want to withdraw from the course?");
+        }
+
+        function showAlertBox(forAction, title, body) {
+            $("#alertBox .modal-title").text(title);
+            $("#alertBox .modal-body").text(body);
+
+            $('#forAction').val(forAction); // alert for what action
+
+            $('#alertBox').modal();
+
+        }
+
+        $('#btnYes').click(function (e) {
+            e.preventDefault();
+
+            var forAction = $('#forAction').val();
+            console.log('for action -', forAction);
+
+            var form = $("#form");
+            var courseId = $("#Id").val();
+
+            if (forAction == "withdraw") {
+                form.attr('action', "@BaseURL/eLearning/CourseEnrollments/RequestWithdraw?id=" + courseId);
+
+                form.submit();
+            }
+
+        });
     </script>
 }

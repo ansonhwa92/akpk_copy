@@ -85,6 +85,11 @@ namespace FEP.WebApiModel.eLearning
 
         public bool IsUserEnrolled { get; set; }
 
+        public int CourseProgressCount { get; set; }
+
+        //set for continue 
+        public int ProgressCourseContentId { get; set; }
+
         public ICollection<ReturnCourseProgressModel> CourseProgress { get; set; }
         public ICollection<EnrollmentHistory> EnrollmentHistory { get; set; }
     }

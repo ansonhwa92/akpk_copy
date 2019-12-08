@@ -155,13 +155,51 @@ namespace FEP.WebApi.Api.eLearning
                     }
                     else
                     {
+                        if (entity.Status == CourseStatus.Verified)
+                        {
+                            entity.Status = CourseStatus.FirstApproval;
+                            approvalLog.ApprovalLevel = ApprovalLevel.Approver1;
+                        }
+                        else
+                        if (entity.Status == CourseStatus.FirstApproval)
+                        {
+                            approvalLog.ApprovalLevel = ApprovalLevel.Approver2;
+                        }
+                        else
+                       if (entity.Status == CourseStatus.SecondApproval)
+                        {
+                            approvalLog.ApprovalLevel = ApprovalLevel.Approver3;
+                        }
+
                         entity.Status = CourseStatus.Approved;
-                        approvalLog.ApprovalStatus = ApprovalStatus.Approved;                        
+                        approvalLog.ApprovalStatus = ApprovalStatus.Approved;
                     }
                 }
             }
             else // Rejected
             {
+                if (entity.Status == CourseStatus.Submitted)
+                {
+                    entity.Status = CourseStatus.Verified;
+                    approvalLog.ApprovalLevel = ApprovalLevel.Verifier;
+                }
+                else
+                if (entity.Status == CourseStatus.Verified)
+                {
+                    entity.Status = CourseStatus.FirstApproval;
+                    approvalLog.ApprovalLevel = ApprovalLevel.Approver1;
+                }
+                else
+                if (entity.Status == CourseStatus.FirstApproval)
+                {
+                    approvalLog.ApprovalLevel = ApprovalLevel.Approver2;
+                }
+                else
+                if (entity.Status == CourseStatus.SecondApproval)
+                {
+                    approvalLog.ApprovalLevel = ApprovalLevel.Approver3;
+                }
+
                 entity.Status = CourseStatus.Amendment;
                 approvalLog.ApprovalStatus = ApprovalStatus.Rejected;
             }

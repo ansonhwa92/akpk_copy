@@ -125,8 +125,15 @@
 
                     <div>
                         <div class="row">
-                            <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
+                            @if (Model.Status != CourseStatus.Cancelled && (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                            {
+                                <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
+                            }
+
+                            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit))
+                            {
                             <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+                            }
                         </div>
                     </div>
 
@@ -153,8 +160,8 @@
                                                 <span class="moduleTitle">@module.Title</span>
                                             </div>
                                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-                                                           (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
-                                                           CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                                             (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
+                                                             CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                                 {
                                                     <div class="col-sm-3 pull-right pt-1">
                                                         <a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
@@ -355,6 +362,10 @@
             showAlertBox("publish", "Publish Course", "Publish this course?");
         }
 
+        function confirmCancel() {
+            showAlertBox("cancelCourse", "Cancel Course Creation", "Cancel this course?");
+        }
+
         function showAlertBox(forAction, title, body) {
             $("#alertBox .modal-title").text(title);
             $("#alertBox .modal-body").text(body);
@@ -373,7 +384,7 @@
             e.preventDefault();
 
             var forAction = $('#forAction').val();
-            //console.log('for action -', forAction);
+            console.log('for action -', forAction);
 
             var form = $("#formPublish");
             var courseId = $("#Id").val();
@@ -382,6 +393,13 @@
 
             if (forAction == "publish") {
                 form.attr('action', "@BaseURL/eLearning/CourseEvents/Publish?id=" + courseId + "&title=" + title + "&viewCategory=" + viewCategory);
+
+                form.submit();
+            }
+
+            if (forAction == "cancelCourse") {
+                form = $("#formCancelCourse");
+                form.attr('action', "@BaseURL/eLearning/Courses/CancelCourse?id=" + courseId + "&title=" + title );
 
                 form.submit();
             }

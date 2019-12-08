@@ -85,17 +85,18 @@ namespace FEP.Model
         [Display(Name = "Media Interview - Rejected")]
         Reject_Media_Interview,
 
-		[Display(Name = "Media Interview - Representative Available")]
-		RepAvailable_MediaInterview,
-		[Display(Name = "Media Interview - Representative Not Available")]
-		RepNotAvailable_MediaInterview,
+        [Display(Name = "Media Interview - Representative Available")]
+        RepAvailable_MediaInterview,
 
+        [Display(Name = "Media Interview - Representative Not Available")]
+        RepNotAvailable_MediaInterview,
 
-		//Exhibition Roadshow
-		[Display(Name = "Exhibition Roadshow - Submit Exhibition Roadshow For Verification")]
-		Submit_Exhibition_RoadShow_For_Verification,
-		[Display(Name = "Exhibition Roadshow - Verify Exhibition Roadshow")]
-		Verify_Exhibition_RoadShow_After_Submit_For_Verification,
+        //Exhibition Roadshow
+        [Display(Name = "Exhibition Roadshow - Submit Exhibition Roadshow For Verification")]
+        Submit_Exhibition_RoadShow_For_Verification,
+
+        [Display(Name = "Exhibition Roadshow - Verify Exhibition Roadshow")]
+        Verify_Exhibition_RoadShow_After_Submit_For_Verification,
 
         [Display(Name = "Exhibition Roadshow - Approve Exhibition Roadshow By Approver 1")]
         Approve_Exhibition_RoadShow_ByApprover_1,
@@ -121,13 +122,14 @@ namespace FEP.Model
         [Display(Name = "Exhibition RoadShow - Approve Duty Roster")]
         Approve_DutyRoster,
 
+        [Display(Name = "Exhibition RoadShow - Accept Participation")]
+        AcceptParticipation_Exhibition_RoadShow,
 
-		[Display(Name = "Exhibition RoadShow - Accept Participation")]
-		AcceptParticipation_Exhibition_RoadShow,
-		[Display(Name = "Exhibition RoadShow - Decline Participation")]
-		DeclineParticipation_Exhibition_RoadShow,
-		//[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
-		//SendInvitationToNominees,
+        [Display(Name = "Exhibition RoadShow - Decline Participation")]
+        DeclineParticipation_Exhibition_RoadShow,
+
+        //[Display(Name = "Exhibition RoadShow - Send Invitation To Nominees")]
+        //SendInvitationToNominees,
 
         //Payment
         [Display(Name = "Payment Pending GL")]
@@ -170,6 +172,9 @@ namespace FEP.Model
         [Display(Name = "Verify Courses Creation")]
         Verify_Courses_Creation,
 
+        [Display(Name = "Verify Courses Creation To Self")]
+        Verify_Courses_Creation_Self,
+
         [Display(Name = "Verify Courses Published Change")]
         Verify_Courses_Published_Change,
 
@@ -180,6 +185,9 @@ namespace FEP.Model
         Verify_Courses_Participant_Withdraw,
 
         //Approve Courses
+        [Display(Name = "Approve Courses Creation Self")]
+        Approve_Courses_Creation_Approver_Self,
+
         [Display(Name = "Approve Courses Creation By First Approver")]
         Approve_Courses_Creation_Approver1,
 
@@ -202,11 +210,26 @@ namespace FEP.Model
         [Display(Name = "Course Is Approved")]
         Course_Approved,
 
+        [Display(Name = "Course Is Approved, Send to Others ")]
+        Course_Approved_Others,
+
+        [Display(Name = "Course Is Approved, Send to Self ")]
+        Course_Approved_Self,
+
         [Display(Name = "Course Requires Amendment")]
         Course_Amendment,
 
+        [Display(Name = "Course Requires Amendment Self")]
+        Course_Amendment_Self,
+
+        [Display(Name = "Course Is Cancelled")]
+        Course_Cancelled,
+
         [Display(Name = "Invitation To Enroll To Course")]
         Course_Invitation,
+
+        [Display(Name = "Publish Course")]
+        Course_Publish,
 
         // Course - Facilitators
         [Display(Name = "Assigned To Course")]
@@ -214,6 +237,12 @@ namespace FEP.Model
 
         [Display(Name = "Student Enroll in the Course")]
         Course_Student_Enrolled,
+
+        // User withdraw from course
+        [Display(Name = "Notify Admin Participant Withdraw From Course")]
+        Notify_Admin_Participant_Withdraw,
+
+        Notify_Self_Withdraw_From_Course,
 
         //Survey
         [Display(Name = "Survey Created and Submitted for Verification")]

@@ -56,17 +56,9 @@
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201911271316335_2711.cs" />
-    <Compile Include="Migrations\201911271316335_2711.designer.cs">
-      <DependentUpon>201911271316335_2711.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912011010166_0112.cs" />
-    <Compile Include="Migrations\201912011010166_0112.designer.cs">
-      <DependentUpon>201912011010166_0112.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912071510037_0712.cs" />
-    <Compile Include="Migrations\201912071510037_0712.designer.cs">
-      <DependentUpon>201912071510037_0712.cs</DependentUpon>
+    <Compile Include="Migrations\201912060345542_InitialDB.cs" />
+    <Compile Include="Migrations\201912060345542_InitialDB.designer.cs">
+      <DependentUpon>201912060345542_InitialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -121,9 +113,7 @@
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -133,14 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911271316335_2711.resx">
-      <DependentUpon>201911271316335_2711.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912011010166_0112.resx">
-      <DependentUpon>201912011010166_0112.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912071510037_0712.resx">
-      <DependentUpon>201912071510037_0712.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912060345542_InitialDB.resx">
+      <DependentUpon>201912060345542_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

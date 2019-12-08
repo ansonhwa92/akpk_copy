@@ -9,7 +9,6 @@ using Language;
 
 namespace FEP.Model.eLearning
 {
-
     /// <summary>
     /// This table contains the histury for the course being offered for trial or for public/private groups.
     /// </summary>
@@ -17,17 +16,20 @@ namespace FEP.Model.eLearning
     {
         [Required]
         public string Name { get; set; }
+
         public string Description { get; set; }
+
         /// <summary>
         /// Specific code for enrollment, defined during creation of group of Learners
         /// </summary>
         [Required]
-        [Index(IsUnique = true)]    
+        [Index(IsUnique = true)]
         [MaxLength(150)]
         public string EnrollmentCode { get; set; }
 
         [Index]
         public int CourseId { get; set; }
+
         public virtual Course Course { get; set; }
 
         // The coursestatus at the point of this event, can be either Approved or Draft, changed afterward
@@ -38,6 +40,7 @@ namespace FEP.Model.eLearning
 
         // Date the course is available. After this date enrillment is not possible, but the course is still viewable by enrolled learners
         public DateTime? End { get; set; }
+
         public DateTime? LastDateToCancel { get; set; }
 
         public int? GroupId { get; set; }
@@ -49,14 +52,15 @@ namespace FEP.Model.eLearning
         // Required if published for trial
         public string TrialRemark { get; set; }
 
+        public bool IsTrial { get; set; }
+
         // ----- Start value from Course
 
         [Range(0.0, 100.0, ErrorMessage = "Value must be between 0 to 100.")]
         public decimal AllowablePercentageBeforeWithdraw { get; set; } = 0.0m;
 
-
         // TODO : May need to have conditional validation at ModelView
-        //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation 
+        //https://stackoverflow.com/questions/2417113/asp-net-mvc-conditional-validation
         //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         //{
         //    if (!this.Course.IsFree && AllowablePercentageBeforeWithdraw < 0.0m)
@@ -72,7 +76,6 @@ namespace FEP.Model.eLearning
         Public,
     }
 
-
     public enum CourseEventStatus
     {
         Trial,
@@ -82,6 +85,6 @@ namespace FEP.Model.eLearning
         AvailableToPublicAndPrivate,
 
         Suspended,
-        Cancelled        
+        Cancelled
     }
 }

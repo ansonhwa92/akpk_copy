@@ -113,7 +113,7 @@
             $('#btnNext').click(function () {
                 var cid = $('#catid').val();
                 if (cid == "") {
-                    alert("Please select a Publication Type!");
+                    alert("Please select a Course Category.");
                 }
                 else {
                     var url = '@Url.Action("Create", "Courses", new { area = "eLearning" })?catid=' + cid;

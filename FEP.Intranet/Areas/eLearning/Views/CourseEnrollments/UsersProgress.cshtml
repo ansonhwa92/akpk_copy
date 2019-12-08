@@ -192,6 +192,9 @@
                                 case @Json.Encode(EnrollmentStatus.Invited) :
                                     return "<span class='color-yellow font-weight-bold'>Invited Verification</span>";
 
+                                case @Json.Encode(EnrollmentStatus.Withdrawn) :
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawn</span>";
+
                                 default:
                                     return "<span class='color-red font-weight-bold'>" + row.Status + "</span>";
 

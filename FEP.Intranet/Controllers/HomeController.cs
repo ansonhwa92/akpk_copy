@@ -43,15 +43,21 @@ namespace FEP.Intranet.Controllers
         {
             var userid = CurrentUser.UserId;
 
-            if(module == null)
+            var availableModule = new List<DashboardModule>();
+            GetAvailableModule(availableModule);
+
+            if(module == null && availableModule.Count > 0)
             {
-                module = DashboardModule.Courses;
+                module = availableModule.First();
             }
 
             var response = await WepApiMethod.SendApiAsync<DashboardList>(HttpVerbs.Get, $"Home/Dashboard/GetDashbordList?userid={userid}&module={module}");
 
+
+
             if (response.isSuccess)
             {
+                response.Data.DashboardModuleByRole.AvailableModule = availableModule;
                 var model = response.Data;
                 return View(model);
             }
@@ -640,7 +646,32 @@ namespace FEP.Intranet.Controllers
 
         }
 
+        [NonAction]
+        private void GetAvailableModule(List<DashboardModule> avaialbeModules)
+        {
+            if (CurrentUser.UserType == UserType.SystemAdmin || CurrentUser.UserType == UserType.Staff)
+            {
+                if (CurrentUser.HasAccess(UserAccess.EventMenu))
+                {
+                    avaialbeModules.Add(DashboardModule.PublicEvent);
+                    avaialbeModules.Add(DashboardModule.MediaInterview);
+                    avaialbeModules.Add(DashboardModule.Exhibition);
+                }
+                if (CurrentUser.HasAccess(UserAccess.LearningMenu))
+                {
+                    avaialbeModules.Add(DashboardModule.Courses);
+                }
+                if (CurrentUser.HasAccess(UserAccess.KMCMenu))
+                {
+                    avaialbeModules.Add(DashboardModule.KMC);
+                }
+                if (CurrentUser.HasAccess(UserAccess.RnPMenu))
+                {
+                    avaialbeModules.Add(DashboardModule.Publication);
+                    avaialbeModules.Add(DashboardModule.Survey);
+                }
+            }
+        }
 
-        
     }
 }

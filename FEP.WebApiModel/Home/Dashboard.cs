@@ -12,10 +12,11 @@ namespace FEP.WebApiModel.Home
         public DashboardList()
         {
             DashboardItemList = new List<DashboardItemList>();
+            DashboardModuleByRole = new DashboardModuleByRole();
         }
         public DashboardModule ModuleName { get; set; }
         public List<DashboardItemList> DashboardItemList { get; set; }
-
+        public DashboardModuleByRole DashboardModuleByRole { get; set; }
     }
 
     public class DashboardItemList
@@ -29,7 +30,7 @@ namespace FEP.WebApiModel.Home
 
     public enum DashboardModule
     {
-        [Display(Name = "Individual", ResourceType = typeof(Language.Dashboard))]
+        [Display(Name = "Individual")]
         Individual,
         [Display(Name = "Agency")]
         Agency,
@@ -55,6 +56,11 @@ namespace FEP.WebApiModel.Home
 
     public class DashboardModuleByRole
     {
+        public DashboardModuleByRole()
+        {
+            DefaultModule = new DashboardModule();
+            AvailableModule = new List<DashboardModule>();
+        }
         public DashboardModule DefaultModule { get; set; }
         public List<DashboardModule> AvailableModule { get; set; }
     }

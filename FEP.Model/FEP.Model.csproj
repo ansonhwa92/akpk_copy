@@ -57,9 +57,9 @@
     <Compile Include="Cart.cs" />
     <Compile Include="CTE.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201912081320324_x.cs" />
-    <Compile Include="Migrations\201912081320324_x.designer.cs">
-      <DependentUpon>201912081320324_x.cs</DependentUpon>
+    <Compile Include="Migrations\201912081622227_x.cs" />
+    <Compile Include="Migrations\201912081622227_x.designer.cs">
+      <DependentUpon>201912081622227_x.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -126,8 +126,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912081320324_x.resx">
-      <DependentUpon>201912081320324_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912081622227_x.resx">
+      <DependentUpon>201912081622227_x.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

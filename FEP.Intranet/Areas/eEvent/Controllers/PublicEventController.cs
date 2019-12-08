@@ -473,7 +473,8 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				RefNo = response.Data.RefNo,
 				Attachments = response.Data.Attachments,
 				SpeakerId = response.Data.SpeakerId,
-				ExternalExhibitorId = response.Data.ExternalExhibitorId
+				ExternalExhibitorId = response.Data.ExternalExhibitorId,
+                TentativeScript = response.Data.tentativeScript
 			};
 
 			if (model == null)

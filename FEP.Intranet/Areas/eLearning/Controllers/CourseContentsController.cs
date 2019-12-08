@@ -88,7 +88,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         // POST: eLearning/CourseModules/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CreateOrEditContentModel model, string SubmitType="Save")
+        public async Task<ActionResult> Create(CreateOrEditContentModel model, string SubmitType = "Save")
         {
             if (ModelState.IsValid)
             {
@@ -248,7 +248,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CreateOrEditContentModel model, string SubmitType="Save")
+        public async Task<ActionResult> Edit(CreateOrEditContentModel model, string SubmitType = "Save")
         {
             if (ModelState.IsValid)
             {
@@ -331,7 +331,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                         return RedirectToAction("View", "CourseContents", new { area = "eLearning", @id = model.Id });
                     else
                         return RedirectToAction("Content", "CourseModules", new { area = "eLearning", @id = model.CourseModuleId });
-               }
+                }
             }
 
             TempData["ErrorMessage"] = "Cannot edit content.";
@@ -448,35 +448,56 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
         }
 
+        [Authorize]
         public async Task<ActionResult> View(int id)
         {
             var content = await TryGetContent(id);
 
+            var currentUserId = CurrentUser.UserId.Value;
+
+
+            bool IsUserEnrolled = false;
+
             if (content != null)
             {
-                switch (content.ContentType)
+                if (content.Status == CourseStatus.Published)
                 {
-                    case CourseContentType.Video:
-                        // If its youtube video ensure the word 'embed' is there, if not, put it in
-                        // eg. https://www.youtube.com/watch?v=WEDIj9JBTC8
-                        if (content.VideoType == VideoType.ExternalVideo)
-                        {
-                            content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
-                        }
-                        break;
+                    var response = await WepApiMethod.SendApiAsync<UserCourseEnrollmentModel>(HttpVerbs.Get, CourseEnrollmentApiUrl.GetEnrollment +
+                     $"?id={content.CourseId}&userId={currentUserId}");
 
-                    default:
-                        break;
+                    if (response.isSuccess)
+                    {
+                        if (response.Data.Status == EnrollmentStatus.Enrolled || response.Data.Status == EnrollmentStatus.Completed)
+                            IsUserEnrolled = true;
+                    }
                 }
 
-                return View(content);
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
+                // check if user is enrolled. If not enrolled cannot see content
+                if ((content.Status == CourseStatus.Published && IsUserEnrolled) || 
+                    (content.Status != CourseStatus.Published && CurrentUser.HasAccess(UserAccess.CourseNonLearnerView)))
+                {
+                    switch (content.ContentType)
+                    {
+                        case CourseContentType.Video:
+                            // If its youtube video ensure the word 'embed' is there, if not, put it in
+                            // eg. https://www.youtube.com/watch?v=WEDIj9JBTC8
+                            if (content.VideoType == VideoType.ExternalVideo)
+                            {
+                                content.Url = YouTubeUrlHelper.ConvertToEmbeddedUrl(content.Url);
+                            }
+                            break;
 
-                return Redirect(Request.UrlReferrer.ToString());
+                        default:
+                            break;
+                    }
+
+                    return View(content);
+                }
             }
+
+            TempData["ErrorMessage"] = "Could not find the content.";
+
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         public async Task<CreateOrEditContentModel> TryGetContent(int id)

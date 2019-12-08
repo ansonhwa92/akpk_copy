@@ -103,15 +103,24 @@
                         </div>
 
                         <div>
+                            @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
+                            {
+                                if (!String.IsNullOrEmpty(Model.EnrollmentCode))
+                                {
+                                    <label class="control-label" for="EnrollmentCode" value="Enrollment Code">Enrollment Code </label>
+                                    <input class="form-control" value="@Model.EnrollmentCode" />
+                                    <br />
+                                }
+                            }
+
                             <div class="row">
                                 @if (Model.Status == CourseStatus.Published && (ViewBag.EnrollmentStatus != EnrollmentStatus.Enrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed))
                                 {
-                                    <button class="btn btn-secondary m-2" onclick="checkLogin()">Enroll</button>
+                                    <button class="btn btn-secondary m-2 col-sm-2" onclick="checkLogin()">Enroll </button>
                                 }
 
                                 @if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled && @ViewBag.InProgress))
-                                {
-                                    <!-- allow to continue the course - already enrolled -->
+                                {<!-- allow to continue the course - already enrolled -->
                                     <a class="btn btn-secondary m-2" href="~/eLearning/CourseContents/View/@ViewBag.ProgressCourseContentId">Continue</a>
                                 }
                                 else if (Model.Status == CourseStatus.Trial || (Model.Status == CourseStatus.Published && Model.IsUserEnrolled))
@@ -120,12 +129,12 @@
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
                                 }
 
-                                @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled)
+                                @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed)
                                 {
                                     <button class="btn btn-secondary m-2" id="btnWithdraw" type="button" onclick="withdraw()">Withdraw</button>
                                 }
 
-                                @if (Model.Status != CourseStatus.Published)
+                                @if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">View as Learner</a>
                                 }
@@ -152,33 +161,54 @@
                                 {
                                     var module = modules[i];
 
-                                    <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
-                                        <div class="row  mb-2">
-                                            @*<div class="col-sm-2">
-                                                    <span class="moduleTitle">MODULE @i</span>
-                                                </div>*@
+                                    if (Model.IsUserEnrolled || CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                    {
+                                        <div class="module-box" data-id="@module.Order" onclick="openModule(@module.Id)">
+                                            <div class="row  mb-2">
 
-                                            <div class="col-sm-10">
-                                                <span class="moduleTitle">@module.Title</span>
-
-                                                @*<a href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = module.Id })"
-                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>*@
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div>
-                                                @Html.Raw(@module.Description)
-
-                                                <div class="row pl-2">
-                                                    <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
-                                                    <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
-                                                    <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                <div class="col-sm-10">
+                                                    <span class="moduleTitle">@module.Title</span>
                                                 </div>
                                             </div>
+
+                                            <div>
+                                                <div>
+                                                    @Html.Raw(@module.Description)
+
+                                                    <div class="row pl-2">
+                                                        <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                        <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                        <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
                                         </div>
-                                        <div class="divider"></div>
-                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="module-box" data-id="@module.Order">
+                                            <div class="row  mb-2">
+
+                                                <div class="col-sm-10">
+                                                    <span class="moduleTitle">@module.Title</span>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div>
+                                                    @Html.Raw(@module.Description)
+
+                                                    <div class="row pl-2">
+                                                        <div class="pr-3"><i class="la la-files-o la-2x" data-toggle="tooltip" title="Total Content"></i><span class="pb-1">@module.ModuleContents.Count() Contents</span></div>
+                                                        <div class="pr-3"><i class="la la-youtube la-2x" data-toggle="tooltip" title="Total VIdeo"></i><span class="pb-1">@module.TotalVideo Videos</span></div>
+                                                        <div class="pr-3"><i class="la la-file-audio-o la-2x" data-toggle="tooltip" title="Total Audio"></i><span class="pb-1">@module.TotalAudio Audios</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="divider"></div>
+                                        </div>
+                                    }
                                 }
                             }
                         </div>

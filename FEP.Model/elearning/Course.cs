@@ -135,7 +135,15 @@ namespace FEP.Model.eLearning
         public void UpdateCourseStat()
         {
             TotalModules = this.Modules.Count();
-            TotalContents = this.Modules.Sum(x => x.TotalContent);
+
+            TotalContents = 0;
+            foreach (var module in this.Modules)
+            {
+                if (module.ModuleContents != null)
+                    TotalContents += module.ModuleContents.Count();
+            }
+
+            // TotalContents = this.Modules.Sum(x => x.ModuleContents?.Count()).Value;
         }
     }
 

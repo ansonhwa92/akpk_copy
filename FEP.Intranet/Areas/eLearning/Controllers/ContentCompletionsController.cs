@@ -48,14 +48,44 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     var nextModule = response.Data.nextModuleId;
                     var courseId = response.Data.CourseId;
 
-                    //if (nextContent < 0) // go to index, no more content this module
                     if (nextContent == null)
                     {
                         if (nextModule == null) // No more module and content, lets go to the course page
                         {
                             TempData["SuccessMessage"] = "Congratulations, you have completed this course.";
 
-                            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                            var course = await CoursesController.TryGetFrontCourse(courseId.Value);
+
+                            if (course.Status != Model.eLearning.CourseStatus.Published)
+                            {
+                                if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                {
+                                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                                else
+                                if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
+                                {
+                                    return RedirectToAction("Approve", "CourseApprovals", new { area = "eLearning", @id = courseId });
+                                }
+                            }
+                            else
+                            if (course.Status == Model.eLearning.CourseStatus.Published)
+                            {
+                                if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                {
+                                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                                else
+                                if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
+                                {
+                                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                                else
+                                {
+                                    return RedirectToAction("View", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                            }
+                            return RedirectToAction("View", "Courses", new { area = "eLearning", @id = courseId });
                         }
                         else  // go to next module
                         {

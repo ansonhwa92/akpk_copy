@@ -130,6 +130,12 @@ namespace FEP.WebApi.Api.eLearning
 
                     await db.SaveChangesAsync();
 
+                    course.UpdateCourseStat();
+
+                    db.SetModified(course);
+
+                    await db.SaveChangesAsync();
+
                     return Ok(content.Id);
                 }
                 else
@@ -150,13 +156,17 @@ namespace FEP.WebApi.Api.eLearning
 
                     module.ModuleContents.Add(content);
 
-                    try
+                    await db.SaveChangesAsync();
+
+                    var course = await db.Courses.FindAsync(module.CourseId);
+
+                    if (course != null)
                     {
+                        course.UpdateCourseStat();
+
+                        db.SetModified(course);
+
                         await db.SaveChangesAsync();
-                    }
-                    catch (Exception e)
-                    {
-                        return BadRequest(e.Message);
                     }
 
                     return Ok(content.Id);
@@ -317,7 +327,15 @@ namespace FEP.WebApi.Api.eLearning
                 {
                     module.UpdateTotals();
                     await db.SaveChangesAsync();
+                }
 
+                var course = await db.Courses.FindAsync(content.CourseId);
+                if (course != null)
+                {
+                    course.UpdateCourseStat();
+
+                    db.SetModified(course);
+                    await db.SaveChangesAsync();
                 }
 
                 return Ok(model);
@@ -351,7 +369,6 @@ namespace FEP.WebApi.Api.eLearning
 
             return Ok(entities);
         }
-
 
         [Route("api/eLearning/CourseContents/GetAllDocument")]
         [HttpGet]

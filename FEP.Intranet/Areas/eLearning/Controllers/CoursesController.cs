@@ -63,10 +63,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+            if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
+                return View();
+            else
+                return RedirectToAction(nameof(HomeController.BrowseElearnings), "Home", new { area = "eLearning" });
         }
 
-        //[HasAccess(UserAccess.RnPPublicationEdit)]
+        [AllowAnonymous]
         public ActionResult SelectCategory()
         {
             // need to change to call api
@@ -283,7 +286,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             //model.Roles = new SelectList(await GetRoles(), "Id", "Name", 0);
 
             return View(model);
-
         }
 
         [HttpGet]
@@ -316,7 +318,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [NonAction]
         private async Task<IEnumerable<SectorModel>> GetSectors()
         {
-
             var sectors = Enumerable.Empty<SectorModel>();
 
             var response = await WepApiMethod.SendApiAsync<List<SectorModel>>(HttpVerbs.Get, $"Administration/Sector");
@@ -332,7 +333,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [NonAction]
         private async Task<IEnumerable<BranchModel>> GetBranches()
         {
-
             var branches = Enumerable.Empty<BranchModel>();
 
             var response = await WepApiMethod.SendApiAsync<List<BranchModel>>(HttpVerbs.Get, $"Administration/Branch");
@@ -348,7 +348,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [NonAction]
         private async Task<IEnumerable<DepartmentModel>> GetDepartments()
         {
-
             var departments = Enumerable.Empty<DepartmentModel>();
 
             var response = await WepApiMethod.SendApiAsync<List<DepartmentModel>>(HttpVerbs.Get, $"Administration/Department");
@@ -359,7 +358,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             return departments;
-
         }
 
         /// <summary>
@@ -441,7 +439,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return RedirectToAction("Trainers", "Courses", new { area = "eLearning", id = CourseId });
         }
 
-        [HasAccess(UserAccess.CourseCreate)]
         public async Task<ActionResult> Content(int? id)
         {
             if (id == null)
@@ -458,12 +455,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
-            model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
+            // allow to see if not published for creator, verifier, etc
+            // this should be a filter but....
+            if (model.Status != CourseStatus.Published)
+            {
+                if (CurrentUser.HasAccess(UserAccess.CourseCreate) ||
+                    CurrentUser.HasAccess(UserAccess.CourseVerify) ||
+                    CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
+                    CurrentUser.HasAccess(UserAccess.CourseApproval2) ||
+                    CurrentUser.HasAccess(UserAccess.CourseApproval3))
+                {
+                    model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
+
+                    return View(model);
+                }
+            }
+            else
+            {
+                if (CurrentUser.HasAccess(UserAccess.CourseEnroll) ||
+                    CurrentUser.HasAccess(UserAccess.CourseDiscussionCreate) ||
+                    CurrentUser.HasAccess(UserAccess.CourseDiscussionGroupCreate))
+                {
+                    model.Modules = model.Modules.OrderBy(x => x.Order).ToList();
+                }
+            }
 
             return View(model);
         }
 
-        //[HasAccess(UserAccess.CourseView)]
         [AllowAnonymous]
         public async Task<ActionResult> View(int? id, string enrollmentCode = "")
         {
@@ -882,7 +901,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "Could not start the course. Are you enrolled?";
+                TempData["ErrorMessage"] = "Could not load next content.";
 
                 return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             }

@@ -283,14 +283,14 @@ namespace FEP.Model
 
         // elearning Learner
         CourseEnroll,
+		CourseDiscussionGroupCreate,
+		// elearning Facilitator
+		//CourseGroupCreate,
 
-        // elearning Facilitator
-        //CourseGroupCreate,
-
-        //CourseDiscussionCreate,
+		//CourseDiscussionCreate,
 
 
-        [Display(Name = "Course - Discussion - Create")]
+		[Display(Name = "Course - Discussion - Create")]
         CourseDiscussionCreate,
 
         [Display(Name = "Course - Discussion - Delete")]

@@ -1,0 +1,204 @@
+﻿@model FEP.WebApiModel.PublicEvent.DetailsPublicEventModel
+
+@{
+	ViewBag.Title = "Purchase Public Event";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section Nav{
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = Model.Id})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/Home">Public Event</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent">Browse Public Event</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent/PublicEventDetails">Attend Event</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent/PublicEventDetails/EventSelectTicket">Select Ticket</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent/PublicEventDetails/EventSelectTicket/PurchasePublicEvent">Purchase Public Event</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">@Model.EventTitle</h1>
+					<div class="header-text">Public Event Request Ref No: @Model.RefNo</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<div class="content-container">
+	<div class="container">
+		<div class="row">
+			<!-- column content left -->
+			<div class="col-lg-9">
+				<div class="col-content">
+					<h4 class="color-darkblue">Purchase Information</h4>
+					<table class="table tableStyle1 table-foot mt-0 mb-5">
+						<tfoot>
+							<tr>
+								<td class="text-left font-weight-bolder">Item Name</td>
+								<td class="text-left font-weight-bolder">Format</td>
+								<td class="text-right font-weight-bolder">Price</td>
+								<td class="text-right font-weight-bolder">Quantity</td>
+								<td class="text-right font-weight-bolder">Amount</td>
+							</tr>
+							<tr>
+								<td class="text-left font-weight-bold">@Model.EventTitle</td>
+								<td class="text-left font-weight-bold">Individual</td>
+								<td class="text-right font-weight-bold">@ViewBag.IndividualAmt.ToString("0.00")</td>
+								@if (ViewBag.card_i == "true")
+								{
+									<td class="text-right font-weight-bold">1</td>
+									<td class="text-right font-weight-bold">@ViewBag.IndividualAmt.ToString("0.00")</td>
+								}
+								else
+								{
+									<td class="text-right font-weight-bold">0</td>
+									<td class="text-right font-weight-bold">0.00</td>
+								}
+							</tr>
+							<tr>
+								<td class="text-right font-weight-bold"></td>
+								<td class="text-left font-weight-bold">Group</td>
+								<td class="text-right font-weight-bold">@ViewBag.GroupAmt.ToString("0.00")</td>
+								@if (ViewBag.card_g == "true")
+								{
+									<td class="text-right font-weight-bold">@ViewBag.card_bil</td>
+									<td class="text-right font-weight-bold">@ViewBag.GroupAmt.ToString("0.00")</td>
+								}
+								else
+								{
+									<td class="text-right font-weight-bold">0</td>
+									<td class="text-right font-weight-bold">0.00</td>
+								}
+							</tr>
+							<tr>
+								<td class="text-right font-weight-bold"></td>
+								<td class="text-left font-weight-bold">Agency</td>
+								<td class="text-right font-weight-bold">@ViewBag.AgencyAmt.ToString("0.00")</td>
+								@if (ViewBag.card_a == "true")
+								{
+									<td class="text-right font-weight-bold">@ViewBag.card_bil</td>
+									<td class="text-right font-weight-bold">@ViewBag.AgencyAmt.ToString("0.00")</td>
+								}
+								else
+								{
+									<td class="text-right font-weight-bold">0</td>
+									<td class="text-right font-weight-bold">0.00</td>
+								}
+							</tr>
+						</tfoot>
+					</table>
+					<!-- Table total -->
+					<table class="table tableStyle1 table-foot mt-0 mb-5">
+						<tfoot>
+							@*<tr>
+					<td class="text-right font-weight-bold"><span class="color-grey2 xs-small">Shipping Fee <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="If less than or equal 50 books / order = RM18 per delivery. If more than 50 books / oder = RM0.40 per book"><i class="la la-question-circle color-red align-middle" style="font-size: 17px;"></i></a></span> </td>
+					<td class="text-right font-weight-bolder" style="width: 150px;"><span class="xs-small">RM 0.00</span></td>
+				</tr>*@
+							<tr>
+								<td class="text-right font-weight-bolder">Total</td>
+								<td class="text-right font-weight-bolder" style="width: 150px;"><span class="color-red">RM @ViewBag.TotalAmt</span></td>
+							</tr>
+						</tfoot>
+					</table>
+
+					<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = Model.Id})'>Back</a>
+					@*<a class="btn btn-secondary" id="btnNext" href="#">Next</a>*@
+
+					<button class="btn btn-secondary" id="btnAddtoCart">Add to Cart</button>
+
+
+
+
+
+
+					<!-- Popup -->
+					<div class="modal fade" id="addtocart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-sm" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<div class="modal-body text-center">
+									<img src="~/img/icon-noti-email.svg" alt="image">
+									<p class="small mt-4" id="resultMsg">Item(s) have been added to your cart.</p>
+								</div>
+								<div class="divider-border"></div>
+								<div class="m-4 text-center">
+									@*<button class="btn btn-default font-weight-normal mr-2" data-dismiss="modal" aria-label="Close" id="btnBackToBrowse">Continue Shopping</button>*@
+									@*<button class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#">Add to Cart</button>*@
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end column content left -->
+			<!-- column content right -->
+			<div class="col-lg-3">
+				<div class="right-sidebar">
+					@*<div class="right-top">
+						<div class="card__wrapper">
+							<div class="card__top">*@
+								@*@{
+									var coverpic1 = "";
+									var coverpic2 = "";
+									var authorpic = "";
+								}
+								@if ((ViewBag.CoverPicture != "") && (ViewBag.CoverPicture != null))
+								{
+									coverpic1 = BaseURL + "/Data/images/publication/" + ViewBag.CoverPicture;
+									coverpic2 = BaseURL + "/Data/images/publication/" + ViewBag.CoverPicture;
+								}
+								else
+								{
+									coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+									coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+								}
+								@if ((ViewBag.AuthorPicture != "") && (ViewBag.AuthorPicture != null))
+								{
+									authorpic = BaseURL + "/Data/images/publication/" + ViewBag.AuthorPicture;
+								}
+								else
+								{
+									authorpic = BaseURL + "/" + "img" + "/8.jpg";
+								}
+								<div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>*@
+							@*</div>
+						</div>*@
+						<!--<div class="mb-4"><img src="../img/cover-publication-dummy.jpg"></div>-->
+						<div class="card-group">
+							<div class="lead color-darkblue mb-3 font-weight-bolder">Public Event Details</div>
+							<ul>
+								<li><i class="la la-list-ul font-icon color-secondary" data-toggle="tooltip" title="Event Category" style="font-size: 17px;"></i>@Model.EventCategoryName</li>
+								<li><i class="la la-file-text font-icon color-secondary" data-toggle="tooltip" title="Event Title" style="font-size: 17px;"></i>@Model.EventTitle</li>
+								<li><i class="la la-calendar font-icon color-secondary" data-toggle="tooltip" title="Event Date" style="font-size: 19px;"></i>@Model.StartDate.Value.ToString("dd/MM/yyyy") - @Model.EndDate.Value.ToString("dd/MM/yyyy")</li>
+								<li><i class="la la-map-marker font-icon color-secondary" data-toggle="tooltip" title="Event Venue" style="font-size: 17px;"></i>@Model.Venue</li>
+								<li><i class="fas fa-chair font-icon color-secondary" data-toggle="tooltip" title="Availability" style="font-size: 17px;"></i>@Model.ParticipantAllowed Seats Remaining</li>
+							</ul>
+						</div>
+						<!-- Share with friends -->
+						<div class="card-group">
+							<div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+							<div class="ms-share"></div>
+						</div>
+					@*</div>*@
+				</div>
+			</div>
+			<!-- end column content right -->
+		</div>
+	</div>
+	<!-- Wrapper -->
+</div>

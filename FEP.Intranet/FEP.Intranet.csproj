@@ -255,6 +255,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\eLearning\Views\CourseContents\_createVideo.cshtml" />
+    <Content Include="img\EventSpeaker-ProfilePicture\20191128010700_WhatsApp Image 2019-11-21 at 8.45.37 PM.jpeg" />
+    <Content Include="img\EventSpeaker-ProfilePicture\20191203114445_WhatsApp Image 2019-11-21 at 8.45.37 PM.jpeg" />
+    <Content Include="img\EventSpeaker-ProfilePicture\20191203115522_WhatsApp Image 2019-11-21 at 8.45.37 PM.jpeg" />
+    <Content Include="img\events\icon-purchase-agency.svg" />
+    <Content Include="img\events\icon-purchase-group.svg" />
+    <Content Include="img\events\icon-purchase-individual.svg" />
     <Content Include="img\no-image.png" />
     <Content Include="Areas\RnP\Views\Survey\Answer.cshtml" />
     <Content Include="Areas\RnP\Views\Survey\Build.cshtml" />
@@ -1076,6 +1082,9 @@
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
     <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\BrowseEvent.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\PublicEventDetails.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\EventSelectTicket.cshtml" />
+    <Content Include="Areas\eEvent\Views\Home\PurchasePublicEvent.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -1,0 +1,888 @@
+﻿@model FEP.WebApiModel.PublicEvent.DetailsPublicEventModel
+@{
+	ViewBag.Title = "Public Event Details";
+	Layout = "~/Views/Shared/_LayoutLandingPage.cshtml";
+}
+
+@section ContentScript {
+	<script type="text/javascript">
+		$(document).ready(function () {
+			//by default
+			$('#eventagenda').hide();
+			$('#eventspeakers').hide();
+			$('#venue').hide();
+			$('#attendees').hide();
+			$('#reviews').hide();
+			//by default
+
+			$('#about-tab').click(function () {
+				$('#about').show();
+				$('#eventagenda').hide();
+				$('#eventspeakers').hide();
+				$('#venue').hide();
+				$('#attendees').hide();
+				$('#reviews').hide();
+			});
+
+			$('#eventagenda-tab').click(function () {
+				$('#eventagenda').show();
+				$('#about').hide();
+				$('#eventspeakers').hide();
+				$('#venue').hide();
+				$('#attendees').hide();
+				$('#reviews').hide();
+			});
+
+			$('#eventspeakers-tab').click(function () {
+				$('#eventspeakers').show();
+				$('#about').hide();
+				$('#eventagenda').hide();
+				$('#venue').hide();
+				$('#attendees').hide();
+				$('#reviews').hide();
+			});
+
+			$('#venue-tab').click(function () {
+				$('#venue').show();
+				$('#about').hide();
+				$('#eventagenda').hide();
+				$('#eventspeakers').hide();
+				$('#attendees').hide();
+				$('#reviews').hide();
+			});
+
+			$('#attendees-tab').click(function () {
+				$('#attendees').show();
+				$('#about').hide();
+				$('#eventagenda').hide();
+				$('#eventspeakers').hide();
+				$('#venue').hide();
+				$('#reviews').hide();
+			});
+
+			$('#reviews-tab').click(function () {
+				$('#reviews').show();
+				$('#about').hide();
+				$('#eventagenda').hide();
+				$('#eventspeakers').hide();
+				$('#venue').hide();
+				$('#attendees').hide();
+			});
+
+		});
+	</script>
+}
+
+@section Nav{
+	<div class="header-col-right float-right mt-5"><a href='@Url.Action("BrowseEvent", "Home", new { area = "eEvent" })' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+
+	<div id="breadcrumb">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+				<li class="breadcrumb-item"><a href="~/eEvent/Home">Public Event</a></li>
+				<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent">Browse Public Event</a></li>
+				<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent/PublicEventDetails">Attend Event</a></li>
+				<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+			</ol>
+		</nav>
+	</div>
+	<h1 class="page-title text-white">@Model.EventTitle</h1>
+	<div class="header-text">Public Event Request Ref No: @Model.RefNo</div>
+	@*<div class="header-text">
+			<div class="d-flex star-rating">
+				<div class="rating">
+					<i class="material-icons">star</i>
+					<i class="material-icons">star</i>
+					<i class="material-icons">star</i>
+					<i class="material-icons">star</i>
+					<i class="material-icons">star_border</i>
+				</div>
+				<div class="mx-2">4.2 (104 ratings) <span class="reviews-text">99 reviews</span></div>
+			</div>
+		</div>*@
+}
+
+<main id="landing-inner" class="rellax" data-rellax-speed="0">
+	<div class="content-container">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- Anchor tab -->
+					<div class="custom-tab mb-4 mt-5">
+						<ul class="nav nav-line" id="myTab">
+
+							<li class="nav-item">
+								<a class="nav-link scrollLink active" data-toggle="tab" id="about-tab" href="#about" role="tab">About</a>
+							</li>
+
+
+							<li class="nav-item">
+								<a class="nav-link scrollLink" data-toggle="tab" id="eventagenda-tab" href="#eventagenda" role="tab">Event Agenda</a>
+							</li>
+
+
+							<li class="nav-item">
+								<a class="nav-link scrollLink" data-toggle="tab" id="eventspeakers-tab" href="#eventspeakers" role="tab">Event Speakers</a>
+							</li>
+
+
+							<li class="nav-item">
+								<a class="nav-link scrollLink" data-toggle="tab" id="venue-tab" href="#venue" role="tab">Venue</a>
+							</li>
+
+
+							<li class="nav-item">
+								<a class="nav-link scrollLink" data-toggle="tab" id="attendees-tab" href="#attendees" role="tab">Attendees</a>
+							</li>
+
+
+							<li class="nav-item">
+								<a class="nav-link scrollLink" data-toggle="tab" id="reviews-tab" href="#reviews" role="tab">Reviews</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- column content left -->
+				<div class="col-lg-9">
+					<div class="col-content">
+						<div id="about" class="tab-pane">
+							<h4 class="color-darkblue mt-5">About This Event</h4>
+							@{
+								var coverpic1 = "";
+								var coverpic2 = "";
+								var authorpic = "";
+							}
+							@if (Model.EventTitle != "")
+							{
+								if ((Model.CoverPicture != "") && (Model.CoverPicture != null))
+								{
+									coverpic1 = BaseURL + "/Data/images/publication/" + Model.CoverPicture;
+									coverpic2 = BaseURL + "/Data/images/publication/" + Model.CoverPicture;
+								}
+								else
+								{
+									coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+									coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+								}
+								//if ((Model.AuthorPicture != "") && (Model.AuthorPicture != null))
+								//{
+								//	authorpic = BaseURL + "/Data/images/publication/" + Model.AuthorPicture;
+								//}
+								//else
+								//{
+								//	authorpic = BaseURL + "/" + "img" + "/8.jpg";
+								//}
+							}
+							else
+							{
+								coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+								coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
+								authorpic = BaseURL + "/" + "img" + "/8.jpg";
+							}
+							<p class="img-responsive"><img src="@coverpic1" alt="image"></p>
+
+							<h4 class="color-darkblue mt-5">Event Objectives</h4>
+							<p>@Model.EventObjective</p>
+						</div>
+
+						<div id="eventagenda" class="tab-pane">
+							<h4 class="color-darkblue mt-5">Event Agenda</h4>
+							<div class="d-flex align-items-baseline">
+								<div class="badge badge-light px-3 py-2 mb-2">SUN, 8 SEPT</div>
+								<div class="w-100 ml-3">
+									<div class="sub-Title color-darkblue mb-2">Session 1</div>
+									<div class="card__text pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed sapien vitae arcu rhoncus ultricies. Nulla porta lacus risus. Phasellus ut quam eu augue tristique sollicitudin.</div>
+									<div class="showcontent">
+										<div class="mb-4">
+											<a href="#session1" data-toggle="collapse" class="btn btn-expand btn-sm mw-auto btn-default color-secondary">EXPAND</a>
+										</div>
+										<div id="session1" class="collapse small">
+											<div id="page-nav" class="noanchor page-nav">
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Morning</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">8.30am</span>
+															<a href="#" class="nav-link d-inline-block">Check-in</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">9.00am</span>
+															<a href="#" class="nav-link d-inline-block">Breakfast</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">10.00am</span>
+															<a href="#" class="nav-link d-inline-block">Opening event / Keynote speaker <span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Erikka Erissa Hassan</span></a>
+														</li>
+													</ul>
+												</div>
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Afternoon</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">1.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Lunch Time</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">2.30am</span>
+															<a href="#" class="nav-link d-inline-block">The Discovery Education Experience<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> A. Farhad Ghurlam</span></a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">4.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Principal Concurrent Sessions<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Sulaiman Jahar</span></a>
+														</li>
+													</ul>
+												</div>
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Evening</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">5.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Tea Break</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">5.30am</span>
+															<a href="#" class="nav-link d-inline-block">Streaming Certification Session<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Erikka Erissa hassan</span></a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">6.00pm</span>
+															<a href="#" class="nav-link d-inline-block">QnA Sessions</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="border-bottom mb-4"></div>
+							<div class="d-flex align-items-baseline">
+								<div class="badge badge-light px-3 py-2 mb-2">MON, 9 SEPT</div>
+								<div class="w-100 ml-3">
+									<div class="sub-Title color-darkblue mb-2">Session 2</div>
+									<div class="card__text pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed sapien vitae arcu rhoncus ultricies. Nulla porta lacus risus. Phasellus ut quam eu augue tristique sollicitudin.</div>
+									<div class="showcontent">
+										<div class="mb-4">
+											<a href="#session2" data-toggle="collapse" class="btn btn-expand btn-sm mw-auto btn-default color-secondary">EXPAND</a>
+										</div>
+										<div id="session2" class="collapse small">
+											<div id="page-nav" class="noanchor page-nav">
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Morning</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">8.30am</span>
+															<a href="#" class="nav-link d-inline-block">Check-in</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">9.00am</span>
+															<a href="#" class="nav-link d-inline-block">Breakfast</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">10.00am</span>
+															<a href="#" class="nav-link d-inline-block">Opening event / Keynote speaker <span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Erikka Erissa Hassan</span></a>
+														</li>
+													</ul>
+												</div>
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Afternoon</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">1.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Lunch Time</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">2.30am</span>
+															<a href="#" class="nav-link d-inline-block">The Discovery Education Experience<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> A. Farhad Ghurlam</span></a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">4.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Principal Concurrent Sessions<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Sulaiman Jahar</span></a>
+														</li>
+													</ul>
+												</div>
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Evening</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">5.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Tea Break</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">5.30am</span>
+															<a href="#" class="nav-link d-inline-block">Streaming Certification Session<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Erikka Erissa hassan</span></a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">6.00pm</span>
+															<a href="#" class="nav-link d-inline-block">QnA Sessions</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="border-bottom mb-4"></div>
+							<div class="d-flex align-items-baseline">
+								<div class="badge badge-light px-3 py-2 mb-2">TUE, 10 SEPT</div>
+								<div class="w-100 ml-3">
+									<div class="sub-Title color-darkblue mb-2">Session 3</div>
+									<div class="card__text pb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed sapien vitae arcu rhoncus ultricies. Nulla porta lacus risus. Phasellus ut quam eu augue tristique sollicitudin.</div>
+									<div class="showcontent">
+										<div class="mb-4">
+											<a href="#session3" data-toggle="collapse" class="btn btn-expand btn-sm mw-auto btn-default color-secondary">EXPAND</a>
+										</div>
+										<div id="session3" class="collapse small">
+											<div id="page-nav" class="noanchor page-nav">
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Morning</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">8.30am</span>
+															<a href="#" class="nav-link d-inline-block">Check-in</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">9.00am</span>
+															<a href="#" class="nav-link d-inline-block">Breakfast</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">10.00am</span>
+															<a href="#" class="nav-link d-inline-block">Opening event / Keynote speaker <span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Erikka Erissa Hassan</span></a>
+														</li>
+													</ul>
+												</div>
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Afternoon</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">1.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Lunch Time</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">2.30am</span>
+															<a href="#" class="nav-link d-inline-block">The Discovery Education Experience<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> A. Farhad Ghurlam</span></a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">4.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Principal Concurrent Sessions<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Sulaiman Jahar</span></a>
+														</li>
+													</ul>
+												</div>
+												<div class="page-section">
+													<h6 class="color-darkblue mb-2">Evening</h6>
+													<ul class="nav page-nav__menu">
+														<li class="nav-item">
+															<span class="timeevent">5.00pm</span>
+															<a href="#" class="nav-link d-inline-block">Tea Break</a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">5.30am</span>
+															<a href="#" class="nav-link d-inline-block">Streaming Certification Session<span class="color-darkblue d-block font-weight-bolder"><i class="la la-microphone align-middle color-secondary" style="font-size: 22px;"></i> Erikka Erissa hassan</span></a>
+														</li>
+														<li class="nav-item">
+															<span class="timeevent">6.00pm</span>
+															<a href="#" class="nav-link d-inline-block">QnA Sessions</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="border-bottom mb-4"></div>
+						</div>
+
+						<div id="eventspeakers" class="tab-pane">
+							<h4 class="color-darkblue mt-5">Event Speakers</h4>
+							<div class="row">
+								@*<div class="speakers-slider owl-carousel">*@
+								<div class="instructor-container">
+									<div class="element_column">
+										<div class="element_instructor">
+											<img src="../img/lect-01.jpg" alt="image">
+											<div class="instructor-team-details">
+												<div class="instructor-team-name">Erikka Erissa Hassan</div>
+												<div class="instructor-team-job">Speaker</div>
+											</div>
+										</div>
+									</div>
+									<div class="element_column_back">
+										<p class="profile-text">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+										</p>
+										<p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
+									</div>
+								</div>
+								<div class="instructor-container">
+									<div class="element_column">
+										<div class="element_instructor">
+											<img src="../img/lect-02.jpg" alt="image">
+											<div class="instructor-team-details">
+												<div class="instructor-team-name">Sulaiman Jahar</div>
+												<div class="instructor-team-job">Speaker</div>
+											</div>
+										</div>
+									</div>
+									<div class="element_column_back">
+										<p class="profile-text">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+										</p>
+										<p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
+									</div>
+								</div>
+								<div class="instructor-container">
+									<div class="element_column">
+										<div class="element_instructor">
+											<img src="../img/lect-01.jpg" alt="image">
+											<div class="instructor-team-details">
+												<div class="instructor-team-name">Erikka Erissa Hassan</div>
+												<div class="instructor-team-job">Keynote Speaker</div>
+											</div>
+										</div>
+									</div>
+									<div class="element_column_back">
+										<p class="profile-text">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+										</p>
+										<p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
+									</div>
+								</div>
+								<div class="instructor-container">
+									<div class="element_column">
+										<div class="element_instructor">
+											<img src="../img/lect-02.jpg" alt="image">
+											<div class="instructor-team-details">
+												<div class="instructor-team-name">A Farhad Gurlam</div>
+												<div class="instructor-team-job">Speaker</div>
+											</div>
+										</div>
+									</div>
+									<div class="element_column_back">
+										<p class="profile-text">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+										</p>
+										<p class="more-link"><a href="#" class="color-secondary">View Full Profile<span class="align-middle"><i class="la la-long-arrow-right">&nbsp;</i></span></a></p>
+									</div>
+								</div>
+							</div>
+							@*</div>*@
+						</div>
+
+						<div id="venue" class="tab-pane">
+							<h4 class="color-darkblue mt-5">Event Venue</h4>
+							<div class="map-container">
+								<div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.77515252912!2d101.71108441384416!3d3.1539022540051818!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc37d37bd3fcff%3A0x7706359b57f73cb7!2sKuala%20Lumpur%20Convention%20Centre!5e0!3m2!1sen!2smy!4v1568360962877!5m2!1sen!2smy" width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen=""></iframe></div>
+								<div class="map-footer">
+									<h6 class="color-darkblue mb-1">Kuala Lumpur Convention Centre Conference Room</h6>
+									<div class="row">
+										<div class="col-lg-7">
+											<div class="d-flex mb-2">
+												<span><i class="la la-map-marker color-secondary font-icon" style="font-size: 19px;"></i></span>
+												<span>
+													Level 11 Menara KEN TTDI,<br />
+													37 Jalan Burhanuddin Helmi, <br />
+													Taman Tun Dr Ismail<br />
+													60000 Kuala Lumpur, Wilayah Persekutuan <br />
+													Kuala Lumpur
+												</span>
+											</div>
+										</div>
+										<div class="col-lg-5">
+											<div class="mb-2 d-flex"><i class="la la-location-arrow font-icon color-secondary" style="font-size: 21px;"></i>Use Google Map Direction</div>
+											<div class="mb-2 d-flex"><i class="la la-phone font-icon color-secondary" style="font-size: 22px;"></i>016-720 0327</div>
+											<div class="mb-2 d-flex"><i class="la la-globe font-icon color-secondary" style="font-size: 21px;"></i><a href="http://www.klcc.com.my">http://www.klcc.com.my</a></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="attendees" class="tab-pane">
+							<h4 class="color-darkblue mt-5">Event Attendees</h4>
+							<div class="load-list">
+								<div class="row">
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Mehreen kent</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_90-jiang-640827-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Anna Mary</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_clem-onojeghuo-150467-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Graham Mark</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Nur Adila Nik Adek</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Anna Mary</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Zaizuraizham Abd Rahim</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Mehreen kent</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Anna Mary</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Graham Mark</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Mehreen kent</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Anna Mary</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Graham Mark</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Graham Mark</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Mehreen kent</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Graham Mark</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Graham Mark</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-sm-6">
+										<div class="card__wrapper card-group">
+											<div class="p-3">
+												<a class="card__col-left" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__author-name">Mehreen kent</span><span class="card__instructby">Multimedia Student</span></span></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="reviews" class="tab-pane">
+							<h4 class="color-darkblue mt-5">Reviews</h4>
+							<div class="card">
+								<div class="row pt-4">
+									<div class="col-lg-4 text-center">
+										<div class="main-rating">4.2</div>
+										<div class="rating">
+											<i class="material-icons">star</i>
+											<i class="material-icons">star</i>
+											<i class="material-icons">star</i>
+											<i class="material-icons">star</i>
+											<i class="material-icons">star_border</i>
+										</div>
+										<div class="small my-2">rating of <span class="font-weight-bold">102</span> reviews</div>
+									</div>
+									<div class="col-lg-8 py-4">
+										<div class="d-flex rating-progress">
+											<div class="progress">
+												<div class="progress-bar bg-green" role="progressbar" style="width: 56%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<div class="rating mx-2">
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+											</div>
+											<div class="ratingpercent small">56%</div>
+										</div>
+										<div class="d-flex rating-progress">
+											<div class="progress">
+												<div class="progress-bar bg-blue" role="progressbar" style="width: 34%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<div class="rating mx-2">
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star_border</i>
+											</div>
+											<div class="ratingpercent small">34%</div>
+										</div>
+										<div class="d-flex rating-progress">
+											<div class="progress">
+												<div class="progress-bar bg-cyan" role="progressbar" style="width: 8%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<div class="rating mx-2">
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star_border</i>
+												<i class="material-icons">star_border</i>
+											</div>
+											<div class="ratingpercent small">8%</div>
+										</div>
+										<div class="d-flex rating-progress">
+											<div class="progress">
+												<div class="progress-bar bg-orange" role="progressbar" style="width: 2%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<div class="rating mx-2">
+												<i class="material-icons">star</i>
+												<i class="material-icons">star</i>
+												<i class="material-icons">star_border</i>
+												<i class="material-icons">star_border</i>
+												<i class="material-icons">star_border</i>
+											</div>
+											<div class="ratingpercent small">2%</div>
+										</div>
+										<div class="d-flex rating-progress">
+											<div class="progress">
+												<div class="progress-bar bg-red" role="progressbar" style="width: 1%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<div class="rating mx-2">
+												<i class="material-icons">star</i>
+												<i class="material-icons">star_border</i>
+												<i class="material-icons">star_border</i>
+												<i class="material-icons">star_border</i>
+												<i class="material-icons">star_border</i>
+											</div>
+											<div class="ratingpercent small">1%</div>
+										</div>
+									</div>
+									<div class="col-lg-12 text-right small px-5 py-3"><span class="font-weight-bolder">1-5</span> of <span class="font-weight-bolder">80</span> reviews</div>
+								</div>
+								<div class="border-bottom mb-4"></div>
+								<div class="card__body reviews-list">
+									<div class="review-comment">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">1 min ago</span><span class="card__author-name">Richard N.Kartz</span></span></a>
+											</div>
+											<div class="col-lg-8 col-sm-6">
+												<div class="rating mb-2">
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star_border</i>
+												</div>
+												<div class="small">I already understood the fundamentals from a Java course i'd taken a while ago, this allowed me to re-touch base and learn a hell of alot more.</div>
+												<button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+											</div>
+										</div>
+										<div class="border-bottom mb-4"></div>
+									</div>
+									<div class="review-comment">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">1 hour ago</span><span class="card__author-name">Cynthia Golden</span></span></a>
+											</div>
+											<div class="col-lg-8 col-sm-6">
+												<div class="rating mb-2">
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+												</div>
+												<div class="small">Really greate crash course and nice refresher as i've been working with Java over the past few years. I especially appreciated the naming conventions lecture and the way you kept referring to the Microsoft Developer Docs as becoming familiar with the proper resources is critical to become self sufficient.</div>
+												<button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+											</div>
+										</div>
+										<div class="border-bottom mb-4"></div>
+									</div>
+									<div class="review-comment">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">1 day ago</span><span class="card__author-name">Diana G.Oblinger</span></span></a>
+											</div>
+											<div class="col-lg-8 col-sm-6">
+												<div class="rating mb-2">
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star_border</i>
+												</div>
+												<div class="small">Will be a very good Crash course to get people used to c# after coming from the Java masterclass once all the content is here.</div>
+												<button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+											</div>
+										</div>
+										<div class="border-bottom mb-4"></div>
+									</div>
+									<div class="review-comment">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">21 days ago</span><span class="card__author-name">Mark Luker</span></span></a>
+											</div>
+											<div class="col-lg-8 col-sm-6">
+												<div class="rating mb-2">
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star_border</i>
+													<i class="material-icons">star_border</i>
+												</div>
+												<div class="small">It isn't bad course, it's actually a pretty good one but it feels incomplete; the last chapter refers to future chapters that aren't there.</div>
+												<button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+											</div>
+										</div>
+										<div class="border-bottom mb-4"></div>
+									</div>
+									<div class="review-comment">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">21 days ago</span><span class="card__author-name">Ahmad Azham</span></span></a>
+											</div>
+											<div class="col-lg-8 col-sm-6">
+												<div class="rating mb-2">
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+												</div>
+												<div class="small">This course helped me a lot with my projects. Emma go directly to the point and make you save a lot of time.</div>
+												<button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+											</div>
+										</div>
+										<div class="border-bottom mb-4"></div>
+									</div>
+									<div class="review-comment">
+										<div class="row">
+											<div class="col-lg-4 col-sm-6">
+												<a class="card__col-left mb-3" href="#"><span class="card__avatar"><img class="card__avatar__image" src="../dist/assets/images/256_rsz_nicolas-horn-689011-unsplash.jpg" alt="image"></span><span class="card__name-wrap"><span class="card__instructby">21 days ago</span><span class="card__author-name">Lincon Thomas</span></span></a>
+											</div>
+											<div class="col-lg-8 col-sm-6">
+												<div class="rating mb-2">
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star</i>
+													<i class="material-icons">star_border</i>
+													<i class="material-icons">star_border</i>
+												</div>
+												<div class="small">It isn't bad course, it's actually a pretty good one but it feels incomplete; the last chapter refers to future chapters that aren't there.</div>
+												<button class="btn btn-default btn-sm my-4"><i class="la la-thumbs-o-up color-secondary font-icon" style="font-size: 17px;"></i>This is helpful</button>
+											</div>
+										</div>
+										<div class="border-bottom mb-4"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end column content left -->
+				<!-- column content right -->
+				<div class="col-lg-3">
+					<div class="right-sidebar">
+						<div class="card-group">
+							<div class="lead color-darkblue mb-3 font-weight-bolder">Public Event Details</div>
+							<ul>
+								<li><i class="la la-list-ul font-icon color-secondary" data-toggle="tooltip" title="Event Category" style="font-size: 17px;"></i>@Model.EventCategoryName</li>
+								<li><i class="la la-file-text font-icon color-secondary" data-toggle="tooltip" title="Event Title" style="font-size: 17px;"></i>@Model.EventTitle</li>
+								<li><i class="la la-calendar font-icon color-secondary" data-toggle="tooltip" title="Event Date" style="font-size: 19px;"></i>@Model.StartDate.Value.ToString("dd/MM/yyyy") - @Model.EndDate.Value.ToString("dd/MM/yyyy")</li>
+								<li><i class="la la-map-marker font-icon color-secondary" data-toggle="tooltip" title="Event Venue" style="font-size: 17px;"></i>@Model.Venue</li>
+								<li><i class="fas fa-chair font-icon color-secondary" data-toggle="tooltip" title="Availability" style="font-size: 17px;"></i>@Model.ParticipantAllowed Seats Remaining</li>
+							</ul>
+						</div>
+
+						<!-- Buy Courses -->
+						<div class="card text-center mb-5">
+							<div class="card__body">
+								@if (!Model.FreeIndividual)
+								{
+									<h4 class="color-darkblue mr-auto mb-0">RM @Model.IndividualFee<br><span class="small">Join now before registration is closed</span></h4>
+								}
+								else
+								{
+									<h3 class="color-darkblue mb-0">Free<br><span class="small">Join now before registration is closed</span></h3>
+								}
+								<div class="mt-3">
+									@if (CurrentUser.IsAuthenticated())
+									{
+										<a href="@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = Model.Id })" class="btn btn-default color-secondary d-block mb-2">I want to attend</a>
+									}
+									else
+									{
+										<a href="@Url.Action("LoginAndReturn", "Auth", new { area = "", @returnurl = "~/eEvent/Home/EventSelectTicket/" + Model.Id })" class="btn btn-default color-secondary d-block mb-2">I want to attend</a>
+									}
+								</div>
+							</div>
+						</div>
+						<!-- Share with friends -->
+						<div class="card-group">
+							<div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+							<div class="ms-share"></div>
+						</div>
+					</div>
+				</div>
+				<!-- end column content right -->
+			</div>
+		</div>
+		<!-- Wrapper -->
+	</div>
+</main>

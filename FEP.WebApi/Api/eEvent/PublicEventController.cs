@@ -1664,7 +1664,7 @@ namespace FEP.WebApi.Api.eEvent
 		public BrowseEventModel GetPublishedPublicEvent(string keyword, string sorting, bool workshops, bool seminars, bool dialogues,
 			bool conferences, bool symposium, bool convention)
 		{
-			var query = db.PublicEvent.Where(i => i.Display && i.EventStatus == EventStatus.Published);
+			var query = db.PublicEvent.Where(i => i.EventStatus == EventStatus.Published);
 
 			var totalCount = query.Count();
 
@@ -1692,6 +1692,10 @@ namespace FEP.WebApi.Api.eEvent
 			else if (sorting == "RefNo")
 			{
 				query = query.OrderByDescending(o => o.RefNo).OrderBy(o => o.EventTitle);
+			}
+			else
+			{
+				query = query.OrderBy(o => o.EventTitle).OrderByDescending(o => o.CreatedDate);
 			}
 
 			var data = query.Skip(0).Take(filteredCount).Select(s => new PublicEventModel
@@ -1729,6 +1733,25 @@ namespace FEP.WebApi.Api.eEvent
 				CreatedByName = s.CreatedByUser.Name,
 			}).ToList();
 
+			foreach (var publicevent in data)
+			{
+				//di++;
+				var pubimages = db.PublicEventImages.Where(i => i.EventId == publicevent.Id).Select(s => new PublicEventImagesModel
+				{
+					Id = s.Id,
+					EventId = s.EventId,
+					CoverPicture = s.CoverPicture,
+				}).FirstOrDefault();
+
+				if (pubimages != null)
+				{
+					if ((pubimages.CoverPicture != null) && (pubimages.CoverPicture != ""))
+					{
+						publicevent.CoverPicture = pubimages.CoverPicture.Substring(pubimages.CoverPicture.LastIndexOf('\\') + 1);
+					}
+				}
+			}
+
 			var browser = new BrowseEventModel
 			{
 				Keyword = keyword,
@@ -1738,6 +1761,7 @@ namespace FEP.WebApi.Api.eEvent
 				PublicEvents = data
 			};
 
+			
 			return browser;
 		}
 	}

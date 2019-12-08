@@ -60,6 +60,15 @@ namespace FEP.Model
 		public virtual ICollection<EventAgenda> EventAgendas { get; set; }
 	}
 
+	[Table("PublicEventImages")]
+	public class PublicEventImages
+	{
+		[Key]
+		public int Id { get; set; }
+		public int EventId { get; set; }
+		public string CoverPicture { get; set; }
+	}
+
 	[Table("EventExternalExhibitor")]
 	public class EventExternalExhibitor
 	{

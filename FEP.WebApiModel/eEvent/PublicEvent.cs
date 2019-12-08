@@ -326,4 +326,11 @@ namespace FEP.WebApiModel.PublicEvent
 		public DateTime? CreatedDate { get; set; }
 		public bool Display { get; set; }
 	}
+
+	public class PublicEventImagesModel
+	{
+		public int Id { get; set; }
+		public int EventId { get; set; }
+		public string CoverPicture { get; set; }
+	}
 }

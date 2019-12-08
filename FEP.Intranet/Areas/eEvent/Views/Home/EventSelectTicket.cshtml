@@ -1,0 +1,259 @@
+﻿@model FEP.WebApiModel.PublicEvent.DetailsPublicEventModel
+
+@{
+	ViewBag.Title = "Select Ticket";
+	Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@section ContentScript {
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			var selectPublicEvent = $(".box-contain .card");
+
+			selectPublicEvent.click(function () {
+				//var active = $(this).data('active');
+				//alert(active);
+
+				var active = $(this).data('selected');
+				//alert(String(active));
+				if (String(active) == "true") {
+					$(this).data('selected', String('false'));
+				} else {
+					$(this).data('selected', String('true'));
+				}
+				//alert($(this).data('selected'));
+					//$(this).toggleClass('active');
+					//if ($(this).hasClass('active')) {
+					if ($(this).data('selected') == "true") {
+						$(this).css('background-color', 'lightblue');
+						$(this).data('selected', String('true'));
+					} else {
+						$(this).css('background-color', 'white');
+						$(this).data('selected', String('false'));
+					}
+				
+				//location.reload();
+			});
+
+			$("#touch-spin-2").click(function (e) {
+				e.stopPropagation();
+			});
+
+			$("#btnNext").click(function () {
+				//alert("hyw");
+				var ci = $("#card_individual").data('selected');
+				var cg = $("#card_group").data('selected');
+				var ca = $("#card_agency").data('selected');
+
+				//alert( ci);
+				//alert( cg);
+				//alert( ca);
+
+				// Jeez... can't compare true/false as string for some reason, coz sd/sh/sb all becomes boolean
+				if ((ci == "false") && (cg == "false") && (ca == "false")) {
+					alert("Please select one (1) ticket!");
+					return false;
+				} else if ((ci == "true") && (cg == "true") && (ca == "true")) {
+					alert("Please select only one (1) ticket!");
+					return false;
+				} else if ((ci == "true") && (cg == "true") && (ca == "false")) {
+					alert("Please select only one (1) ticket!");
+					return false;
+				} else if ((ci == "true") && (cg == "false") && (ca == "true")) {
+					alert("Please select only one (1) ticket!");
+					return false;
+				} else if ((ci == "false") && (cg == "true") && (ca == "true")) {
+					alert("Please select only one (1) ticket!");
+					return false;
+				}
+
+
+				$("#card_i").val(ci);
+				$("#card_g").val(cg);
+				$("#card_a").val(ca);
+
+
+				if (cg == "true" || ca == "true") {
+					var bil = $("#touch-spin-2").val();
+					if ($.isNumeric(bil)) {
+						if (Math.floor(bil) == bil) {
+							if (parseInt(bil) > 0) {
+								$("#card_bil").val(bil);
+							}
+							else {
+								alert("Please enter a valid number!");
+								return false;
+							}
+						}
+						else {
+							alert("Please enter a valid number!");
+							return false;
+						}
+					}
+					else {
+						alert("Please enter a valid number");
+						return false;
+					}
+				}
+				else if (ci == "true") {
+					$("#card_bil").val('0');
+				}
+				else {
+					$("#card_bil").val('0');
+				}
+				$("#myform").submit();
+			});
+
+		});
+	</script>
+}
+
+@section Nav{
+	<div class="title_header">
+		<div class="title-header-container">
+			<div class="container">
+				<!-- if have button -->
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("PublicEventDetails", "Home", new { area = "eEvent", @id = Model.Id})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-left">
+					<div id="breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="~/Home">Home</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/Home">Public Event</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent">Browse Public Event</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent/PublicEventDetails">Attend Event</a></li>
+								<li class="breadcrumb-item"><a href="~/eEvent/BrowseEvent/PublicEventDetails/EventSelectTicket">Select Ticket</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+							</ol>
+						</nav>
+					</div>
+					<h1 class="page-title text-white">@Model.EventTitle</h1>
+					<div class="header-text">Public Event Request Ref No: @Model.RefNo</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+
+<div class="row">
+	<!-- column content left -->
+	<div class="col-lg-9">
+		<div class="col-content">
+			<h4 class="color-darkblue">Select Tickets</h4>
+			<div class="row select-publication mb-4">
+				<div class="col-lg-4">
+					<div class="box-contain">
+
+						<div class="card text-center" id="card_individual" data-selected="false" data-active="yes">
+							<div class="mb-4"><img src="~/img/events/icon-purchase-individual.svg" alt="image"></div>
+							<div class="color-secondary font-weight-bolder mb-1">Individual</div>
+							@if (!Model.FreeIndividual)
+							{
+								<h3 class="color-darkblue mb-0">@Model.IndividualFee</h3>
+							}
+							else
+							{
+								<h3 class="color-darkblue mb-0">Free</h3>
+							}
+						</div>
+
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="box-contain">
+						<div class="card text-center" id="card_group" data-selected="false" data-active="yes">
+							<div class="mb-4"><img src="~/img/events/icon-purchase-group.svg" alt="image"></div>
+							<div class="color-secondary font-weight-bolder mb-1">Group Booking</div>
+							@if (!Model.FreeIndividual)
+							{
+								<h3 class="color-darkblue mb-0">@Model.IndividualFee</h3>
+							}
+							else
+							{
+								<h3 class="color-darkblue mb-0">Free</h3>
+							}
+							<div class="touchspin-wrapper position-bottom"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="0" class="form-control" /></div>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="box-contain">
+
+
+						<div class="card text-center" id="card_agency" data-selected="false" data-active="yes">
+							<div class="mb-4"><img src="~/img/events/icon-purchase-agency.svg" alt="image"></div>
+							<div class="color-secondary font-weight-bolder mb-1">For Agencies</div>
+							@if (!Model.FreeAgency)
+							{
+								<h3 class="color-darkblue mb-0">@Model.IndividualFee</h3>
+							}
+							else
+							{
+								<h3 class="color-darkblue mb-0">Free</h3>
+							}
+							<div class="touchspin-wrapper position-bottom"><input id="touch-spin-2" data-toggle="touch-spin" data-min="0" data-max="10" data-step="1" type="text" value="0" class="form-control" /></div>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<!-- Action Button -->
+					<div class="border-top py-3 mt-5">
+
+						@using (Html.BeginForm("PurchasePublicEvent", "Home", new { area = "eEvent" }, FormMethod.Post, new { id = "myform" }))
+						{
+							@Html.AntiForgeryToken()
+
+							<input type="hidden" name="puid" id="puid" value="@Model.Id" />
+							<input type="hidden" name="card_i" id="card_i" value="" />
+							<input type="hidden" name="card_g" id="card_g" value="" />
+							<input type="hidden" name="card_bil" id="card_bil" value="" />
+							<input type="hidden" name="card_a" id="card_a" value="" />
+						}
+
+						<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("PublicEventDetails", "Home", new { area = "eEvent", @id = Model.Id})'>Back</a>
+						<a class="btn btn-secondary" id="btnNext" href="#">Next</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end column content left -->
+	<!-- column content right -->
+	<div class="col-lg-3">
+		<div class="right-sidebar">
+			@*<div class="right-top">*@
+			@*<div class="mb-4 column-img"><img src="../img/cover-module-default.jpg"></div>*@
+			<div class="mb-4">
+				<div class="lead color-darkblue mb-3 font-weight-bolder">Public Event Details</div>
+				<ul>
+					<li><i class="la la-list-ul font-icon color-secondary" data-toggle="tooltip" title="Event Category" style="font-size: 17px;"></i>@Model.EventCategoryName</li>
+					<li><i class="la la-file-text font-icon color-secondary" data-toggle="tooltip" title="Event Title" style="font-size: 17px;"></i>@Model.EventTitle</li>
+					<li><i class="la la-calendar font-icon color-secondary" data-toggle="tooltip" title="Event Date" style="font-size: 19px;"></i>@Model.StartDate.Value.ToString("dd/MM/yyyy") - @Model.EndDate.Value.ToString("dd/MM/yyyy")</li>
+					<li><i class="la la-map-marker font-icon color-secondary" data-toggle="tooltip" title="Event Venue" style="font-size: 17px;"></i>@Model.Venue</li>
+					<li><i class="fas fa-chair font-icon color-secondary" data-toggle="tooltip" title="Availability" style="font-size: 17px;"></i>@Model.ParticipantAllowed Seats Remaining</li>
+					@*<li><i class="la la-calendar font-icon color-secondary" style="font-size: 18px;"></i>Sunday, 8 Sept</li>
+						<li><i class="la la-map-marker font-icon color-secondary" style="font-size: 19px;"></i>KLCC Conference Room, KL</li>
+						<li><i class="la la-user font-icon color-secondary" style="font-size: 19px;"></i>107 people attending</li>
+						<li><i class="fas fa-chair font-icon color-secondary"></i>Availability: <span class="color-yellow font-weight-bolder">Selling fast</span></li>*@
+				</ul>
+			</div>
+			<!-- Share with friends -->
+			<div>
+				<div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+				<div class="ms-share"></div>
+			</div>
+			@*</div>*@
+		</div>
+	</div>
+	<!-- end column content right -->
+</div>
+

@@ -147,7 +147,8 @@ namespace FEP.Model
         public DbSet<TargetedGroupMembers> TargetedGroupMembers { get; set; }
 
         //eEvent
-        public DbSet<PublicEvent> PublicEvent { get; set; } 
+        public DbSet<PublicEvent> PublicEvent { get; set; }
+		public DbSet<PublicEventImages> PublicEventImages { get; set; }
 		public DbSet<EventCalendar> EventCalendar { get; set; }
 		public DbSet<EventAgenda> EventAgenda { get; set; }
         public DbSet<AgendaScript> AgendaScript { get; set; }

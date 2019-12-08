@@ -3,99 +3,105 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <meta charset="utf-8">
-    <title>@ViewBag.Title</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-    <!-- Favicons -->
-    <link href="img/favicon.png" rel="icon">
+	<meta charset="utf-8">
+	<title>@ViewBag.Title</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+	<!-- Favicons -->
+	<link href="img/favicon.png" rel="icon">
 
-    @RenderSection("ContentStyle", false)
+	@RenderSection("ContentStyle", false)
 
-    @*@Styles.Render("~/core/css")*@
+	@*@Styles.Render("~/core/css")*@
 
-    <!-- Material Design Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
-    <link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
-    <!-- Animation Transition -->
-    <link href="@BaseURL/lib/animate/animate.min.css" rel="stylesheet">
-    <!-- Flatpickr -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
-    <link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
-    <!-- Slider -->
-    <link href="@BaseURL/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="@BaseURL/css/slick.css" rel="stylesheet">
-    <!-- Social media share -->
-    <link href="@BaseURL/css/jssocials.css" rel="stylesheet">
-    <!-- Select2 form -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet">
-    <!-- App CSS -->
-    <link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
-    <!-- Main Stylesheet File -->
-    <link href="@BaseURL/css/base.css" rel="stylesheet">
-    <link href="@BaseURL/css/style.css" rel="stylesheet">
+	<!-- Material Design Icons -->
+	<link type="text/css" href="@BaseURL/dist/assets/css/material-icons.css" rel="stylesheet">
+	<link type="text/css" href="@BaseURL/dist/assets/css/material-icons.rtl.css" rel="stylesheet">
+	<!-- Font Awesome Icons -->
+	<link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.css" rel="stylesheet">
+	<link type="text/css" href="@BaseURL/dist/assets/css/fontawesome.rtl.css" rel="stylesheet">
+	<link href="@BaseURL/lib/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+	<!-- Animation Transition -->
+	<link href="@BaseURL/lib/animate/animate.min.css" rel="stylesheet">
+	<!-- Flatpickr -->
+	<link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.css" rel="stylesheet">
+	<link type="text/css" href="@BaseURL/dist/assets/css/flatpickr.rtl.css" rel="stylesheet">
+	<!-- Slider -->
+	<link href="@BaseURL/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+	<link href="@BaseURL/css/slick.css" rel="stylesheet">
+	<!-- Social media share -->
+	<link href="@BaseURL/css/jssocials.css" rel="stylesheet">
+	<!-- Select2 form -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet">
+	<!-- App CSS -->
+	<link type="text/css" href="@BaseURL/dist/assets/css/app.css" rel="stylesheet">
+	<!-- Main Stylesheet File -->
+	<link href="@BaseURL/css/base.css" rel="stylesheet">
+	<link href="@BaseURL/css/style.css" rel="stylesheet">
+	<link type="text/css" href="@BaseURL/dist/assets/css/bootstrap-touchspin.rtl.css" rel="stylesheet">
+	<!-- Perfect Scrollbar -->
+	<link type="text/css" href="@BaseURL/dist/assets/vendor/perfect-scrollbar.css" rel="stylesheet">
 
 </head>
 <body>
 
-    <section id="top_header_content">
-        <div class="top-header-container">
-            <div class="container wow fadeInUp">
-                <!-- if have button -->
-                <!-- <div class="header-col-right float-right mt-5"><a href="#" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a></div> -->
-                <div class="header-col-left">
-                    @RenderSection("Nav", false)
-                </div>
-            </div>
-        </div>
-    </section>
+	<section id="top_header_content">
+		<div class="top-header-container">
+			<div class="container wow fadeInUp">
+				<!-- if have button -->
+				<!-- <div class="header-col-right float-right mt-5"><a href="#" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="icon ion-ios-arrow-round-back">&nbsp;</i></span> Back</a></div> -->
+				<div class="header-col-left">
+					@RenderSection("Nav", false)
+				</div>
+			</div>
+		</div>
+	</section>
 
-    @RenderSection("Preloader", false)
+	@RenderSection("Preloader", false)
 
-    <!--firus-->
-    @if (CurrentUser.IsAuthenticated())
-    {
-        @Html.Partial("_Header")
-    }
-    else
-    {
-        @Html.Partial("_HeaderLandingPage")
-    }
+	<!--firus-->
+	@if (CurrentUser.IsAuthenticated())
+	{
+		@Html.Partial("_Header")
+	}
+	else
+	{
+		@Html.Partial("_HeaderLandingPage")
+	}
 
-    @RenderBody()
+	@RenderBody()
 
-    @Html.Partial("_Footer")
+	@Html.Partial("_Footer")
 
-    <div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+	<div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
-    <a href="#" class="back-to-top text-white"><i class="fa fa-angle-up"></i></a>
-    <!-- jQuery -->
-    <script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
-    <script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
-    <script src="@BaseURL/lib/easing/easing.min.js"></script>
-    <!-- Javascript Library -->
-    <script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
-    <script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
-    <script src="@BaseURL/js/jquery.simpleLoadMore.js"></script>
-    <script src="@BaseURL/lib/wow/wow.min.js"></script>
-    <script src="@BaseURL/js/jssocials.min.js"></script>
-    <script src="@BaseURL/js/rellax.min.js"></script>
-    <script src="@BaseURL/js/jquery.countTo.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-    <!-- Slider -->
-    <script src="@BaseURL/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="@BaseURL/js/slick.min.js"></script>
-    <!-- Template Main Javascript File -->
-    <script src="@BaseURL/js/main.js"></script>
+	<a href="#" class="back-to-top text-white"><i class="fa fa-angle-up"></i></a>
+	<!-- jQuery -->
+	<script src="@BaseURL/dist/assets/vendor/jquery.min.js"></script>
+	<!-- Bootstrap -->
+	<script src="@BaseURL/dist/assets/vendor/popper.min.js"></script>
+	<script src="@BaseURL/dist/assets/vendor/bootstrap.min.js"></script>
+	<script src="@BaseURL/lib/easing/easing.min.js"></script>
+	<!-- Javascript Library -->
+	<script src="@BaseURL/dist/assets/vendor/flatpickr/flatpickr.min.js"></script>
+	<script src="@BaseURL/dist/assets/js/flatpickr.js"></script>
+	<script src="@BaseURL/js/jquery.simpleLoadMore.js"></script>
+	<script src="@BaseURL/lib/wow/wow.min.js"></script>
+	<script src="@BaseURL/js/jssocials.min.js"></script>
+	<script src="@BaseURL/js/rellax.min.js"></script>
+	<script src="@BaseURL/js/jquery.countTo.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+	<!-- Slider -->
+	<script src="@BaseURL/lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="@BaseURL/js/slick.min.js"></script>
+	<!-- Template Main Javascript File -->
+	<script src="@BaseURL/js/main.js"></script>
 
-    @RenderSection("ContentScript", false)
+	<script src="@BaseURL/dist/assets/vendor/jquery.bootstrap-touchspin.js"></script>
+	<script src="@BaseURL/dist/assets/js/touchspin.js"></script>
+
+	@RenderSection("ContentScript", false)
 
 
 </body>

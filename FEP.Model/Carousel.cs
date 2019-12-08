@@ -69,8 +69,9 @@ namespace FEP.Model
         [Display(Name = "Left")]        // Left
         Left,
         [Display(Name = "Middle")]      // Middle
-        Middle,
-        [Display(Name = "Right")]       // Right
-        Right
+        Middle
+        //,
+        //[Display(Name = "Right")]       // Right
+        //Right
     }
 }

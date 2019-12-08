@@ -299,20 +299,20 @@ namespace FEP.Model.Migrations
                 UserAccess.CourseDiscussionGroupCreate, UserAccess.CourseGroupCreate,
                 UserAccess.CourseAddDocument);
             AddRoleAndAccess(db, RoleNames.eLearningAdmin, "Admin eLearning",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
                 UserAccess.CourseCreate, UserAccess.CourseEdit,
                 UserAccess.CoursePublish, UserAccess.CoursePublish);
             AddRoleAndAccess(db, RoleNames.eLearningVerifier, "Verifier eLearning",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
                 UserAccess.CourseVerify);
             AddRoleAndAccess(db, RoleNames.eLearningApprover1, "Approver eLearning 1",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
                 UserAccess.CourseApproval1);
             AddRoleAndAccess(db, RoleNames.eLearningApprover2, "Approver eLearning 2",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
                 UserAccess.CourseApproval2);
             AddRoleAndAccess(db, RoleNames.eLearningApprover3, "Approver eLearning 3",
-                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
+                UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView, UserAccess.CourseNonLearnerView,
                 UserAccess.CourseApproval3);
             AddRoleAndAccess(db, RoleNames.eLearningLearner, "Learner",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,

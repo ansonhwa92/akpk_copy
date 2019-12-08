@@ -63,10 +63,13 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+            if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
+                return View();
+            else
+                return RedirectToAction(nameof(HomeController.BrowseElearnings), "Home", new { area = "eLearning" });
         }
 
-        //[HasAccess(UserAccess.RnPPublicationEdit)]
+        [AllowAnonymous]
         public ActionResult SelectCategory()
         {
             // need to change to call api
@@ -480,7 +483,6 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             return View(model);
         }
 
-        //[HasAccess(UserAccess.CourseView)]
         [AllowAnonymous]
         public async Task<ActionResult> View(int? id, string enrollmentCode = "")
         {

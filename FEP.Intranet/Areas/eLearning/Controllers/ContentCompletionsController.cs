@@ -58,16 +58,34 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
                             if (course.Status != Model.eLearning.CourseStatus.Published)
                             {
-                                if (CurrentUser.HasAccess(UserAccess.CourseVerify) ||
-                                    CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
-                                    CurrentUser.HasAccess(UserAccess.CourseApproval2) ||
-                                    CurrentUser.HasAccess(UserAccess.CourseApproval3))
+                                if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                {
+                                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                                else
+                                if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
                                 {
                                     return RedirectToAction("Approve", "CourseApprovals", new { area = "eLearning", @id = courseId });
                                 }
                             }
-
-                            return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                            else
+                            if (course.Status == Model.eLearning.CourseStatus.Published)
+                            {
+                                if (CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                {
+                                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                                else
+                                if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
+                                {
+                                    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                                else
+                                {
+                                    return RedirectToAction("View", "Courses", new { area = "eLearning", @id = courseId });
+                                }
+                            }
+                            return RedirectToAction("View", "Courses", new { area = "eLearning", @id = courseId });
                         }
                         else  // go to next module
                         {

@@ -130,11 +130,11 @@
                                 <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
                             }
 
-                            @if (Model.Status != CourseStatus.Published)
+                            @if (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit))
                             {
-                                <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+                            <a class="btn btn-secondary m-2" href="@Url.Action("View", "Courses", new { area = "eLearning", id = @Model.Id })">View as learner</a>
                             }
-                            </div>
+                        </div>
                     </div>
 
                     <div class="subtitle">

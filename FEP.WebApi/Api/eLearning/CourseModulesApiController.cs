@@ -141,6 +141,15 @@ namespace FEP.WebApi.Api.eLearning
 
                 db.SaveChanges();
 
+                var course = db.Courses.Find(module.CourseId);
+
+                if (course != null)
+                {
+                    course.UpdateCourseStat();
+
+                    db.SetModified(course);
+                    db.SaveChanges();
+                }
                 return ptitle;
             }
 

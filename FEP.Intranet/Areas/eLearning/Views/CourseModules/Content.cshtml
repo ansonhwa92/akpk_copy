@@ -102,12 +102,18 @@
                     <div>
                         <div class="row">
                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-(CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                 (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                 {
                                     <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = @Model.Id })">Edit Module</a>
                                 }
+
+                                if (Model.Status != CourseStatus.Published && (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                {
+                                    <a class="btn btn-secondary m-2" href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+
+                                }
                             }
-                            <a class="btn btn-secondary m-2" href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+
                         </div>
                     </div>
                     <hr />

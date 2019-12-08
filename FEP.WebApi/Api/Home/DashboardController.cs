@@ -55,6 +55,10 @@ namespace FEP.WebApi.Api.Home
             {
                 dashboardList = KMCList();
             }
+            else if (module == DashboardModule.Publication)
+            {
+                dashboardList = PublicationStatusList();
+            }
 
             dashboardList.ModuleName = module;
 
@@ -228,6 +232,80 @@ namespace FEP.WebApi.Api.Home
                 dashboardList.DashboardItemList.Add(itemList);
             }
     
+            return dashboardList;
+        }
+
+
+        private Dictionary<int, Dictionary<int, string>> PublicationStatusMapping()
+        {
+            var mapping = new Dictionary<int, Dictionary<int,string>>();
+
+            mapping.Add((int)PublicationStatus.New, new Dictionary<int, string> { { -1, "Draft" } });
+            mapping.Add((int)PublicationStatus.Submitted, new Dictionary<int, string> { { -1, "Pending Verification" } });
+            mapping.Add((int)PublicationStatus.Verified, new Dictionary<int, string> { { (int)PublicationApprovalLevels.Approver1, "Pending Approval 1" },
+                                                                                       { (int)PublicationApprovalLevels.Approver2, "Pending Approval 2" },
+                                                                                       { (int)PublicationApprovalLevels.Approver3, "Pending Approval 3" } });
+            mapping.Add((int)PublicationStatus.Published, new Dictionary<int, string> { { -1, "Published" } });
+            mapping.Add((int)PublicationStatus.VerifierRejected, new Dictionary<int, string> { { -1, "Require Amendment" } });
+            mapping.Add((int)PublicationStatus.Trashed, new Dictionary<int, string> { { -1, "Withdrawn" } });
+            
+            return mapping;
+        }
+
+        private DashboardList PublicationStatusList()
+        {
+            var dashboardList = new DashboardList();
+
+            var eventStatusMapping = PublicationStatusMapping();
+
+            foreach (var item in eventStatusMapping)
+            {
+
+                var count = 0;
+
+                if(item.Key == (int)PublicationStatus.Verified)
+                {
+                    foreach(var _item in item.Value)
+                    {
+                        count = 0;
+                        count = db.Publication.Count(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == (PublicationApprovalLevels)_item.Key);
+
+                        dashboardList.DashboardItemList.Add(new DashboardItemList()
+                        {
+                            StatusID = item.Key,
+                            StatusName = _item.Value,
+                            Count = count,
+                            ApprovalLevel = _item.Key
+                        });
+                    }
+                }
+                else
+                {
+                    if(item.Key == (int)PublicationStatus.VerifierRejected)
+                    {
+                        count = db.Publication.Count(q => q.Status == PublicationStatus.VerifierRejected
+                                                    || q.Status == PublicationStatus.ApproverRejected
+                                                    || q.Status == PublicationStatus.WithdrawalVerifierRejected
+                                                    || q.Status == PublicationStatus.WithdrawalApproverRejected);
+                    }
+                    else if (item.Key == (int)PublicationStatus.Trashed)
+                    {
+                        count = db.Publication.Count(q => q.Status == PublicationStatus.Trashed || q.Status == PublicationStatus.WithdrawalTrashed);
+                    }
+                    else
+                    {
+                        count = db.Publication.Count(q => (int)q.Status == item.Key);
+                    }                   
+
+                    dashboardList.DashboardItemList.Add(new DashboardItemList()
+                    {
+                        StatusID = item.Key,
+                        StatusName = item.Value.First().Value,
+                        Count = count
+                    });
+                }
+            }
+
             return dashboardList;
         }
     }

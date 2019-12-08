@@ -24,6 +24,7 @@ namespace FEP.WebApiModel.Home
         public string StatusName { get; set; }
         public int Count { get; set; }
         public string RedirectLink { get; set; }
+        public int? ApprovalLevel { get; set; } // For Publication && Survey
     }
 
     public enum DashboardModule

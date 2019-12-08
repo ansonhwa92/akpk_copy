@@ -1,5 +1,32 @@
 ﻿@model FEP.WebApiModel.RnP.ReturnListPublicationModel
 
+@using FEP.Model
+
+@{
+    UserAccess currentUser = UserAccess.HomeDashboard1; //assign dummy
+
+    if (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit))
+    {
+        currentUser = UserAccess.RnPPublicationEdit;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
+    {
+        currentUser = UserAccess.RnPPublicationVerify;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))
+    {
+        currentUser = UserAccess.RnPPublicationApprove1;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))
+    {
+        currentUser = UserAccess.RnPPublicationApprove2;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))
+    {
+        currentUser = UserAccess.RnPPublicationApprove3;
+    }
+}
+
 <div class="d-flex align-items-center">
     <div class="filter dropdown">
         <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
@@ -7,26 +34,26 @@
             <div class="filter-head">Filters</div>
             <div class="filter-body">
                 <!--
-                <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
-                    -->
+    <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
+        -->
                 <!--
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        <select class="select2 form-control small" name="filter">
-                            <option value="all">All</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
-                    </div>
-                </div>
-                -->
+    <div class="sorting-wrap">
+        <div class="sorting-dropdown">
+            <select class="select2 form-control small" name="filter">
+                <option value="all">All</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+    </div>
+    -->
                 <!--
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
-                    </div>
-                </div>
-                    -->
+    <div class="sorting-wrap">
+        <div class="sorting-dropdown">
+            @*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
+        </div>
+    </div>
+        -->
                 <div>@Html.DisplayNameFor(m => m.Filters.Author)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
@@ -48,6 +75,9 @@
                 <div>
                     <button id="btnSearch" class="btn btn-secondary">Search</button>
                 </div>
+                @Html.HiddenFor(m => m.Filters.Status)
+                @Html.HiddenFor(m => m.Filters.ApprovalLevel)
+                @Html.HiddenFor(m => m.Filters.RequireAction)
             </div>
         </div>
     </div>
@@ -75,7 +105,9 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-        <div><a href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Publication</a></div>
+        <div class="create-new-record-button">
+            <a href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Publication</a>
+        </div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -109,6 +141,10 @@
                         filter.Author = $('#Filters_Author').val();
                         filter.Title = $('#Filters_Title').val();
                         filter.ISBN = $('#Filters_ISBN').val();
+                        filter.Status = $('#Filters_Status').val();
+                        filter.ApprovalLevel = $('#Filters_ApprovalLevel').val();
+                        filter.RequireAction = $('#Filters_RequireAction').val();
+                        filter.UserAccess = "@currentUser";
                     },
                     dataFilter: function (res) {
                         // do what you need to the data before it loads to the table
@@ -360,4 +396,28 @@
 
         }
 
+
+    function ActionBox() {
+        $('.create-new-record-button').children('a').hide();
+        $('.create-new-record-button').append('<button class="btn btn-secondary btnRequireAction">Require Action</button>');
+        $('.create-new-record-button').append('<button class="btn btn-outline-secondary btnAll">All</button>');
+
+        $('.create-new-record-button').on('click', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("true");
+            $('.btnRequireAction').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.btnAll').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+
+
+        $('.create-new-record-button').on('blur', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("false");
+        });
+
+        $('.create-new-record-button').on('click', '.btnAll', function () {
+            $('.btnRequireAction').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.btnAll').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+    }
 </script>

@@ -17,6 +17,11 @@
             </div>
         </div>
     </div>
-    <input value=@item.StatusID hidden />
+    <input class="statusValue" value=@item.StatusID hidden />
+
+    @if (item.ApprovalLevel != null)
+    {
+        <input class="approvalLevelValue" value=@item.ApprovalLevel hidden />
+    }
 </div>
 }

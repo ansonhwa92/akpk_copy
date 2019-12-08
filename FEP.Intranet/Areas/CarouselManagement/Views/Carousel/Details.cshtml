@@ -38,15 +38,15 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Publication.BreadcrumbHome</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement"})">Manage Carousel</a></li>
-                                <li class="breadcrumb-item"><a href="#">Carousel Details</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Carousel.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement"})">@Language.Carousel.BreadcrumbManagement</a></li>
+                                <li class="breadcrumb-item"><a href="#">@Language.Carousel.BreadcrumbDetails</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Carousel Details</h1>
-                    <div class="header-text">View carousel details below.</div>
+                    <h1 class="page-title text-white">@Language.Carousel.HeadingDetails</h1>
+                    <div class="header-text">@Language.Carousel.HeadingDescriptionView</div>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             <div class="form-container">
                 <div class="mt-2 mb-4 pb-1">
                     <h4 class="color-darkblue mb-0">Carousel Details</h4>
-                    <h6 class="font-weight-normal">@Language.Publication.MandatoryPrefix (<span class="text-danger">*</span>) @Language.Publication.MandatorySuffix</h6>
+                    <h6 class="font-weight-normal">@Language.Carousel.MandatoryPrefix (<span class="text-danger">*</span>) @Language.Carousel.MandatorySuffix</h6>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -113,7 +113,7 @@
         </div>
         <div class="border-left border-right border-bottom p-3 rounded-bottom">
             <a class="btn btn-default" href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-            <button type="submit" class="btn btn-secondary" id="btnEdit" name="Submittype" value="Submit">Edit</button>
+            <button type="submit" class="btn btn-secondary" id="btnEdit" name="Submittype" value="Submit">@Language.General.ButtonEdit</button>
         </div>
     </div>
 </div>

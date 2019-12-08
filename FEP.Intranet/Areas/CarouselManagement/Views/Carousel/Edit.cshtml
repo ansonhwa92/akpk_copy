@@ -55,15 +55,15 @@
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Publication.BreadcrumbHome</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement"})">Manage Carousel</a></li>
-                                <li class="breadcrumb-item"><a href="#">Edit Carousel</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Carousel.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement"})">@Language.Carousel.BreadcrumbManagement</a></li>
+                                <li class="breadcrumb-item"><a href="#">@Language.Carousel.BreadcrumbEdit</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">Edit Carousel</h1>
-                    <div class="header-text">Update carousel by filling in carousel details below.</div>
+                    <h1 class="page-title text-white">@Language.Carousel.HeadingDetailsEdit</h1>
+                    <div class="header-text">@Language.Carousel.HeadingDescriptionEdit</div>
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
                         <li class="step-item active">
                             <a href="" class="step-link">
                                 <span class="step-number">1</span>
-                                <span class="step-title">Update Carousel Details</span>
+                                <span class="step-title">@Language.Carousel.SideBarStepEdit</span>
                             </a>
                         </li>
                     </ul>
@@ -95,8 +95,8 @@
             <div class="border-form rounded-top">
                 <div class="form-container">
                     <div class="mt-2 mb-4 pb-1">
-                        <h4 class="color-darkblue mb-0">Carousel Details</h4>
-                        <h6 class="font-weight-normal">@Language.Publication.MandatoryPrefix (<span class="text-danger">*</span>) @Language.Publication.MandatorySuffix</h6>
+                        <h4 class="color-darkblue mb-0">@Language.Carousel.HeadingDetails</h4>
+                        <h6 class="font-weight-normal">@Language.Carousel.MandatoryPrefix (<span class="text-danger">*</span>) @Language.Carousel.MandatorySuffix</h6>
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
@@ -158,7 +158,7 @@
             </div>
             <div class="border-left border-right border-bottom p-3 rounded-bottom">
                 <a class="btn btn-default" href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement" })" data-toggle="tooltip" data-placement="top" title="Back">@Language.General.ButtonBack</a>
-                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">Submit</button>
+                <button type="submit" class="btn btn-secondary" id="btnSubmit" name="Submittype" value="Submit">@Language.General.ButtonSubmit</button>
             </div>
         </div>
     </div>

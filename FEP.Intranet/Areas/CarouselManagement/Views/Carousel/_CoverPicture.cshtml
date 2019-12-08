@@ -10,9 +10,18 @@
         var file_no;
 
         $('#btnAddFile1').click(function () {
-            file_input1 = $('<input type="file" name="CoverPictureFiles" style="display:none" />');
+            file_input1 = $('<input type="file" name="CoverPictureFiles" id="fileName" accept="image/jpeg,image/png,image/jpg,image/x-png" style="display:none" />');
             file_input1.trigger('click');
-            file_input1.change(function () {
+            file_input1.change(function (e) {
+
+                var file = e.target.files[0];
+
+                //acceptable file type
+                if (!(file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png" || file.type == "image/x-png")) {
+                    $("#modalMessage").html("Only jpg/jpeg and png files are allowed!");
+                    $('#imageWarning').modal("show");
+                    return false;
+                }                
 
                 var row = $('<tr><td>' + $(this).val().replace(/.*(\/|\\)/, '') + '</tr>');
 

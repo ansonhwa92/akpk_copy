@@ -122,8 +122,7 @@
                         render: function (data, type, row, meta) {
 
                             var action = "";
-                            var canEdit = true;
-                            @*var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationView));*@
+                            var canEdit = @Json.Encode(CurrentUser.HasAccess(UserAccess.CarouselEdit));
 
                             action = '<div class="icon-action">';
 

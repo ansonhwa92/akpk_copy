@@ -1,4 +1,5 @@
 ﻿using FEP.Helper;
+using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
@@ -46,6 +47,12 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Code", ResourceType = typeof(Language.eLearning.Course))]
         public string Code { get; set; }
+
+        [Display(Name = "Status", ResourceType = typeof(Language.eLearning.Course))]
+        public CourseStatus? Status { get; set; }
+
+        public bool? RequireAction { get; set; }
+        public UserAccess? UserAccess { get; set; }
     }
 
     public class CreateOrEditCourseModel : BaseModel

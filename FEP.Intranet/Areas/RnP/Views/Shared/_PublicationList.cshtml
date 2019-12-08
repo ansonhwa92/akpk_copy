@@ -1,0 +1,423 @@
+﻿@model FEP.WebApiModel.RnP.ReturnListPublicationModel
+
+@using FEP.Model
+
+@{
+    UserAccess currentUser = UserAccess.HomeDashboard1; //assign dummy
+
+    if (CurrentUser.HasAccess(UserAccess.RnPPublicationEdit))
+    {
+        currentUser = UserAccess.RnPPublicationEdit;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationVerify))
+    {
+        currentUser = UserAccess.RnPPublicationVerify;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1))
+    {
+        currentUser = UserAccess.RnPPublicationApprove1;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2))
+    {
+        currentUser = UserAccess.RnPPublicationApprove2;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3))
+    {
+        currentUser = UserAccess.RnPPublicationApprove3;
+    }
+}
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+                <!--
+    <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
+        -->
+                <!--
+    <div class="sorting-wrap">
+        <div class="sorting-dropdown">
+            <select class="select2 form-control small" name="filter">
+                <option value="all">All</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+    </div>
+    -->
+                <!--
+    <div class="sorting-wrap">
+        <div class="sorting-dropdown">
+            @*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
+        </div>
+    </div>
+        -->
+                <div>@Html.DisplayNameFor(m => m.Filters.Author)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.Author, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filters.Title)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.Title, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filters.ISBN)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filters.ISBN, new { htmlAttributes = new { @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary">Search</button>
+                </div>
+                @Html.HiddenFor(m => m.Filters.Status)
+                @Html.HiddenFor(m => m.Filters.ApprovalLevel)
+                @Html.HiddenFor(m => m.Filters.RequireAction)
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="table-responsive" data-toggle="lists">
+    <div class="d-flex pb-4 align-items-center">
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+        <div class="create-new-record-button">
+            <a href="@Url.Action("SelectCategory", "Publication", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>Create Publication</a>
+        </div>
+    </div>
+    <!-- Table -->
+    <table class="table tableStyle1 tabledata">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.RefNo)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Category)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Author)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Title)</th>
+                <!--<th>@*Html.DisplayNameFor(model => model.Pubs.Year)*@</th>-->
+                <th>@Html.DisplayNameFor(model => model.Pubs.ISBN)</th>
+                <th>@Html.DisplayNameFor(model => model.Pubs.Status)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+        function initTable () {
+            var table = $('.tabledata').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    "type": "post",
+                    "url": '@(WebApiURL)RnP/Publication/GetAll',
+                    "data": function (filter) {
+                        //filter.Type = $('#Filters_Type').val();
+                        filter.Author = $('#Filters_Author').val();
+                        filter.Title = $('#Filters_Title').val();
+                        filter.ISBN = $('#Filters_ISBN').val();
+                        filter.Status = $('#Filters_Status').val();
+                        filter.ApprovalLevel = $('#Filters_ApprovalLevel').val();
+                        filter.RequireAction = $('#Filters_RequireAction').val();
+                        filter.UserAccess = "@currentUser";
+                    },
+                    dataFilter: function (res) {
+                        // do what you need to the data before it loads to the table
+                        // for debugging only for now
+                        return res;
+                    },
+                    error: function (x, y) {
+                        console.log(x);
+                    }
+                },
+                columns: [
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'RefNo',
+                        sortable: true
+                    },
+                    {
+                        data: 'Category',
+                        sortable: true
+                    },
+                    {
+                        data: 'Author',
+                        sortable: true
+                    },
+                    {
+                        data: 'Title',
+                        sortable: true
+                    },
+                    /*
+                    {
+                        data: 'Year',
+                        sortable: true
+                    },
+                    */
+                    {
+                        data: 'ISBN',
+                        sortable: true
+                    },
+                    {
+                        data: 'Status',
+                        sortable: true,
+                        render: function (data, type, row, meta) {
+                            if (row.Status == 0) {
+                                return "<span class='color-grey font-weight-bold'>Draft</span>";
+                            }
+                            else if (row.Status == 1) {
+                                return "<span class='color-yellow font-weight-bold'>Pending Verification</span>";
+                            }
+                            else if (row.Status == 2) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 3) {
+                                if (row.ApprovalLevel == 1) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 1</span>";
+                                }
+                                else if (row.ApprovalLevel == 2) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 2</span>";
+                                }
+                                else if (row.ApprovalLevel == 3) {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval 3</span>";
+                                }
+                                else {
+                                    return "<span class='color-yellow font-weight-bold'>Pending Approval</span>";
+                                }
+                            }
+                            else if (row.Status == 4) {
+                                return "<span class='color-red font-weight-bold'>Pending Amendment</span>";
+                            }
+                            else if (row.Status == 5) {
+                                return "<span class='color-green font-weight-bold'>Approved</span>";
+                            }
+                            else if (row.Status == 6) {
+                                return "<span class='color-green font-weight-bold'>Published</span>";
+                            }
+                            else if (row.Status == 7) {
+                                return "<span class='color-grey font-weight-bold'>Unpublished</span>";
+                            }
+                            else if (row.Status == 8) {
+                                return "<span class='color-grey font-weight-bold'>Cancelled</span>";
+                            }
+                            else if (row.Status == 9) {
+                                return "<span class='color-grey font-weight-bold'>Draft Withdrawal</span>";
+                            }
+                            else if (row.Status == 10) {
+                                return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Verification</span>";
+                            }
+                            else if (row.Status == 11) {
+                                return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
+                            }
+                            else if (row.Status == 12) {
+                                if (row.WithdrawalLevel == 1) {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval 1</span>";
+                                }
+                                else if (row.WithdrawalLevel == 2) {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval 2</span>";
+                                }
+                                else if (row.WithdrawalLevel == 3) {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval 3</span>";
+                                }
+                                else {
+                                    return "<span class='color-yellow font-weight-bold'>Withdrawal Pending Approval</span>";
+                                }
+                            }
+                            else if (row.Status == 13) {
+                                return "<span class='color-red font-weight-bold'>Withdrawal Pending Amendment</span>";
+                            }
+                            else if (row.Status == 14) {
+                                return "<span class='color-green font-weight-bold'>Withdrawal Approved</span>";
+                            }
+                            else if (row.Status == 15) {
+                                return "<span class='color-green font-weight-bold'>Withdrawn</span>";
+                            }
+                            else if (row.Status == 16) {
+                                return "<span class='color-grey font-weight-bold'>Withdrawal Cancelled</span>";
+                            }
+                        }
+                    },
+                    {
+                        sortable: false,
+                        render: function (data, type, row, meta) {
+
+                            var action = "";
+
+                            var canview = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationView));
+                            var canedit = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationEdit));
+                            var canverify = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationVerify));
+                            var canapprove1 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove1));
+                            var canapprove2 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove2));
+                            var canapprove3 = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationApprove3));
+                            var canpublish = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationPublish));
+                            var canwithdraw = @Json.Encode(CurrentUser.HasAccess(UserAccess.RnPPublicationWithdraw));
+
+                            action = '<div class="icon-action">';
+
+                            if (canview) {
+                                action += '<a href="@Url.Action("Details", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye text-muted"></i></a>&nbsp;';
+                            }
+
+                            if (row.Status == 0) {          // new
+                                if (canedit) {
+                                    action += '<a href="@Url.Action("Edit", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Edit"><i class="la la-edit text-muted"></i></a>';
+                                    action += '<a href="@Url.Action("Delete", "Publication", new { area = "RnP" })/' + row.ID + '" data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o text-muted"></i></i></a>';
+                                }
+                            }
+                            else if (row.Status == 1) {     // submitted (can verify from view)
+                                action += '';
+                                //if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                            }
+                            else if (row.Status == 2) {     // verifier rejected (can edit from view - view lets user see comments)
+                                action += '';
+                            }
+                            else if (row.Status == 3) {     // verified (can approve from view)
+                                action += '';
+                            }
+                            else if (row.Status == 4) {     // approver rejected
+                                action += '';
+                            }
+                            else if (row.Status == 5) {     // approved (can publish from view)
+                                action += '';
+                            }
+                            else if (row.Status == 6) {     // published (can withdraw from view)
+                                action += '';
+                            }
+                            else if (row.Status == 7) {     // unpublished
+                                action += '';
+                            }
+                            else if (row.Status == 8) {     // trashed
+                                action += '';
+                            }
+                            else if (row.Status == 9) {     // new withdrawal (skipped, withdrawal cannot be saved as draft and edited before submission)
+                                action += '';
+                            }
+                            else if (row.Status == 10) {    // withdrawal submitted
+                                action += '';
+                                //if (canverify || canapprove1 || canapprove2 || canapprove3) {
+                            }
+                            else if (row.Status == 11) {    // verifier rejected
+                                action += '';
+                            }
+                            else if (row.Status == 12) {    // verified
+                                action += '';
+                            }
+                            else if (row.Status == 13) {    // approver rejected
+                                action += '';
+                            }
+                            else if (row.Status == 14) {    // approved (skipped, goes straight to withdrawn)
+                                action += '';
+                            }
+                            else if (row.Status == 15) {    // withdrawn
+                                action += '';
+                            }
+                            else if (row.Status == 16) {    // withdrawal trashed (in reality goes back to published)
+                                action += '';
+                            }
+                            else {
+                                action += '';
+                            }
+
+                            action += '</div>';
+
+                            return action;
+                        }
+                    }
+                ],
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                orderMulti: false,
+                info: true,
+                autoWidth: false,
+                order: [[1, 'asc']],
+                language: {
+                    processing: "Processing... <i class='fa fa-refresh fa-spin'></i>",
+                    emptyTable: "No Record Found",
+                    info: "Showing _START_ - _END_ of _TOTAL_ publications"
+                },
+                dom: 'rtip'
+            });
+
+            $('#lengthChange').val(table.page.len());
+
+            $('#quickSearch').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#quickSearchBtn').click(function () {
+                table.search($(this).val()).draw();
+            });
+
+            $('#lengthChange').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' publications');
+                $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+            }).draw();
+
+        }
+
+
+    function ActionBox() {
+        $('.create-new-record-button').children('a').hide();
+        $('.create-new-record-button').append('<button class="btn btn-secondary btnRequireAction">Require Action</button>');
+        $('.create-new-record-button').append('<button class="btn btn-outline-secondary btnAll">All</button>');
+
+        $('.create-new-record-button').on('click', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("true");
+            $('.btnRequireAction').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.btnAll').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+
+
+        $('.create-new-record-button').on('blur', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("false");
+        });
+
+        $('.create-new-record-button').on('click', '.btnAll', function () {
+            $('.btnRequireAction').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.btnAll').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+    }
+</script>

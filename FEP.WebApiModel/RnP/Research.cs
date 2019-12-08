@@ -248,6 +248,10 @@ namespace FEP.WebApiModel.RnP
         //[DisplayFormat(DataFormatString = "{0:dd-mm-yyyy}")]
         //public DateTime EndDate { get; set; }
 
+        public SurveyStatus? Status { get; set; }
+        public SurveyApprovalLevels? ApprovalLevel { get; set; }
+        public bool? RequireAction { get; set; }
+        public UserAccess? UserAccess { get; set; }
         // status filter(TODO)
     }
 

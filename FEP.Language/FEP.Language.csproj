@@ -52,6 +52,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Dashboard.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dashboard.resx</DependentUpon>
+    </Compile>
     <Compile Include="DutyRoster.Designer.cs">
       <DependentUpon>DutyRoster.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -262,6 +267,10 @@
     <EmbeddedResource Include="Administrator\User.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>User.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dashboard.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Dashboard.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="DutyRoster.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

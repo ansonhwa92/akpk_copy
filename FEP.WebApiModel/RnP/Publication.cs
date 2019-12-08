@@ -260,6 +260,14 @@ namespace FEP.WebApiModel.RnP
         [Display(Name = "PubISBN", ResourceType = typeof(Language.RnPForm))]
         public string ISBN { get; set; }
 
+        public PublicationStatus? Status { get; set; }
+
+        public PublicationApprovalLevels? ApprovalLevel { get; set; }
+
+        public bool? RequireAction { get; set; }
+
+        public UserAccess? UserAccess { get; set; }
+
         // status filter(TODO)
     }
 

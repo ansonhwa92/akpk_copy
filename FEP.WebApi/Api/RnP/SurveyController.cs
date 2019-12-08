@@ -54,6 +54,11 @@ namespace FEP.WebApi.Api.RnP
 
             var query = db.Survey.Where(p => p.Status <= SurveyStatus.Trashed);   //TODO: all!!
 
+            if(request.Status != null || request.RequireAction == true)
+            {
+                query = GetSurveyByFilter(request, query);
+            }
+
             var totalCount = query.Count();
 
             //advance search
@@ -2850,6 +2855,55 @@ namespace FEP.WebApi.Api.RnP
                 return response.Data;
             else
                 return null;
+        }
+
+
+        private IQueryable<Survey> GetSurveyByFilter(FilterSurveyModel request, IQueryable<Survey> surveys)
+        {
+            if (request.Status != null)
+            {
+                if (request.Status == SurveyStatus.Verified)
+                {
+                    surveys = surveys.Where(q => db.SurveyApproval.Where(pa => pa.SurveyID == q.ID && pa.Status == SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == request.ApprovalLevel);
+                }
+                else if (request.Status == SurveyStatus.VerifierRejected)
+                {
+                    surveys = surveys.Where(q => q.Status == SurveyStatus.VerifierRejected
+                                                || q.Status == SurveyStatus.ApproverRejected);
+                }
+                else
+                {
+                    surveys = surveys.Where(q => q.Status == request.Status);
+                }
+            }
+
+            if (request.RequireAction == true)
+            {
+                if (request.UserAccess == UserAccess.RnPSurveyEdit)
+                {
+                    surveys = surveys.Where(q => q.Status == SurveyStatus.New
+                                                        || q.Status == SurveyStatus.VerifierRejected
+                                                        || q.Status == SurveyStatus.ApproverRejected);
+                }
+                else if (request.UserAccess == UserAccess.RnPSurveyVerify)
+                {
+                    surveys = surveys.Where(q => db.SurveyApproval.Where(pa => pa.SurveyID == q.ID && pa.Status == SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == SurveyApprovalLevels.Verifier);
+                }
+                else if (request.UserAccess == UserAccess.RnPSurveyApprove1)
+                {
+                    surveys = surveys.Where(q => db.SurveyApproval.Where(pa => pa.SurveyID == q.ID && pa.Status == SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == SurveyApprovalLevels.Approver1);
+                }
+                else if (request.UserAccess == UserAccess.RnPSurveyApprove2)
+                {
+                    surveys = surveys.Where(q => db.SurveyApproval.Where(pa => pa.SurveyID == q.ID && pa.Status == SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == SurveyApprovalLevels.Approver2);
+                }
+                else if (request.UserAccess == UserAccess.RnPSurveyApprove3)
+                {
+                    surveys = surveys.Where(q => db.SurveyApproval.Where(pa => pa.SurveyID == q.ID && pa.Status == SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == SurveyApprovalLevels.Approver3);
+                }
+            }
+
+            return surveys;
         }
     }
 }

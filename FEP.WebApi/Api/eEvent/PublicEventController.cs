@@ -1,4 +1,4 @@
-﻿using FEP.Helper;
+﻿using FEP.Helper; 
 using FEP.Model;
 using FEP.WebApiModel;
 using FEP.WebApiModel.FileDocuments;
@@ -45,8 +45,42 @@ namespace FEP.WebApi.Api.eEvent
 		[HttpPost]
 		public IHttpActionResult Post(FilterPublicEventModel request)
 		{
+            var query = db.PublicEvent.Where(u => u.Display);
 
-			var query = db.PublicEvent.Where(u => u.Display);
+            if(request.EventStatus != null)
+            {
+                query = query.Where(u => u.EventStatus == request.EventStatus);
+            }
+
+            if (request.RequireAction == true)
+            {
+                var eventStatusList = new List<EventStatus?>();
+
+                if(request.UserAccess == UserAccess.EventAdministratorFED)
+                {
+                    eventStatusList.Add(EventStatus.New);
+                    eventStatusList.Add(EventStatus.RequireAmendment);
+                }
+                else if (request.UserAccess == UserAccess.VerifierPublicEventFED)
+                {
+                    eventStatusList.Add(EventStatus.PendingforVerification);
+                }
+                else if (request.UserAccess == UserAccess.Approver1PublicEvent)
+                {
+                    eventStatusList.Add(EventStatus.Verified);
+                }
+                else if (request.UserAccess == UserAccess.Approver2PublicEvent)
+                {
+                    eventStatusList.Add(EventStatus.VerifiedbyFirstApprover);
+
+                }
+                else if (request.UserAccess == UserAccess.Approver3PublicEvent)
+                {
+                    eventStatusList.Add(EventStatus.VerifiedbySecondApprover);
+                }
+
+                query = query.Where(u => eventStatusList.Contains(u.EventStatus));
+            }
 
 			var totalCount = query.Count();
 

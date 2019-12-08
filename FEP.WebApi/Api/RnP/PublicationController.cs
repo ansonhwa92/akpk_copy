@@ -47,6 +47,33 @@ namespace FEP.WebApi.Api.RnP
 
             var query = db.Publication.Where(p => p.Status <= PublicationStatus.WithdrawalTrashed);   //TODO: all!!
 
+            if(request.Status != null || request.RequireAction == true)
+            {
+                query = GetPublicationByFilter(request, query);
+            }
+
+            ////Draft
+            //var test5 = query.Where(q => q.Status == PublicationStatus.New).ToList();
+            ////pending verification
+            //var test = query.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Verifier).ToList();
+            //// pending approval 1
+            //var test1 = query.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Approver1).ToList();
+            //// pending approval 2
+            //var test2 = query.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Approver2).ToList();
+            //// pending approval 3
+            //var test3 = query.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Approver3).ToList();
+            ////Published
+            //var test4 = query.Where(q => q.Status == PublicationStatus.Published).ToList();
+            ////Pending Amendment            
+            //var test6 = query.Where(q => q.Status == PublicationStatus.VerifierRejected 
+            //                            || q.Status == PublicationStatus.ApproverRejected
+            //                            || q.Status == PublicationStatus.WithdrawalVerifierRejected
+            //                            || q.Status == PublicationStatus.WithdrawalApproverRejected).ToList();
+            ////Cancel
+            //var test7 = query.Where(q => q.Status == PublicationStatus.Trashed || q.Status == PublicationStatus.WithdrawalTrashed).ToList();
+
+
+
             var totalCount = query.Count();
 
             //advance search
@@ -2449,5 +2476,60 @@ namespace FEP.WebApi.Api.RnP
                 return null;
         }
 
+        private IQueryable<Publication> GetPublicationByFilter(FilterPublicationModel request, IQueryable<Publication> publications)
+        {
+            if(request.Status != null)
+            {
+                if (request.Status == PublicationStatus.Verified)
+                {
+                    publications = publications.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == request.ApprovalLevel);
+                }
+                else if (request.Status == PublicationStatus.VerifierRejected)
+                {
+                    publications = publications.Where(q => q.Status == PublicationStatus.VerifierRejected
+                                                || q.Status == PublicationStatus.ApproverRejected
+                                                || q.Status == PublicationStatus.WithdrawalVerifierRejected
+                                                || q.Status == PublicationStatus.WithdrawalApproverRejected);
+                }
+                else if (request.Status == PublicationStatus.Trashed)
+                {
+                    publications = publications.Where(q => q.Status == PublicationStatus.Trashed || q.Status == PublicationStatus.WithdrawalTrashed);
+                }
+                else
+                {
+                    publications = publications.Where(q => q.Status == request.Status);
+                }
+            }
+
+            if (request.RequireAction == true)
+            {
+                if(request.UserAccess == UserAccess.RnPPublicationEdit)
+                {
+                    publications = publications.Where(q => q.Status == PublicationStatus.New 
+                                                        || q.Status == PublicationStatus.VerifierRejected
+                                                        || q.Status == PublicationStatus.ApproverRejected
+                                                        || q.Status == PublicationStatus.WithdrawalVerifierRejected
+                                                        || q.Status == PublicationStatus.WithdrawalApproverRejected);
+                }
+                else if(request.UserAccess == UserAccess.RnPPublicationVerify)
+                {
+                    publications = publications = publications.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Verifier);
+                }
+                else if(request.UserAccess == UserAccess.RnPPublicationApprove1)
+                {
+                    publications = publications.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Approver1);
+                }
+                else if (request.UserAccess == UserAccess.RnPPublicationApprove2)
+                {
+                    publications = publications.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Approver2);
+                }
+                else if (request.UserAccess == UserAccess.RnPPublicationApprove3)
+                {
+                    publications = publications.Where(q => db.PublicationApproval.Where(pa => pa.PublicationID == q.ID && pa.Status == PublicationApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == PublicationApprovalLevels.Approver3);
+                }
+            }
+
+            return publications;
+        }
     }
 }

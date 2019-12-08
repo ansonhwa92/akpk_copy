@@ -48,12 +48,24 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     var nextModule = response.Data.nextModuleId;
                     var courseId = response.Data.CourseId;
 
-                    //if (nextContent < 0) // go to index, no more content this module
                     if (nextContent == null)
                     {
                         if (nextModule == null) // No more module and content, lets go to the course page
                         {
                             TempData["SuccessMessage"] = "Congratulations, you have completed this course.";
+
+                            var course = await CoursesController.TryGetFrontCourse(courseId.Value);
+
+                            if (course.Status != Model.eLearning.CourseStatus.Published)
+                            {
+                                if (CurrentUser.HasAccess(UserAccess.CourseVerify) ||
+                                    CurrentUser.HasAccess(UserAccess.CourseApproval1) ||
+                                    CurrentUser.HasAccess(UserAccess.CourseApproval2) ||
+                                    CurrentUser.HasAccess(UserAccess.CourseApproval3))
+                                {
+                                    return RedirectToAction("Approve", "CourseApprovals", new { area = "eLearning", @id = courseId });
+                                }
+                            }
 
                             return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = courseId });
                         }

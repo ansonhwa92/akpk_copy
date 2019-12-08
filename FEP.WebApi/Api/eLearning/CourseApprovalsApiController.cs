@@ -178,6 +178,12 @@ namespace FEP.WebApi.Api.eLearning
             }
             else // Rejected
             {
+                if (entity.Status == CourseStatus.Submitted)
+                {
+                    entity.Status = CourseStatus.Verified;
+                    approvalLog.ApprovalLevel = ApprovalLevel.Verifier;
+                }
+                else
                 if (entity.Status == CourseStatus.Verified)
                 {
                     entity.Status = CourseStatus.FirstApproval;

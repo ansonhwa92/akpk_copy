@@ -150,6 +150,8 @@
 
             // survey portion
 
+            @*var completiontype = @Json.Encode(Model.CompletionType);*@
+
             //var surveyJSON = $('#Questions').val();
             //var survey = new Survey.Model(surveyJSON);
 
@@ -161,13 +163,13 @@
                 onComplete: sendDataToServer
             });
 
-            survey.onValidateQuestion.add(function (s, options) {
-                if (options.name == 'animalwater') {
-                    if (options.value != 'Whale') {
-                        options.error = "The answer is not correct. Please give another answer";
-                    }
-                }
-            });
+            //survey.onValidateQuestion.add(function (s, options) {
+            //    if (options.name == 'animalwater') {
+            //        if (options.value != 'Whale') {
+            //            options.error = "The answer is not correct. Please give another answer";
+            //        }
+            //    }
+            //});
 
             function sendDataToServer(survey) {
                 var givenanswers = survey.data;
@@ -191,15 +193,6 @@
                     $('#surveyResult').html("<b>You only answered " + correctcount + " out of " + totalcount + " questions correctly. Please try again!</b><br/>" + wronganswers);
                     survey.clear();
                     survey.render();
-                    //var btn1 = $('#btnComplete');
-                    //var btn2 = $('#btnTimerComplete');
-                    //var btn3 = $('#btnAnswerComplete');
-                    //if (btn1.length > 0) {
-                    //    var btndisabled = btn1.prop('disabled');
-                    //    if (!btndisabled) {
-                    //        btn1.prop('disabled', true);
-                    //    }
-                    //}
                     return false;
                 }
                 else {
@@ -223,7 +216,8 @@
                 });
             }
 
-            $('#btnComplete,#btnTimerComplete,#btnAnswerComplete').click(function (event) {
+            //$('#btnComplete,#btnTimerComplete,#btnAnswerComplete').click(function (event) {
+            $('#btnAnswerComplete').click(function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 var quizid = $('#QuizId').val();

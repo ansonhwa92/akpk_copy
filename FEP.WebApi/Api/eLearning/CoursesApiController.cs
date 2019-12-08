@@ -830,6 +830,103 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
+        // firus
+        [Route("api/eLearning/Courses/GetAdditionalInput")]
+        [HttpGet]
+        public CourseAdditionalInputModel GetAdditionalInput(int id, string coursetitle)
+        {
+            var inputs = db.CourseAdditionalInputs.Where(c => c.CourseId == id).Select(s => new CourseAdditionalInputModel
+            {
+                Id = s.Id,
+                CourseId = s.CourseId.Value,
+                PageTitle = coursetitle,
+                Contents = s.Contents
+            }).FirstOrDefault();
+
+            if (inputs != null)
+            {
+                return inputs;
+            }
+            else
+            {
+                var newinputs = new CourseAdditionalInputModel
+                {
+                    CourseId = id,
+                    PageTitle = coursetitle,
+                    Contents = ""
+                    //Contents = "{ title: \"Additional Registration Information\" }"
+                };
+                return newinputs;
+            }
+        }
+
+        // firus
+        [Route("api/eLearning/Courses/SaveAdditionalInput")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool SaveAdditionalInput([FromBody] CourseAdditionalInputModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var inputs = db.CourseAdditionalInputs.Where(c => c.Id == model.Id).FirstOrDefault();
+
+                if (inputs != null)
+                {
+                    inputs.Contents = model.Contents;
+                    db.Entry(inputs).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    var newinputs = new CourseAdditionalInput
+                    {
+                        CourseId = model.CourseId,
+                        Contents = model.Contents
+                    };
+                    db.CourseAdditionalInputs.Add(newinputs);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // firus
+        [Route("api/eLearning/Courses/SubmitResponse")]
+        [HttpPost]
+        [ValidationActionFilter]
+        public bool SubmitResponse([FromBody] CourseAdditionalInputResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var inputanswers = db.CourseAdditionalInputResponses.Where(a => a.InputId == model.InputId && a.UserId == model.UserId).FirstOrDefault();
+
+                if (inputanswers != null)
+                {
+                    inputanswers.Answers = model.Answers;
+                    db.Entry(inputanswers).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    var newinputanswers = new CourseAdditionalInputResponses
+                    {
+                        InputId = model.InputId,
+                        UserId = model.UserId,
+                        Answers = model.Answers
+                    };
+                    db.CourseAdditionalInputResponses.Add(newinputanswers);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// To save the front page of course, basically the order of the modules
         /// </summary>

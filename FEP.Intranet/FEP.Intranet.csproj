@@ -1075,6 +1075,8 @@
     <Content Include="Areas\eLearning\Views\CourseGroup\_CoursesList.cshtml" />
     <Content Include="Areas\KMC\Views\Home\Index.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\Questions.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\AdditionalInput.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\AdditionalInput.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

@@ -1,7 +1,7 @@
 ﻿@model FEP.WebApiModel.eLearning.CreateOrEditContentQuizModel
 
 @{
-    ViewBag.Title = "Edit Questions";
+    ViewBag.Title = "Edit Quiz";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 
     var name = Model.PageTitle;
@@ -38,8 +38,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="page-title text-white">@name : Edit Questions</h1>
-                    <div class="header-text">Edit Questions.</div>
+                    <h1 class="page-title text-white">@name : Edit Quiz</h1>
+                    <div class="header-text">Edit Quiz.</div>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                             <h6 class="x-small color-darkblue"><i class="la la-edit font-icon color-secondary align-bottom"></i>Course Content</h6>
                             <ul class="nav page-nav__menu">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">Questions</a>
+                                    <a href="#" class="nav-link">Quiz</a>
                                 </li>
                             </ul>
                         </div>
@@ -125,6 +125,11 @@
     <script type="text/javascript" src="@BaseURL/js/survey-builder-init.js"></script>
 
     <script>
+
+        var editorDefinition = SurveyCreator.SurveyQuestionEditorDefinition.definition["selectbase"];
+        if (!editorDefinition.tabs) editorDefinition.tabs = [];
+        if (!editorDefinition.properties) editorDefinition.properties = [];
+        editorDefinition.tabs.push({ name: "correctAnswer", index: 12 });
 
         $(document).ready(function () {
 

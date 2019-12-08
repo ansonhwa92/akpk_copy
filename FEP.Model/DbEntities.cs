@@ -211,6 +211,8 @@ namespace FEP.Model
         // firus
         public DbSet<CourseContentQuiz> CourseContentQuizzes { get; set; }
         public DbSet<CourseContentAnswers> CourseContentAnswers { get; set; }
+        public DbSet<CourseAdditionalInput> CourseAdditionalInputs { get; set; }
+        public DbSet<CourseAdditionalInputResponses> CourseAdditionalInputResponses { get; set; }
 
         // Elearning Discussion
         public DbSet<Discussion> Discussions { get; set; }

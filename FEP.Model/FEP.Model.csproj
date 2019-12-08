@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201912011010166_0112.designer.cs">
       <DependentUpon>201912011010166_0112.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912071510037_0712.cs" />
+    <Compile Include="Migrations\201912071510037_0712.designer.cs">
+      <DependentUpon>201912071510037_0712.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -134,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912011010166_0112.resx">
       <DependentUpon>201912011010166_0112.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912071510037_0712.resx">
+      <DependentUpon>201912071510037_0712.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

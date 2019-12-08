@@ -201,6 +201,35 @@ namespace FEP.WebApiModel.eLearning
 
     }
 
+    // firus
+    public class CourseAdditionalInputModel
+    {
+        public int Id { get; set; }
+
+        public int CourseId { get; set; }
+
+        public string Contents { get; set; }
+
+        public string PageTitle { get; set; }
+    }
+
+
+    // firus
+    public class CourseAdditionalInputResponseModel
+    {
+        public int Id { get; set; }
+
+        public int InputId { get; set; }
+
+        public int UserId { get; set; }
+
+        public string Answers { get; set; }
+
+        public int CourseId { get; set; }
+
+        public string EnrollmentCode { get; set; }
+    }
+
     public class TrainerCourseModel
     {
         public int CourseId { get; set; }

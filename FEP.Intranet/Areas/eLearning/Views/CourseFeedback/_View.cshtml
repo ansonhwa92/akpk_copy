@@ -1,7 +1,8 @@
 ﻿@model FeedbackModel
 
 @{
-    Layout = "~/Views/Shared/_Layout1.cshtml";
+    Layout = null;
+    //Layout = "~/Views/Shared/_Layout1.cshtml";
     //  int feedbackId = ViewBag.FeedbackId;
     //bool editEnable = CurrentUser.HasAccess(UserAccess.CourseGroupEdit);
     //var toDisplay = Model;
@@ -88,30 +89,39 @@
             <label for="customCheck01" class="custom-control-label">Enable Feedback</label>
         </div>
     </div>*@
-<form action="@BaseURL/eLearning/CourseFeedback/_View" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+@*<form action="@BaseURL/eLearning/CourseFeedback/_View" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" id="FeedbackFrom">*@
+@*@using (Html.BeginForm())*@
+@using (Ajax.BeginForm("_View", "CourseFeedback", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "onAjaxRequestSuccess"
+},
+new { @id = "AjaxDARid", @class = "form-horizontal", role = "form" }
+))
+{
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(m => m.id)
     @Html.HiddenFor(m => m.NewPost.UserId, new { Value = CurrentUser.UserId })
     @Html.HiddenFor(m => m.NewPost.FeedbackId, new { Value = Model.id })
-    <div class="border-form rounded-top">
+    <div class="border-form rounded-top "  style="margin:10px;">
         @if (!String.IsNullOrEmpty(CurrentUser.Avatar))
         {
-            <img src="@BaseURL/img/avatar/@CurrentUser.Avatar" alt="Avatar" class="rounded-cir rounded-color" width="55">
+            <img src="@BaseURL/img/avatar/@CurrentUser.Avatar" alt="Avatar" class="rounded-cir rounded-color" width="55"  style="margin-left:25px;">
             // <img src="@BaseURL/img/avatar/@CurrentUser.Avatar" alt="Avatar" class="rounded-circle rounded-color" width="40">
         }
         else
         {
-            <img src="@BaseURL/img/no-photo.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40">
+            <img src="@BaseURL/img/no-photo.jpg" alt="Avatar" class="rounded-circle rounded-color" width="40"  style="margin:10px;">
         }
 
-        <div class="talk-bubble  border round tri-right left-in">
+        <div class="col-lg-10 talk-bubble  border round tri-right left-in">
             <div class="talktext">
                 <div class="widget-subtitle">Ingin bertanya? Sila tinggalkan pertanyaan anda di sini (Jika ada)</div>
                 <div class="form-container">
                     <div class="form-group">
                         <div class="">
-                            @Html.TextAreaFor(m => m.NewPost.Post, new { @class = "FeedBackCloud summernote form-control" })
+                            @Html.TextAreaFor(m => m.NewPost.Post, new { @class = "editor form-control" })
                             @Html.ValidationMessageFor(m => m.NewPost.Post, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -120,7 +130,7 @@
                             @Html.DropDownListFor(m => m.NewPost.Visibility, Model.Visibilities, htmlAttributes: new { @class = "MakeWide MakeHi" })
                             @Html.ValidationMessageFor(m => m.NewPost.Visibility)
 
-                            <button type="submit" class="btn btn-default pull-right" id="btnSave" name="SubmitType" value="@Model.id">
+                            <button type="submit" class="btn btn-default pull-right" id="btnFeedbackSubmit" name="SubmitType" value="@Model.id">
                                 <i class="la la-save font-icon" style="font-size: 1.5rem;"></i>Submit Feedback
                             </button>
                         </div>
@@ -129,7 +139,8 @@
             </div>
         </div>
     </div>
-</form>
+}
+@*</form>*@
 
 <div class="border-form rounded-top">
 
@@ -275,30 +286,37 @@
 @*}*@
 @section ContentScript
 {
-    <link href="~/css/elearn.css" rel="stylesheet" />
+    @*<link href="~/css/elearn.css" rel="stylesheet" />*@
     @*<link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />*@
     @*<script src="~/Scripts/summernote/summernote-lite.min.js"></script>*@
-    <script src="~/js/elearn.js"></script>
-    <script src="~/js/elearn-course.js"></script>
-    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    @*<script src="~/js/elearn.js"></script>*@
+    @*<script src="~/js/elearn-course.js"></script>*@
+    @*<script src="~/Scripts/tinymce/tinymce.min.js"></script>*@
+    @*<script type="text/javascript" src="~/js/tinymce_cfg.js" id="tmscript" baseUrl="@(BaseURL)"></script>*@
     <script>
 
-        function deletethispost(postid) {
-            alert(postid);
-            if (postid > 0) {
+         @*$(document).ready(function () {
+        $('#FeedbackFrom').submit(function () {
+            alert("Sukses");
+            if ($(this).valid()) {
                 $.ajax({
-                    type: 'get',
-                    url: '@Url.Action("_DeletePost", "CourseFeedback", new { area = "eLearning" })?id=' + postid + '&Uid=' + @CurrentUser.UserId,
-                    success: function () {
-                        location.reload();  
-                        //$('#PartialViewLocation').html(data);
-                    },
-                    error: function (xhr, status, error) {
-                        $('#detail').html('');
+                    url: '@BaseURL/eLearning/CourseFeedback/_View',
+                    type: "post",
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        alert("Sukses");
+                        location.reload();
                     }
                 });
             }
-        }
+            return false;
+        });
+    });*@
+
+
+       
+
+
 
     </script>
     @*<script>
@@ -306,210 +324,131 @@
                 selector: '#FeedBackCloud'
             });
         </script>*@
-    <script>
-        var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
-        var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
+    @*<script>
+            var uploadImgUrl = '@(BaseURL)/eLearning/File/UploadFile';
+            var getImgUrl = '@(BaseURL)/eLearning/File/GetImg/?fileName=';
 
-       // var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
-        var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
-        var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
 
-        //$(document).ready(function () {
-                tinymce.init({
-                    selector: '.FeedBackCloud',
-                plugins: 'print preview fullpage paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
-                imagetools_cors_hosts: ['picsum.photos'],
-                menubar: 'file edit view insert format tools table help',
-                toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview print | insertfile image media link anchor codesample | ltr rtl',
-                toolbar_sticky: true,
-                autosave_ask_before_unload: true,
-                autosave_interval: "30s",
-                autosave_prefix: "{path}{query}-{id}-",
-                autosave_restore_when_empty: false,
-                autosave_retention: "2m",
-                image_advtab: true,
-                branding: false,
+           // var uploadDocUrl = '@(WebApiURL)/eLearning/File/';
+            var uploadDocUrl = '@(BaseURL)/eLearning/File/UploadFile';
+            var convertFileUrl = '@(BaseURL)eLearning/File/DocToHTML';
+            $(document).ready(function () {
+                    tinymce.init({
+                        selector: '.FeedBackCloud',
+                    plugins: 'print preview fullpage paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+                    imagetools_cors_hosts: ['picsum.photos'],
+                    menubar: 'file edit view insert format tools table help',
+                    toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview print | insertfile image media link anchor codesample | ltr rtl',
+                    toolbar_sticky: true,
+                    autosave_ask_before_unload: true,
+                    autosave_interval: "30s",
+                    autosave_prefix: "{path}{query}-{id}-",
+                    autosave_restore_when_empty: false,
+                    autosave_retention: "2m",
+                    image_advtab: true,
+                    branding: false,
 
-                importcss_append: true,
-                file_picker_types: 'file image media',
-                file_picker_callback: function (callback, value, meta) {
-                    /* Provide file and text for the link dialog */
-                    if (meta.filetype === 'file') {
-                        callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
-                    }
-
-                    /* Provide image and alt text for the image dialog */
-                    if (meta.filetype === 'image') {
-                        callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
-                    }
-
-                    /* Provide alternative source and posted for the media dialog */
-                    if (meta.filetype === 'media') {
-                        // callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
-
-                        // Trigger click on file element
-                        jQuery("#fileupload").trigger("click");
-                        $("#fileupload").unbind('change');
-                        // File selection
-                        jQuery("#fileupload").on("change", function () {
-                            var file = this.files[0];
-                            var reader = new FileReader();
-
-                            // FormData
-                            var fd = new FormData();
-                            var files = file;
-                            fd.append("file", files);
-                            fd.append('filetype', meta.filetype);
-
-                            var filename = "";
-
-                            // AJAX
-                            var url = '@BaseURL/elearning/File/EditorUpload';
-                            //console.log('url - ', url);
-
-                            jQuery.ajax({
-                                url: url,
-                                type: "post",
-                                data: fd,
-                                contentType: false,
-                                processData: false,
-                                async: false,
-                                success: function (response) {
-                                    //console.log('filename-', response);
-                                    filename = response.location;
-                                    alert(response.location);
-                                }
-                            });
-
-                            reader.onload = function (e) {
-                                callback(filename);
-                            };
-                            reader.readAsDataURL(file);
-                        });
-                    }
-                },
-
-                width: 720,
-                height: 240,
-                image_caption: true,
-                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-                noneditable_noneditable_class: "mceNonEditable",
-                toolbar_drawer: 'sliding',
-                contextmenu: "link image imagetools table",
-                images_upload_url: '@BaseURL/elearning/File/EditorUpload',
-                images_upload_base_path: '@BaseURL/eLearning',
-                images_upload_credentials: true,
-                relative_urls: false,
-                remove_script_host: false,
-                convert_urls: true,
-
-                init_instance_callback: function (editor) {
-
-                    editor.on('BeforeSetContent', function (e) {
-                        //console.log(e.content);
-
-                        if (e.content.indexOf("video ") > 0) {
-                            if (e.content.indexOf(".pdf") > 0) {
-                                e.content = e.content.replace("<video", "<div");
-
-                                var width = e.content.match("width=\"(.*)\" height");
-                                var height = e.content.match("height=\"(.*)\" controls");
-                                //console.log('width - ', width, ' height - ', height);
-
-                                e.content = e.content.replace("controls=\"controls\"", "");
-
-                                e.content = e.content.replace("<source", "<object");
-                                e.content = e.content.replace("src=", "data=");
-                                //console.log('middle - ', e.content);
-
-                                e.content = e.content.replace("</video", "</div");
-                                e.content = e.content.replace("/>", "type=\"application/pdf\" width=\"" + width[1] + "\" height=\"" + height[1] + "\"  ></object>");
-                            }
-
-                            //console.log('after - ', e.content);
+                    importcss_append: true,
+                    file_picker_types: 'file image media',
+                    file_picker_callback: function (callback, value, meta) {
+                        /* Provide file and text for the link dialog */
+                        if (meta.filetype === 'file') {
+                            callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
                         }
-                    });
-                },
-            //});
 
-            //$("#clickButton").prop("checked", true);
-            //$('#Timer').prop("disabled", true);
-            //$('#ContentQuestionId').prop("disabled", true);
+                        /* Provide image and alt text for the image dialog */
+                        if (meta.filetype === 'image') {
+                            callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+                        }
 
-            //$('input[name=CompletionType]').val("ClickButton");
+                        /* Provide alternative source and posted for the media dialog */
+                        if (meta.filetype === 'media') {
+                            // callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
 
-            //var contentType = $('#ContentType').val();
-            //console.log(contentType);
+                            // Trigger click on file element
+                            jQuery("#fileupload").trigger("click");
+                            $("#fileupload").unbind('change');
+                            // File selection
+                            jQuery("#fileupload").on("change", function () {
+                                var file = this.files[0];
+                                var reader = new FileReader();
 
-            //if (contentType == 'Video') {
-            //    if ($('#VideoType').val() == "ExternalVideo") {
+                                // FormData
+                                var fd = new FormData();
+                                var files = file;
+                                fd.append("file", files);
+                                fd.append('filetype', meta.filetype);
 
-            //        $("#video1").prop("checked", true);
-            //        $('#Url').prop("disabled", false);
-            //        $('#File').prop("disabled", true);
-            //    }
+                                var filename = "";
 
-            //    if ($('#VideoType').val() == "UploadVideo") {
+                                // AJAX
+                                var url = '@BaseURL/elearning/File/EditorUpload';
+                                //console.log('url - ', url);
 
-            //        $("#video2").prop("checked", true);
-            //        $('#File').prop("disabled", false);
-            //        $('#Url').prop("disabled", true);
-            //    }
-            //}
+                                jQuery.ajax({
+                                    url: url,
+                                    type: "post",
+                                    data: fd,
+                                    contentType: false,
+                                    processData: false,
+                                    async: false,
+                                    success: function (response) {
+                                        //console.log('filename-', response);
+                                        filename = response.location;
+                                        alert(response.location);
+                                    }
+                                });
 
-            //console.log($('#AudioType').val());
-            //if (contentType == 'Audio') {
-            //    if ($('#AudioType').val() == "SavedAudio") {
-            //        $("#audio1").prop("checked", true);
-            //        $('#File').prop("disabled", true);
-            //        $("#ContentFileId").prop("disabled", false);
-            //    }
+                                reader.onload = function (e) {
+                                    callback(filename);
+                                };
+                                reader.readAsDataURL(file);
+                            });
+                        }
+                    },
 
-            //    if ($('#AudioType').val() == "UploadAudio") {
+                    width: 720,
+                    height: 240,
+                    image_caption: true,
+                    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                    noneditable_noneditable_class: "mceNonEditable",
+                    toolbar_drawer: 'sliding',
+                    contextmenu: "link image imagetools table",
+                    images_upload_url: '@BaseURL/elearning/File/EditorUpload',
+                    images_upload_base_path: '@BaseURL/eLearning',
+                    images_upload_credentials: true,
+                    relative_urls: false,
+                    remove_script_host: false,
+                    convert_urls: true,
 
-            //        $("#audio2").prop("checked", true);
-            //        $('#File').prop("disabled", false);
-            //        $("#ContentFileId").prop("disabled", true);
+                    init_instance_callback: function (editor) {
 
-            //    }
-            //}
+                        editor.on('BeforeSetContent', function (e) {
+                            //console.log(e.content);
 
-            //console.log($('#DocumentType').val());
-            //if (contentType == 'Document') {
-            //    if ($('#DocumentType').val() == "SavedDocument") {
-            //        $("#document1").prop("checked", true);
-            //        $('#File').prop("disabled", true);
-            //        $("#ContentFileId").prop("disabled", false);
-            //        $('#Url').prop("disabled", true);
+                            if (e.content.indexOf("video ") > 0) {
+                                if (e.content.indexOf(".pdf") > 0) {
+                                    e.content = e.content.replace("<video", "<div");
 
-            //        document.getElementById("otherDoc").style.display = "block";
-            //        document.getElementById("slideShareDoc").style.display = "none";
-            //    }
+                                    var width = e.content.match("width=\"(.*)\" height");
+                                    var height = e.content.match("height=\"(.*)\" controls");
+                                    //console.log('width - ', width, ' height - ', height);
 
-            //    if ($('#DocumentType').val() == "UploadDocument") {
+                                    e.content = e.content.replace("controls=\"controls\"", "");
 
-            //        $("#document2").prop("checked", true);
-            //        $('#File').prop("disabled", false);
-            //        $("#ContentFileId").prop("disabled", true);
-            //        $('#Url').prop("disabled", true);
+                                    e.content = e.content.replace("<source", "<object");
+                                    e.content = e.content.replace("src=", "data=");
+                                    //console.log('middle - ', e.content);
 
-            //        document.getElementById("otherDoc").style.display = "block";
-            //        document.getElementById("slideShareDoc").style.display = "none";
+                                    e.content = e.content.replace("</video", "</div");
+                                    e.content = e.content.replace("/>", "type=\"application/pdf\" width=\"" + width[1] + "\" height=\"" + height[1] + "\"  ></object>");
+                                }
 
-            //    }
-            //    if ($('#DocumentType').val() == "UseSlideshare") {
-
-            //        $("#document3").prop("checked", true);
-            //        $('#File').prop("disabled", true);
-            //        $("#ContentFileId").prop("disabled", true);
-            //        $('#Url').prop("disabled", false);
-
-            //        document.getElementById("otherDoc").style.display = "none";
-            //        document.getElementById("slideShareDoc").style.display = "block";
-
-            //    }
-            //}
-
-        });
-    </script>
+                                //console.log('after - ', e.content);
+                            }
+                        });
+                    },
+                });
+            });
+        </script>*@
 }

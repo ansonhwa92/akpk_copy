@@ -58,6 +58,37 @@ namespace FEP.WebApi.Api.eLearning
             }
         }
 
+
+        [Route("api/eLearning/Feedback/CreateNewFeedback")]
+        [HttpPost]
+        public IHttpActionResult CreateNewFeedback(FeedbackCreateModel model)
+        {
+            try
+            {
+                using (DbEntities _db = new DbEntities())
+                {
+                    Feedback _new = new Feedback();
+
+                    _new.Header = model.Header;
+                    _new.Template = model.Template;
+                    _new.CreatedBy = model.CreatedBy;
+                    _new.CreatedDate = model.Created;
+                    _new.UpdatedBy = model.CreatedBy;
+
+                    _db.Feedback.Add(_new);
+                    _db.SaveChanges();
+
+                    return Ok(_new.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Debug.WriteLine(ex.Message);
+                return Ok();
+                //return ex.InnerException.Message.ToString();
+            }
+        }
+
         [Route("api/eLearning/Feedback/PostNew")]
         [HttpPost]
         public IHttpActionResult PostNew(FeedbackModel model)

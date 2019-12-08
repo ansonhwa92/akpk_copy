@@ -254,6 +254,7 @@ namespace FEP.Model
 
         //CourseDiscussionCreate,
 
+
         [Display(Name = "Course - Discussion - Create")]
         CourseDiscussionCreate,
 
@@ -262,6 +263,9 @@ namespace FEP.Model
 
         [Display(Name = "Course - Discussion - Edit")]
         CourseDiscussionEdit,
+
+        [Display(Name = "Course - Discussion - ViewAll")]
+        CourseDiscussionViewAll,
 
         [Display(Name = "Course - Group - Create")]
         CourseGroupCreate,

@@ -57,13 +57,17 @@
     <Compile Include="CTE.cs" />
     <Compile Include="elearning\Feedback.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201911232123335_x.cs" />
-    <Compile Include="Migrations\201911232123335_x.designer.cs">
-      <DependentUpon>201911232123335_x.cs</DependentUpon>
+    <Compile Include="Migrations\201912070200351_addfeedbacktocoursecontenttable.cs" />
+    <Compile Include="Migrations\201912070200351_addfeedbacktocoursecontenttable.designer.cs">
+      <DependentUpon>201912070200351_addfeedbacktocoursecontenttable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.cs" />
-    <Compile Include="Migrations\201912060303586_AddFieldNameForCourseCertificate.designer.cs">
-      <DependentUpon>201912060303586_AddFieldNameForCourseCertificate.cs</DependentUpon>
+    <Compile Include="Migrations\201912070633172_lol.cs" />
+    <Compile Include="Migrations\201912070633172_lol.designer.cs">
+      <DependentUpon>201912070633172_lol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912070831074_lolfix.cs" />
+    <Compile Include="Migrations\201912070831074_lolfix.designer.cs">
+      <DependentUpon>201912070831074_lolfix.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
@@ -128,8 +132,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201911232123335_x.resx">
-      <DependentUpon>201911232123335_x.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912070200351_addfeedbacktocoursecontenttable.resx">
+      <DependentUpon>201912070200351_addfeedbacktocoursecontenttable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912070633172_lol.resx">
+      <DependentUpon>201912070633172_lol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912070831074_lolfix.resx">
+      <DependentUpon>201912070831074_lolfix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

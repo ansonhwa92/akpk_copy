@@ -1,7 +1,9 @@
 ﻿@using FEP.Model
 @using FEP.Model.eLearning
 @model List<CourseDiscussionModel>
-@{ var i = 0;}
+@{ var i = 0;
+    bool addEnable = CurrentUser.HasAccess(UserAccess.CourseDiscussionCreate);
+}
 
 @{
     ViewBag.Title = "Parameter Course Category";
@@ -48,22 +50,26 @@
                 <input type="text" class="form-control" placeholder="Search discussions" id="searchSample02">
                 <button class="btn pr-3" type="button" role="button"><i class="material-icons">search</i></button>
             </div>*@
-        <div class="col-mb-12">
-            <div class="media align-items-center">
-                <div class="media-body">
-                </div>
-                <div class="media-right">
-                    <a href="#" class="btn btn-secondary" onclick="showAdd();">
-                        <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>
-                        @Language.eLearning.CourseDiscussion.CreateNewLabel
-                    </a>
+        @if (addEnable)
+        {
+            <div class="col-mb-12">
+                <div class="media align-items-center">
+                    <div class="media-body">
+                    </div>
+                    <div class="media-right">
+                        <a href="#" class="btn btn-secondary" onclick="showAdd();">
+                            <i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>
+                            @Language.eLearning.CourseDiscussion.CreateNewLabel
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="" style="padding: 10px" id="addForm">
+            <div class="" style="padding: 10px" id="addForm">
 
-        </div>
+            </div>
+        }
+
         <div class="mb-4 d-flex align-items-center">
             <div class="input-keyword col-lg-10 col-sm-10 mr-auto px-0">
                 <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
@@ -133,163 +139,13 @@
                 </tr>
             </thead>
         </table>
-
-        @*<div class="card">
-
-
-
-
-                <ul class="list-group list-group-fit">
-                    @foreach (var item in Model.Where(m => m.DiscussionVisibility == DiscussionVisibility.Everybody))
-                    {
-                        <li class="list-group-item forum-thread">
-                            <div class="media align-items-center">
-                                <div class="media-left">
-                                    <div class="forum-icon-wrapper">
-                                        <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-icon">
-                                            <i class="material-icons">description</i>
-                                        </a>
-                                        <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-user">
-                                            <img src="assets/images/people/50/guy-1.jpg" alt="" width="20" class="rounded-circle">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <div class="d-flex align-items-center">
-                                        <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="text-body"><strong>@item.CreatedByName</strong></a>
-                                        <small class="ml-auto text-muted">@item.CreatedOn</small>
-                                    </div>
-                                    <a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id">
-                                        @{ if (item.FirstPost != null)
-                                            {
-                                                if (item.FirstPost != null)
-                                                {
-                                                    if (item.FirstPost.Count() > 50)
-                                                    {
-                                                        @item.FirstPost.Substring(0, 50);
-                                                        @Html.Raw(" ... ")
-                                                    }
-                                                    else
-                                                    {
-                                                        @item.FirstPost
-                                                    }
-                                                }
-
-                                            }
-                                        }
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-
-
-                    }
-
-                </ul>
-
-            </div>*@
-
-        @*<nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center pagination-sm ">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true" class="material-icons">chevron_left</span>
-                            <span>Prev</span>
-                        </a>
-                    </li>
-
-                    <li class="page-item active">
-                        <a class="page-link" href="#" aria-label="1">
-                            <span>1</span>
-                        </a>
-                    </li>
-
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="2">
-                            <span>2</span>
-                        </a>
-                    </li>
-
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span>Next</span>
-                            <span aria-hidden="true" class="material-icons">chevron_right</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </nav>
-            <br />*@
-        @*<div class="card">
-                <div class="card-header">
-                    <div class="media align-items-center">
-                        <div class="media-body">
-                            <h4 class="card-title">Lessons</h4>
-                            <p class="card-subtitle">Course related topics.</p>
-                        </div>
-
-                    </div>
-                </div>
-
-
-
-                <ul class="list-group list-group-fit">
-                    @foreach (var item in Model.Where(m => m.DiscussionVisibility == DiscussionVisibility.GroupOnly))
-                    {
-                        <li class="list-group-item forum-thread">
-                            <div class="media align-items-center">
-                                <div class="media-left">
-                                    <div class="forum-icon-wrapper">
-                                        <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-icon">
-                                            <i class="material-icons">description</i>
-                                        </a>
-                                        <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="forum-thread-user">
-                                            <img src="assets/images/people/50/guy-1.jpg" alt="" width="20" class="rounded-circle">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <div class="d-flex align-items-center">
-                                        <a href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id" class="text-body"><strong>@item.CreatedByName</strong></a>
-                                        <small class="ml-auto text-muted">@item.CreatedOn</small>
-                                    </div>
-                                    <a class="text-black-70" href="@Url.Action("View", "CourseDiscussion", new { area = "eLearning" })/@item.Id">
-                                        @{ if (item.FirstPost != null)
-                                            {
-                                                if (item.FirstPost != null)
-                                                {
-                                                    if (item.FirstPost.Count() > 50)
-                                                    {
-                                                        @item.FirstPost.Substring(0, 50);
-                                                        @Html.Raw(" ... ")
-                                                    }
-                                                    else
-                                                    {
-                                                        @item.FirstPost
-                                                    }
-                                                }
-
-                                            }
-                                        }
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    }
-
-                </ul>
-            </div>*@
-
-
-
-
     </div>
 
 </div>
 
 @section ContentScript{
     <script type="text/javascript">
-     
+
 
 
     $(document).ready(function () {
@@ -302,7 +158,7 @@
             $("#ShowAll").click(function () {
                 $('#DiscussionDropDown button').removeClass('active');
 
-                $("#GroupDataTable_wrapper").show(); 
+                $("#GroupDataTable_wrapper").show();
                 $("#GeneralDataTable_wrapper").show();
                 $("#ShowAll").addClass('active');
                 $("#DropDownSelected").html("All Topics");
@@ -506,7 +362,7 @@
                                 else {
                                     return 'Created on ' + moment(datetimetodisplay).format('LLL');
                                 }
-                                
+
                             }
                         }
                     }
@@ -564,7 +420,10 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)eLearning/CourseDiscussion/GetAllGroup',
+                      @{
+                        var sendId = CurrentUser.UserId;
+                    }
+                    "url": '@(WebApiURL)eLearning/CourseDiscussion/GetAllGroup?id=@sendId',
                     "data": function (filter) {
                         console.log("-", filter);
 

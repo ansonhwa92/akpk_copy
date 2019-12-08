@@ -309,11 +309,11 @@ namespace FEP.Model.Migrations
                 UserAccess.CourseCreate, UserAccess.CourseEdit,
                 UserAccess.CourseGroupCreate, UserAccess.CourseGroupEdit, UserAccess.CourseGroupView,
                 UserAccess.CourseFeedbackView, UserAccess.CourseFeedbackPostDelete,
-                UserAccess.CourseDiscussionCreate,
+                UserAccess.CourseDiscussionCreate, UserAccess.CourseDiscussionViewAll,
                 UserAccess.CoursePublish, UserAccess.CoursePublish);
             AddRoleAndAccess(db, RoleNames.eLearningVerifier, "Verifier eLearning",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu, UserAccess.CourseView,
-                UserAccess.CourseGroupView,
+                UserAccess.CourseGroupView, UserAccess.CourseDiscussionViewAll,
                 UserAccess.CourseFeedbackView,
                 UserAccess.CourseVerify);
             AddRoleAndAccess(db, RoleNames.eLearningApprover1, "Approver eLearning 1",
@@ -334,7 +334,7 @@ namespace FEP.Model.Migrations
             AddRoleAndAccess(db, RoleNames.eLearningFacilitator, "Facilitator",
                 UserAccess.HomeDashboard1, UserAccess.LearningMenu,
                 UserAccess.CourseGroupCreate, UserAccess.CourseGroupEdit, UserAccess.CourseGroupView, 
-                UserAccess.CourseDiscussionCreate, UserAccess.CourseFeedbackPostDelete,
+                UserAccess.CourseDiscussionCreate, UserAccess.CourseFeedbackPostDelete, UserAccess.CourseDiscussionViewAll,
                 UserAccess.CourseFeedbackView,
                 UserAccess.CourseAddDocument, 
                 UserAccess.CourseEnroll);

@@ -361,3 +361,14 @@ function setError(name, message) {
         }
     }
 }
+
+function checkthis() {
+    if ($('input[id=feedbacktoggle]').prop("checked")) {
+        $('#feedbacktoggle').prop("checked", false);
+        $("#IsFeedbackOn").val(0);
+    }
+    else {
+        $('#feedbacktoggle').prop("checked", true);
+        $("#IsFeedbackOn").val(1);
+    }
+}

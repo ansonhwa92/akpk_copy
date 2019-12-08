@@ -86,7 +86,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> _View(FeedbackModel model)
+        public async Task<JsonResult> _View(FeedbackModel model)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             model.Visibilities = new SelectList(await GetVisibility(), "Id", "Type", 1);
                             //IEnumerable<SelectListItem> getget = new SelectList(await GetVisibility(), "Id", "Type", 1);
                             //model.Visibilities = new List<SelectListItem>();
-                            return PartialView(model);
+                            return this.Json(new { EnableSuccess = true, SuccessTitle = "Success", SuccessMsg = "Add Data Into Database Success" });
+                            //return Json(1, JsonRequestBehavior.AllowGet);
+                            //return PartialView(model);
                             //return RedirectToAction("_View", "CourseFeedback", new { area = "eLearning", @id = model.id });
                         }
                     }
@@ -112,8 +114,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             TempData["ErrorMessage"] = "Cannot add content.";
 
             // await GetAllQuestions(model.CourseId);
-
-            return PartialView(model);
+            return Json(0, JsonRequestBehavior.AllowGet);
+            //return PartialView(model);
         }
 
         [HttpGet]

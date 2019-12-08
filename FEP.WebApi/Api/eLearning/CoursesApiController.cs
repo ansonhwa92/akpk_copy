@@ -936,6 +936,7 @@ namespace FEP.WebApi.Api.eLearning
             model.CourseApprovalLogModel = new CourseApprovalLogModel();
             model.CourseApprovalLogModel.Status = model.Status;
 
+
             var courseEvent = new CourseEvent();
 
             if (entity.Status == CourseStatus.Trial)

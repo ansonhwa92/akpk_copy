@@ -69,6 +69,23 @@ namespace FEP.WebApi.Api.eLearning
                 var content = _mapper.Map<CourseContent>(request);
                 content.CompletionType = request.CompletionType;
 
+                if (request.IsFeedbackOn > 0)
+                {
+                    if (request.FeedbackId.HasValue)
+                    {
+                        content.FeedbackId = request.FeedbackId.Value;
+                        content.FeedbackEnable = true;
+                    }
+                    else
+                    {
+                        content.FeedbackEnable = false;
+                    }
+                }
+                else
+                {
+                    content.FeedbackEnable = false;
+                }
+
                 if (request.CompletionType == ContentCompletionType.Timer)
                 {
                     content.Timer = request.Timer != null ? request.Timer.Value : 0;
@@ -189,14 +206,34 @@ namespace FEP.WebApi.Api.eLearning
             if (course == null)
                 return NotFound();
 
+
+
+
             var model = _mapper.Map<CreateOrEditContentModel>(entity);
 
             model.ModuleName = module.Title;
             model.Status = course.Status;
 
+            if (entity.FeedbackEnable.HasValue)
+            {
+                if (entity.FeedbackEnable.Value)
+                {
+                    model.IsFeedbackOn = 1;
+                }
+                else
+                {
+                    model.IsFeedbackOn = 0;
+                }
+            }
+            else
+            {
+                model.IsFeedbackOn = 0;
+            }
+            model.FeedbackId = entity.FeedbackId;
+
             // for uploaded content
             if (entity.ContentFile != null &&
-                entity.ContentFile.FileDocument != null)
+            entity.ContentFile.FileDocument != null)
             {
                 model.FileDocument = entity.ContentFile.FileDocument;
                 model.FileDocumentId = entity.ContentFile.FileDocumentId;
@@ -229,6 +266,22 @@ namespace FEP.WebApi.Api.eLearning
                 if (content == null)
                     return BadRequest();
 
+                if (request.IsFeedbackOn == 0)
+                {
+                    content.FeedbackEnable = false;
+                }
+                else
+                {
+                    if (request.FeedbackId == null)
+                    {
+                        content.FeedbackEnable = false;
+                    }
+                    else
+                    {
+                        content.FeedbackId = request.FeedbackId;
+                        content.FeedbackEnable = true;
+                    }
+                }
                 content.CompletionType = request.CompletionType;
 
                 content.ContentType = request.ContentType;

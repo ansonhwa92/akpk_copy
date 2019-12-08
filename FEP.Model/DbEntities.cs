@@ -176,7 +176,7 @@ namespace FEP.Model
 		public DbSet<EventRequest> EventRequest { get; set; }
 		public DbSet<EventRequestApproval> EventRequestApproval { get; set; }
 		public DbSet<MediaRepresentative> MediaRepresentative { get; set; }
-
+		public DbSet<PublicEventPurchaseItem> PublicEventPurchaseItem { get; set; }
 		// Elearning
 		public DbSet<Course> Courses { get; set; }
 

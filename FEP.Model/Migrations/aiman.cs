@@ -307,6 +307,7 @@ namespace FEP.Model.Migrations
 			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_MediaInterview });
 			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
 			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
+			VerifierMediaCCD.Add(new RoleAccess { UserAccess = UserAccess.Approver3_MediaInterview });
 
 			mhafeez.AddRole(db, "Verifier Event - CCD", "Verifier Event", VerifierMediaCCD);
 
@@ -321,6 +322,7 @@ namespace FEP.Model.Migrations
 			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.RequireAmendment_MediaInterview });
 			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_ExhibitionRoadShow });
 			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Verify_MediaInterview });
+			VerifierExhibitionCCD.Add(new RoleAccess { UserAccess = UserAccess.Approver3_ExhibitionRoadShow });
 
 			mhafeez.AddRole(db, "Verifier Event - CCD", "Verifier Event", VerifierExhibitionCCD);
 

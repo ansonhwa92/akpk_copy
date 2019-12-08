@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.PublicEvent.DetailsPublicEventModel
+﻿@model FEP.WebApiModel.PublicEvent.PurchasePublicEventModel
 
 @{
 	ViewBag.Title = "Purchase Public Event";
@@ -10,7 +10,7 @@
 		<div class="title-header-container">
 			<div class="container">
 				<!-- if have button -->
-				<div class="header-col-right float-right mt-5"><a href='@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = Model.Id})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+				<div class="header-col-right float-right mt-5"><a href='@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = ViewBag.EventId})' class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
 				<div class="header-col-left">
 					<div id="breadcrumb">
 						<nav aria-label="breadcrumb">
@@ -25,8 +25,8 @@
 							</ol>
 						</nav>
 					</div>
-					<h1 class="page-title text-white">@Model.EventTitle</h1>
-					<div class="header-text">Public Event Request Ref No: @Model.RefNo</div>
+					<h1 class="page-title text-white">@ViewBag.EventTitle</h1>
+					<div class="header-text">Public Event Request Ref No: @ViewBag.RefNo</div>
 				</div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 								<td class="text-right font-weight-bolder">Amount</td>
 							</tr>
 							<tr>
-								<td class="text-left font-weight-bold">@Model.EventTitle</td>
+								<td class="text-left font-weight-bold">@ViewBag.EventTitle</td>
 								<td class="text-left font-weight-bold">Individual</td>
 								<td class="text-right font-weight-bold">@ViewBag.IndividualAmt.ToString("0.00")</td>
 								@if (ViewBag.card_i == "true")
@@ -110,12 +110,32 @@
 						</tfoot>
 					</table>
 
-					<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = Model.Id})'>Back</a>
+					@*<a class="btn btn-default font-weight-normal mr-2" href='@Url.Action("EventSelectTicket", "Home", new { area = "eEvent", @id = Model.Id})'>Back</a>*@
 					@*<a class="btn btn-secondary" id="btnNext" href="#">Next</a>*@
+					@*<button class="btn btn-default" id="btnBackToBrowse">Cancel</button>
+					<button class="btn btn-secondary" id="btnAddtoCart">Add to Cart</button>*@
 
-					<button class="btn btn-secondary" id="btnAddtoCart">Add to Cart</button>
+					@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "myform", id = "myform" }))
+					{
+						@Html.AntiForgeryToken()
 
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+					
+						<!-- Action Button -->
+						<div class="border-top py-3 mt-5">
+							@Html.HiddenFor(model => model.EventId, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.IndividualTicket, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.GroupTicket, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.AgencyTicket, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.AgencyTicketQuantity, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.GroupTicketQuantity, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+							@*<a class="btn btn-default font-weight-normal mr-2" href="@Url.Action("SelectFormat", "Home", new { area = "RnP", @id = ViewBag.PubID })">Back</a>*@
+							<button class="btn btn-secondary" id="btnAddtoCart">Add to Cart</button>
+							@*<a class="btn btn-secondary" id="btnAddtoCart" href="#" data-toggle="modal" data-target="#addtocart">Add to Cart</a>*@
+						</div>
+					}
 
 
 
@@ -149,51 +169,21 @@
 			<!-- column content right -->
 			<div class="col-lg-3">
 				<div class="right-sidebar">
-					@*<div class="right-top">
-						<div class="card__wrapper">
-							<div class="card__top">*@
-								@*@{
-									var coverpic1 = "";
-									var coverpic2 = "";
-									var authorpic = "";
-								}
-								@if ((ViewBag.CoverPicture != "") && (ViewBag.CoverPicture != null))
-								{
-									coverpic1 = BaseURL + "/Data/images/publication/" + ViewBag.CoverPicture;
-									coverpic2 = BaseURL + "/Data/images/publication/" + ViewBag.CoverPicture;
-								}
-								else
-								{
-									coverpic1 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-									coverpic2 = BaseURL + "/" + "img" + "/cover-buku-1.jpg";
-								}
-								@if ((ViewBag.AuthorPicture != "") && (ViewBag.AuthorPicture != null))
-								{
-									authorpic = BaseURL + "/Data/images/publication/" + ViewBag.AuthorPicture;
-								}
-								else
-								{
-									authorpic = BaseURL + "/" + "img" + "/8.jpg";
-								}
-								<div class="card__top__wapper"><img class="card__top__image" src="@coverpic1" alt="image"></div>*@
-							@*</div>
-						</div>*@
-						<!--<div class="mb-4"><img src="../img/cover-publication-dummy.jpg"></div>-->
-						<div class="card-group">
-							<div class="lead color-darkblue mb-3 font-weight-bolder">Public Event Details</div>
-							<ul>
-								<li><i class="la la-list-ul font-icon color-secondary" data-toggle="tooltip" title="Event Category" style="font-size: 17px;"></i>@Model.EventCategoryName</li>
-								<li><i class="la la-file-text font-icon color-secondary" data-toggle="tooltip" title="Event Title" style="font-size: 17px;"></i>@Model.EventTitle</li>
-								<li><i class="la la-calendar font-icon color-secondary" data-toggle="tooltip" title="Event Date" style="font-size: 19px;"></i>@Model.StartDate.Value.ToString("dd/MM/yyyy") - @Model.EndDate.Value.ToString("dd/MM/yyyy")</li>
-								<li><i class="la la-map-marker font-icon color-secondary" data-toggle="tooltip" title="Event Venue" style="font-size: 17px;"></i>@Model.Venue</li>
-								<li><i class="fas fa-chair font-icon color-secondary" data-toggle="tooltip" title="Availability" style="font-size: 17px;"></i>@Model.ParticipantAllowed Seats Remaining</li>
-							</ul>
-						</div>
-						<!-- Share with friends -->
-						<div class="card-group">
-							<div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
-							<div class="ms-share"></div>
-						</div>
+					<div class="card-group">
+						<div class="lead color-darkblue mb-3 font-weight-bolder">Public Event Details</div>
+						<ul>
+							<li><i class="la la-list-ul font-icon color-secondary" data-toggle="tooltip" title="Event Category" style="font-size: 17px;"></i>@ViewBag.EventCategoryName</li>
+							<li><i class="la la-file-text font-icon color-secondary" data-toggle="tooltip" title="Event Title" style="font-size: 17px;"></i>@ViewBag.EventTitle</li>
+							<li><i class="la la-calendar font-icon color-secondary" data-toggle="tooltip" title="Event Date" style="font-size: 19px;"></i>@ViewBag.StartDate - @ViewBag.EndDate</li>
+							<li><i class="la la-map-marker font-icon color-secondary" data-toggle="tooltip" title="Event Venue" style="font-size: 17px;"></i>@ViewBag.Venue</li>
+							<li><i class="fas fa-chair font-icon color-secondary" data-toggle="tooltip" title="Availability" style="font-size: 17px;"></i>@ViewBag.ParticipantAllowed Seats Remaining</li>
+						</ul>
+					</div>
+					<!-- Share with friends -->
+					<div class="card-group">
+						<div class="lead color-darkblue mb-3 font-weight-bolder">Share with Friends</div>
+						<div class="ms-share"></div>
+					</div>
 					@*</div>*@
 				</div>
 			</div>
@@ -202,3 +192,42 @@
 	</div>
 	<!-- Wrapper -->
 </div>
+
+@section ContentScript {
+	<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#btnAddtoCart').click(function (event) {
+                var form = $('#myform');
+                //alert(form.serialize());
+                //return false;
+                var myurl = '@Url.Action("AddToCart", "Home", new { area = "eEvent" })';
+                $.ajax({
+                    url: myurl,
+                    type: "POST",
+					data: form.serialize(),
+                    success: function (data) {
+                        if (data == "success") {
+                            $("#resultMsg").text('Item(s) have been added to your cart.');
+                            $("#addtocart").modal();
+                        }
+                        else if (data == "failure") {
+                            $("#resultMsg").text('Failed to add item(s) to your cart!');
+                            $("#addtocart").modal();
+                        }
+                        else {
+                            $("#resultMsg").text('Failed to add item(s) to your cart!');
+                            $("#addtocart").modal();
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('#btnBackToBrowse').click(function (event) {
+                var url = '@Url.Action("BrowsePublicEvent", "Home", new { area = "eEvent" })';
+                window.location = url;
+            });
+        });
+	</script>
+}

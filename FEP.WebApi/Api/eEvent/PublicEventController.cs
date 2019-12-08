@@ -1764,5 +1764,34 @@ namespace FEP.WebApi.Api.eEvent
 			
 			return browser;
 		}
+
+		[Route("api/eEvent/PublicEvent/AddOrderItem")]
+		[HttpPost]
+		[ValidationActionFilter]
+		public bool AddOrderItem([FromBody] PublicEventPurchaseItemModel model)
+		{
+
+			if (ModelState.IsValid)
+			{
+				var pitem = new PublicEventPurchaseItem
+				{
+					PurchaseOrderId = model.PurchaseOrderId,
+					UserId = model.UserId,
+					EventId = model.EventId,
+					Ticket = model.Ticket,
+					Price = model.Price,
+					Quantity = model.Quantity
+				};
+
+				db.PublicEventPurchaseItem.Add(pitem);
+				db.SaveChanges();
+
+				return true;
+			}
+
+			return false;
+		}
+
+
 	}
 }

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using FEP.Helper;
+using FEP.Model;
 using FEP.WebApiModel.LandingPage;
 using FEP.WebApiModel.PublicEvent;
+using FEP.WebApiModel.RnP;
 
 namespace FEP.Intranet.Areas.eEvent.Controllers
 {
@@ -104,7 +106,7 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 			return View(browser);
 		}
 
-		
+
 
 		[ChildActionOnly]
 		public ActionResult _Menu()
@@ -170,6 +172,15 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 				return HttpNotFound();
 			}
 
+			ViewBag.EventId = publicevent.Id;
+			ViewBag.RefNo = publicevent.RefNo;
+			ViewBag.EventTitle = publicevent.EventTitle;
+			ViewBag.EventCategoryName = publicevent.EventCategoryName;
+			ViewBag.StartDate = publicevent.StartDate.Value.ToString("dd/MM/yyyy");
+			ViewBag.EndDate = publicevent.EndDate.Value.ToString("dd/MM/yyyy");
+			ViewBag.Venue = publicevent.Venue;
+			ViewBag.ParticipantAllowed = publicevent.ParticipantAllowed;
+
 			ViewBag.card_i = card_i;
 			ViewBag.card_g = card_g;
 			ViewBag.card_bil = card_bil;
@@ -202,7 +213,151 @@ namespace FEP.Intranet.Areas.eEvent.Controllers
 
 			ViewBag.TotalAmt = ViewBag.IndividualAmt + ViewBag.GroupAmt + ViewBag.AgencyAmt;
 
-			return View(publicevent);
+			var purchase = new PurchasePublicEventModel
+			{
+				EventId = publicevent.Id,
+				IndividualTicket = bool.Parse(card_i),
+				GroupTicket = bool.Parse(card_g),
+				AgencyTicket = bool.Parse(card_a),
+				AgencyTicketQuantity = int.Parse(card_bil),
+				GroupTicketQuantity = int.Parse(card_bil),
+
+				UserId = CurrentUser.UserId.Value,
+			};
+
+			return View(purchase);
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<string> AddToCart(PurchasePublicEventModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var resPub = await WepApiMethod.SendApiAsync<DetailsPublicEventModel>(HttpVerbs.Get, $"eEvent/PublicEvent/GetDelete?id={model.EventId}");
+
+				if (!resPub.isSuccess)
+				{
+					return "notfound";
+				}
+
+				var publicevent = resPub.Data;
+
+				if (publicevent == null)
+				{
+					return "notfound";
+				}
+
+				var order = new PurchaseOrderModel
+				{
+					UserId = CurrentUser.UserId.Value,
+					DiscountCode = "",
+					ProformaInvoiceNo = "",
+					PaymentMode = PaymentModes.Online,
+					CreatedDate = DateTime.Now,
+					TotalPrice = 0,
+					Status = CheckoutStatus.Shopping
+				};
+
+				var response_cart = await WepApiMethod.SendApiAsync<int>(HttpVerbs.Post, $"Commerce/Cart/Create", order);
+
+				if (!response_cart.isSuccess)
+				{
+					return "notfound";
+				}
+
+				var cartid = response_cart.Data;
+
+				var addsuccess = true;
+
+				if (model.IndividualTicket)
+				{
+					var item_i = new PublicEventPurchaseItemModel
+					{
+						PurchaseOrderId = cartid,
+						EventId = publicevent.Id,
+						UserId = CurrentUser.UserId.Value,
+						Ticket = ParticipantType.Individual,
+						Price = publicevent.IndividualFee.Value,
+						Quantity = 1
+					};
+					var response_i = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eEvent/PublicEvent/AddOrderItem", item_i);
+
+					var citem1 = new PurchaseOrderItemModel
+					{
+						PurchaseOrderId = cartid,
+						ItemId = publicevent.Id,
+						Description = publicevent.EventTitle + " (Individual)",
+						PurchaseType = PurchaseType.Publication,
+						Price = publicevent.IndividualFee.Value,
+						Quantity = 1
+					};
+					var cart_digital = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/AddItem", citem1);
+				}
+				if (model.AgencyTicket)
+				{
+					var item_a = new PublicEventPurchaseItemModel
+					{
+						PurchaseOrderId = cartid,
+						EventId = publicevent.Id,
+						UserId = CurrentUser.UserId.Value,
+						Ticket = ParticipantType.Agency,
+						Price = publicevent.IndividualFee.Value,
+						Quantity = model.AgencyTicketQuantity
+					};
+					var response_a = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eEvent/PublicEvent/AddOrderItem", item_a);
+
+					var citem1 = new PurchaseOrderItemModel
+					{
+						PurchaseOrderId = cartid,
+						ItemId = publicevent.Id,
+						Description = publicevent.EventTitle + " (Agency)",
+						PurchaseType = PurchaseType.Publication,
+						Price = publicevent.AgencyFee.Value,
+						Quantity = model.AgencyTicketQuantity
+					};
+					var cart_digital = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/AddItem", citem1);
+				}
+				if (model.GroupTicket)
+				{
+					var item_g = new PublicEventPurchaseItemModel
+					{
+						PurchaseOrderId = cartid,
+						EventId = publicevent.Id,
+						UserId = CurrentUser.UserId.Value,
+						Ticket = ParticipantType.Individual,
+						Price = publicevent.IndividualFee.Value,
+						Quantity = model.GroupTicketQuantity
+					};
+					var response_g = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"eEvent/PublicEvent/AddOrderItem", item_g);
+
+					var citem1 = new PurchaseOrderItemModel
+					{
+						PurchaseOrderId = cartid,
+						ItemId = publicevent.Id,
+						Description = publicevent.EventTitle + " (Group)",
+						PurchaseType = PurchaseType.Publication,
+						Price = publicevent.IndividualFee.Value,
+						Quantity = model.GroupTicketQuantity
+					};
+					var cart_digital = await WepApiMethod.SendApiAsync<bool>(HttpVerbs.Post, $"Commerce/Cart/AddItem", citem1);
+				}
+
+				if (addsuccess)
+				{
+					await LogActivity(Model.Modules.Event, "Purchase Public Event", publicevent);
+
+					return "success";
+				}
+				else
+				{
+					return "failure";
+				}
+			}
+			return "invalid";
+		}
+
+
+
 	}
 }

@@ -333,4 +333,46 @@ namespace FEP.WebApiModel.PublicEvent
 		public int EventId { get; set; }
 		public string CoverPicture { get; set; }
 	}
+
+	public class PublicEventPurchaseItemModel
+	{
+		public int Id { get; set; }
+
+		public int UserId { get; set; }
+
+		public int? PurchaseOrderId { get; set; }
+
+		[Display(Name = "Event Title")]
+		[Required]
+		public int EventId { get; set; }
+
+		[Display(Name = "Ticket")]
+		[Required]
+		public ParticipantType Ticket { get; set; }
+
+		[Display(Name = "Unit Price")]
+		[Required]
+		public float Price { get; set; }
+
+		[Display(Name = "Quantity")]
+		[Required]
+		public int Quantity { get; set; }
+	}
+
+	public class PurchasePublicEventModel 
+	{
+		public int EventId { get; set; }
+
+		public bool IndividualTicket { get; set; }
+
+		public bool GroupTicket { get; set; }
+
+		public bool AgencyTicket { get; set; }
+
+		public int GroupTicketQuantity { get; set; }
+
+		public int AgencyTicketQuantity { get; set; }
+
+		public int UserId { get; set; } 
+	}
 }

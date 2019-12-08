@@ -19,7 +19,7 @@
 						filter.EventTitle = $('#Filter_EventTitle').val();
 						filter.EventStatus = $('#Filter_EventStatus').val();
                         filter.RefNo = $('#Filter_RefNo').val();
-                        filter.Venue = $('#Filter_Venue').val();
+						filter.Venue = $('#Filter_Venue').val();
                     }
                 },
 				columns: [
@@ -85,7 +85,7 @@
       //              },
                     {
                         data: 'EventStatusDesc',
-						sortable: false,
+						sortable: true,
 						render: function (data, type, row, meta) {
 						 if (row.EventStatus == 0) {
                                 return "<span class='color-blue font-weight-bold'> Draft </span>";

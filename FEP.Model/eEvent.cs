@@ -601,5 +601,19 @@ namespace FEP.Model
 		public virtual EventRequest EventRequest { get; set; }
 	}
 
+	[Table("PublicEventPurchaseItem")]
+	public class PublicEventPurchaseItem
+	{
+		[Key]
+		public int ID { get; set; }
+		public int UserId { get; set; }
+		public int? PurchaseOrderId { get; set; }
+		public int EventId { get; set; }
+		public ParticipantType Ticket { get; set; }
+		public float Price { get; set; }
+		public int Quantity { get; set; }
+
+	}
+
 
 }

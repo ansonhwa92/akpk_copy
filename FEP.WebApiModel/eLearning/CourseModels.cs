@@ -294,4 +294,29 @@ namespace FEP.WebApiModel.eLearning
         public string IntroImageFileName { get; set; }
 
     }
+
+    public class ReturnMyCoursesModel
+    {
+        public string Keyword { get; set; }
+
+        public string Sorting { get; set; }
+
+        public int LastIndex { get; set; }
+
+        public int ItemCount { get; set; }
+
+        public List<ReturnElearningModel> CoursesList { get; set; }
+
+        //public int Id { get; set; }
+        //public int CategoryId { get; set; }
+        //public string Title { get; set; }
+        //public string Description { get; set; }
+        //public CourseLanguage Language { get; set; }
+        //public decimal Price { get; set; }
+        //public string Instructor { get; set; }
+        //public int TotalStudent { get; set; }
+        //public CourseStatus Status { get; set; }
+        //public string IntroImageFileName { get; set; }
+
+    }
 }

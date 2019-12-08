@@ -95,6 +95,7 @@
             </div>
         }
     </div>
+
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
         <thead>
@@ -181,13 +182,29 @@
                             var action = "";
 
                             var cancreate = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseCreate));
+                            var cancreateGroup = @Json.Encode(CurrentUser.HasAccess(UserAccess.CourseDiscussionGroupCreate));
 
                             action = '<div class="icon-action">';
 
-                            if (cancreate) {
-                                action += '<a href="@Url.Action("Index", "CourseEnrollments", new { area = "eLearning" })?courseId=' + @Model.Filters.CourseId + "&courseEventId=" + row.CourseEventId +
-                                    '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye "></i></a>&nbsp;';
+                            if (cancreate || cancreateGroup) {
+                                action += '<a href="@Url.Action("Index", "CourseEnrollments", new { area = "eLearning" })?courseId=' +
+                                        @Model.Filters.CourseId + "&courseEventId=" + row.CourseEventId +
+                                    '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>';
+
+                                action += '<a href="@Url.Action("Invitation", "CourseEvents", new { area = "eLearning" })?courseEventId=' +
+                                        row.CourseEventId + "&eventName=" + encodeURIComponent(row.Name) +
+                                        "&courseTitle=" + encodeURIComponent("@ViewBag.CourseTitle") +
+                                        '" data-toggle="tooltip" data-placement="top" title="View Invitations"><i class="la la-users"></i></a>';
+
+                                action += '<a href="@Url.Action("InviteLearners", "CourseEvents", new { area = "eLearning" })?courseId=' +
+                                        @Model.Filters.CourseId + "&eventId=" + row.CourseEventId + "&enrollmentCode=" + encodeURIComponent(row.EnrollmentCode) +
+                                        "&title=" + encodeURIComponent("@ViewBag.CourseTitle") +
+                                        '" data-toggle="tooltip" data-placement="top" title="Invite"><i class="la la-envelope"></i></a>&nbsp;';
+
                             }
+
+                            action += "</div>";
+                            console.log(action);
 
                             return action;
                         }

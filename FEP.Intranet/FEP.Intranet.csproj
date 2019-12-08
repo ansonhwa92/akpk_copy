@@ -21,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44360</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -619,6 +622,7 @@
     <Content Include="js\survey-builder-init-readonly.js" />
     <Content Include="js\survey-builder-init.js" />
     <Content Include="js\survey-tester-init.js" />
+    <Content Include="js\tinymce_cfg.js" />
     <Content Include="js\tmpl.min.js" />
     <Content Include="js\vendor\jquery.ui.widget.js" />
     <Content Include="lib\animate\animate.css" />
@@ -881,7 +885,7 @@
     <Content Include="Areas\eLearning\Views\CourseContents\_createAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\Courses\Trainers.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_defaultContent.cshtml" />
-    <Content Include="Areas\eLearning\Views\Courses\_Add.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddIndividual.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewAssignment.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_viewTest.cshtml" />
     <Content Include="Areas\eLearning\Views\CourseContents\_detailVideo.cshtml" />
@@ -1087,6 +1091,30 @@
     <Content Include="Areas\eEvent\Views\Home\EventSelectTicket.cshtml" />
     <Content Include="Areas\eEvent\Views\Home\PurchasePublicEvent.cshtml" />
     <Content Include="Areas\KMC\Views\Home\_Content.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\MyCourses.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddCompany.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_AddStaff.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\_Details.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_AddCompany.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_AddIndividual.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\_AddStaff.cshtml" />
+    <Content Include="css\fonts\02_APompadourTextSample.otf" />
+    <Content Include="css\fonts\02_APompadourTextSample.ttf" />
+    <Content Include="css\fonts\03_APompadourBoldSample.otf" />
+    <Content Include="css\fonts\03_APompadourBoldSample.ttf" />
+    <Content Include="css\fonts\ARyalBlackBlock.ttf" />
+    <Content Include="css\fonts\adam_gorry_inline.otf" />
+    <Content Include="css\fonts\adam_gorry_lights.otf" />
+    <Content Include="css\fonts\AdmirationPains.ttf" />
+    <Content Include="css\fonts\BadStories.ttf" />
+    <Content Include="css\fonts\Badang.ttf" />
+    <Content Include="css\fonts\BadangItalic.ttf" />
+    <Content Include="css\fonts\BadlyStamped.ttf" />
+    <Content Include="css\fonts\BEBAS.TTF" />
+    <Content Include="css\fonts\HellsRiderDecay.ttf" />
+    <Content Include="css\fonts\TheInboxSt.ttf" />
+    <Content Include="css\fonts\ZiGzAgEo-Reg-FFP.ttf" />
+    <Content Include="Areas\eLearning\Views\CourseEvents\Invitation.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

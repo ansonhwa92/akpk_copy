@@ -102,12 +102,18 @@
                     <div>
                         <div class="row">
                             @{ if ((Model.Status == CourseStatus.Draft || Model.Status == CourseStatus.Amendment) &&
-(CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                 (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                 {
                                     <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "CourseModules", new { area = "eLearning", id = @Model.Id })">Edit Module</a>
                                 }
+
+                                if (Model.Status != CourseStatus.Published && (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
+                                {
+                                    <a class="btn btn-secondary m-2" href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+
+                                }
                             }
-                            <a class="btn btn-secondary m-2" href="@Url.Action("View", "CourseModules", new { area = "eLearning", id = @Model.Id })">View as learner</a>
+
                         </div>
                     </div>
                     <hr />
@@ -187,7 +193,7 @@
                                                               (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) ||
                                                               CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                                                     {
-                                                        <div class="col-sm-4 ">
+                                                        <div class="col-sm-4">
                                                             <div class="row float-right">
                                                                 <a href="@Url.Action($"View", "CourseContents", new { area = "eLearning", id = content.Id })"
                                                                    data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>
@@ -196,7 +202,7 @@
                                                                 <a href="@Url.Action($"Delete", "CourseContents", new { area = "eLearning", id = content.Id })"
                                                                    data-toggle="tooltip" data-placement="top" title="Delete"><i class="la la-trash-o"></i></a>
 
-                                                                <div class="pl-2">
+                                                                <div class="pl-2 pr-3">
                                                                     <i class="fa fa-bars handle color-blue" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Reorder"></i>
                                                                 </div>
                                                             </div>

@@ -76,20 +76,24 @@ namespace FEP.Model
 		EventReception = 1005,
 		//--------/Untuk Button Sahaja----//
 
+        //--------Untuk Notification Receiver-------//
+        [Display(Name = "Media Interview - Submit")]
+        Submit_MediaInterview = 1011,
 
-		//--------Untuk Notification Receiver-------//
-		[Display(Name = "Media Interview - Submit")]
-		Submit_MediaInterview = 1011,
-		[Display(Name = "Media Interview - Verify")]
-		Verify_MediaInterview = 1012,
-		[Display(Name = "Media Interview -  Approve (Level 1)")]
-		Approver1_MediaInterview = 1013,
-		[Display(Name = "Media Interview -  Approve (Level 2)")]
-		Approver2_MediaInterview = 1014,
-		[Display(Name = "Media Interview -  Approve (Level 3)")]
-		Approver3_MediaInterview = 1015,
-		[Display(Name = "Media Interview - Require Amendment")]
-		RequireAmendment_MediaInterview = 1016,
+        [Display(Name = "Media Interview - Verify")]
+        Verify_MediaInterview = 1012,
+
+        [Display(Name = "Media Interview -  Approve (Level 1)")]
+        Approver1_MediaInterview = 1013,
+
+        [Display(Name = "Media Interview -  Approve (Level 2)")]
+        Approver2_MediaInterview = 1014,
+
+        [Display(Name = "Media Interview -  Approve (Level 3)")]
+        Approver3_MediaInterview = 1015,
+
+        [Display(Name = "Media Interview - Require Amendment")]
+        RequireAmendment_MediaInterview = 1016,
 
 		[Display(Name = "Exhibition RoadShow - Submit")]
 		Submit_ExhibitionRoadShow = 1017,
@@ -247,7 +251,10 @@ namespace FEP.Model
         CourseCreate,
 
         [Display(Name = "Course - View")]
-        CourseView,
+        CourseNonLearnerView,  // for main index, verify and approval view
+
+        [Display(Name = "Course - View")]
+        CourseView, // only viewing actual course.
 
         [Display(Name = "Course - Edit")]
         CourseEdit,
@@ -410,6 +417,7 @@ namespace FEP.Model
 
         [Display(Name = "Settings - Error Logs - Delete")]
         ErrorLogDelete = 4042,
+
         [Display(Name = "Settings - User Account")]
         UserAccountSetting = 4043,
 

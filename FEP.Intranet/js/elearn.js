@@ -52,9 +52,10 @@ function uploadFile(url, file, callback) {
 // for document
 function convertDocument(url, fileName, fileType, courseId, callback) {
 
-    url = "/eLearning/File/DocToHTML";
+    //url = "/eLearning/File/DocToHTML";
+    
 
-    console.log(fileType, courseId, fileName);
+    console.log(url, fileType, courseId, fileName);
 
     $.ajax({
         url: url,
@@ -84,7 +85,8 @@ function convertDocument(url, fileName, fileType, courseId, callback) {
 // for document type - select from existing doc in courses
 function getDoc(contentId, callback) {
 
-    url = "/eLearning/File/GetDoc";
+    //url = "/eLearning/File/GetDoc";
+    url = getDocUrl;
 
     //console.log(fileType, courseId, fileName);
 
@@ -112,9 +114,10 @@ function getDoc(contentId, callback) {
 // for document type - select from existing doc in courses
 function getSlideshare(newUrl, callback) {
 
-    url = "/eLearning/CourseContents/GetSlideshare";
-
-
+    //url = "/eLearning/CourseContents/GetSlideshare";
+    var url = getSlideShareUrl;
+    console.log("url ss : ", url);
+    
     $.ajax({
         url: url,
         data: {

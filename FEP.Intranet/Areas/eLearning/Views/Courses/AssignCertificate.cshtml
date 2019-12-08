@@ -85,6 +85,8 @@
                                                 <div class="box-contain" onclick="assignBackground(@item.Id)">
                                                     <div class="card text-center active">
                                                         <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage })" height="100" width="150" id="FileUploadId" /></span>
+                                                        <br />
+                                                        <span>@Html.DisplayFor(model => item.Name)</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -96,6 +98,8 @@
                                                 <div class="box-contain" onclick="assignBackground(@item.Id)">
                                                     <div class="card text-center">
                                                         <span> <img src="@Url.Action("GetImg", "FileUpload", new { area = "eLearning", fileName = item.FileUpload.FileNameOnStorage })" height="100" width="150" id="FileUploadId" /></span>
+                                                        <br />
+                                                        <span>@Html.DisplayFor(model => item.Name)</span>   
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,7 +123,7 @@
                                         <div class="col-lg-4">
                                             <div class="box-contain" onclick="assignTemplate(@item.Id)">
                                                 <div class="card text-center active">
-                                                    @Html.DisplayFor(model => item.Description) -
+                                                    @Html.DisplayFor(model => item.Name) -
                                                     @Html.DisplayFor(model => item.TypePageOrientation)
                                                 </div>
                                             </div>
@@ -130,7 +134,7 @@
                                         <div class="col-lg-4">
                                             <div class="box-contain" onclick="assignTemplate(@item.Id)">
                                                 <div class="card text-center">
-                                                    @Html.DisplayFor(model => item.Description) -
+                                                    @Html.DisplayFor(model => item.Name) -
                                                     @Html.DisplayFor(model => item.TypePageOrientation)
                                                 </div>
                                             </div>

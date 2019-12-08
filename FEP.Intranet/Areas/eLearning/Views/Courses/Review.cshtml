@@ -255,10 +255,13 @@
             font-size: 0.875rem !important;
             box-shadow: none !important;
         }
+
+        .form-container {
+            max-width: none !important;
+        }
     </style>
 
 @section ContentScript {
-    @Scripts.Render("~/bundles/jqueryval")
 
     <link href="~/Scripts/summernote/summernote-lite.css" rel="stylesheet" />
     <script src="~/Scripts/summernote/summernote-lite.min.js"></script>

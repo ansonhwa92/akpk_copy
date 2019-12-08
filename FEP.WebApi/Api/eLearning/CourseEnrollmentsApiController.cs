@@ -543,24 +543,57 @@ namespace FEP.WebApi.Api.eLearning
             if (!String.IsNullOrEmpty(enrollmentCode))
             {
                 var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.CourseId == id &&
-                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase));
+                    x.EnrollmentCode.Equals(enrollmentCode, StringComparison.OrdinalIgnoreCase) &&
+                    !x.IsTrial);
 
                 if (courseEvent != null)
                 {
                     var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == id &&
                         x.CourseEventId == courseEvent.Id && x.Learner.User.Id == userId);
 
+                    //wawa - find progress to continue
+                    var progress = db.CourseProgress.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderByDescending(x => x.CreatedDate).Take(1).FirstOrDefault();
+
+                    var contentId = 0;
+                    if (progress != null)
+                        contentId = progress.ContentId;
+
                     if (enrollment != null)
-                        return Ok(enrollment);
+                        return Ok(new UserCourseEnrollmentModel
+                        {
+                            Id = enrollment.Id,
+                            StudentName = enrollment.Learner.User.Name,
+                            Status = enrollment.Status,
+                            CompletionDate = enrollment.CompletionDate.ToString(),
+                            CourseEventId = enrollment.CourseEventId,
+                             CourseProgressCount = enrollment.CourseProgress.Count(),
+                            ProgressCourseContentId = contentId
+                        });
                 }
             }
             else
             {
                 var enrollment = db.Enrollments.Where(x => x.Learner.User.Id == userId &&
-                            x.CourseId == id).OrderBy(x => x.CreatedDate).FirstOrDefault();
+                            x.CourseId == id && !x.CourseEvent.IsTrial && x.Status != EnrollmentStatus.Withdrawn).OrderBy(x => x.CreatedDate).FirstOrDefault();
+
+                //wawa - find progress to continue
+                var progress = db.CourseProgress.Where(x => x.Learner.User.Id == userId && x.CourseId == id).OrderByDescending(x => x.CreatedDate).Take(1).FirstOrDefault();
+
+                var contentId = 0;
+                if (progress != null)
+                    contentId = progress.ContentId;
 
                 if (enrollment != null)
-                    return Ok(enrollment);
+                    return Ok(new UserCourseEnrollmentModel
+                    {
+                        Id = enrollment.Id,
+                        StudentName = enrollment.Learner.User.Name,
+                        Status = enrollment.Status,
+                        CompletionDate = enrollment.CompletionDate.ToString(),
+                        CourseEventId = enrollment.CourseEventId,
+                        CourseProgressCount = enrollment.CourseProgress.Count(),
+                        ProgressCourseContentId = contentId
+                    });
             }
 
             return BadRequest();
@@ -582,6 +615,102 @@ namespace FEP.WebApi.Api.eLearning
                 return Ok(history);
 
             return BadRequest();
+        }
+
+        [Route("api/eLearning/CourseEnrollments/RequestWithdraw")]
+        [HttpGet]
+        public async Task<IHttpActionResult> RequestWithdraw(int courseId, int userId)
+        {
+            var learner = await db.Learners.FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (learner == null)
+            {
+                return BadRequest("No learner found");
+            }
+
+            var course = await db.Courses.FirstOrDefaultAsync(x => x.Id == courseId);
+
+            if (course == null)
+                return BadRequest("No course found");
+
+            var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.Learner.User.Id == userId &&
+                x.CourseId == courseId && x.Status == EnrollmentStatus.Enrolled &&
+                !x.CourseEvent.IsTrial);
+
+            if (enrollment == null)
+                return BadRequest("No enrollment found.");
+
+            var courseEvent = await db.CourseEvents.FirstOrDefaultAsync(x => x.Id == enrollment.CourseEventId);
+
+            if (courseEvent == null)
+                return BadRequest("No course session found");
+
+            // free course can always withdraw
+            if (course.IsFree)
+            {
+                enrollment.Status = EnrollmentStatus.Withdrawn;
+
+                enrollment.EnrollmentHistories.Add(
+                    new EnrollmentHistory
+                    {
+                        LearnerId = learner.Id,
+                        Remark = "Withdraw from course",
+                        Status = EnrollmentStatus.Withdrawn,
+                        UserId = userId,
+                    }
+                );
+
+                db.SetModified(enrollment);
+
+                await db.SaveChangesAsync();
+
+                return Ok(new TrxResult<Enrollment>
+                {
+                    CourseId = courseId,
+                    CourseTitle = course.Title,
+                    IsSuccess = true,
+                    Message = $"User {learner.User.Name} Withdraw from the course {course.Title}",
+                });
+            }
+            else
+            {
+                if (enrollment.PercentageCompleted < courseEvent.AllowablePercentageBeforeWithdraw)
+                {
+                    enrollment.Status = EnrollmentStatus.Withdrawn;
+
+                    enrollment.EnrollmentHistories.Add(
+                        new EnrollmentHistory
+                        {
+                            LearnerId = learner.Id,
+                            Remark = "Withdraw from course",
+                            Status = EnrollmentStatus.Withdrawn,
+                            UserId = userId,
+                        }
+                    );
+
+                    await db.SaveChangesAsync();
+
+                    // TODO : REFUND??
+
+                    return Ok(new TrxResult<Enrollment>
+                    {
+                        CourseId = courseId,
+                        CourseTitle = course.Title,
+                        IsSuccess = true,
+                        Message = $"User {learner.User.Name} Withdraw from the course {course.Title}",
+                    });
+                }
+                else
+                {
+                    return Ok(new TrxResult<Enrollment>
+                    {
+                        CourseId = courseId,
+                        CourseTitle = course.Title,
+                        IsSuccess = false,
+                        Message = $"User {learner.User.Name} request withdraw from the course {course.Title} unsuccessfull due to more than allowablepercentagetoWitdhraw",
+                    });
+                }
+            }
         }
     }
 }

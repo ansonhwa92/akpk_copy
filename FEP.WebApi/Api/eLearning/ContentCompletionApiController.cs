@@ -48,8 +48,9 @@ namespace FEP.WebApi.Api.eLearning
                 else
                 {
                     // get next module
+                    var currentModule = db.CourseModules.Find(currentContent.CourseModuleId);
                     var nextModule = await db.CourseModules.Where(x => x.CourseId == request.CourseId &&
-                        x.Order > currentContent.CourseModuleId).OrderBy(x => x.Order).FirstOrDefaultAsync();
+                            x.Order > currentModule.Order).OrderBy(x => x.Order).FirstOrDefaultAsync();
 
                     if (nextModule == null)
                     {
@@ -58,7 +59,6 @@ namespace FEP.WebApi.Api.eLearning
                     }
                     else
                     {
-                        // Wrong
                         request.nextModuleId = nextModule.Id;
                         request.nextContentId = null;
                     }
@@ -91,7 +91,8 @@ namespace FEP.WebApi.Api.eLearning
                         return BadRequest();
                     }
 
-                    var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == request.CourseId && x.LearnerId == learner.Id);
+                    var enrollment = await db.Enrollments.FirstOrDefaultAsync(x => x.CourseId == request.CourseId &&
+                        x.LearnerId == learner.Id && !x.CourseEvent.IsTrial && (x.Status == EnrollmentStatus.Enrolled || x.Status == EnrollmentStatus.Completed));
 
                     if (enrollment == null)
                     {
@@ -107,7 +108,7 @@ namespace FEP.WebApi.Api.eLearning
                         return BadRequest();
                     }
 
-                    var courseProgress = await db.CourseProgress.FirstOrDefaultAsync(x => x.ModuleId == currentContent.CourseModuleId &&
+                    var courseProgress = enrollment.CourseProgress.FirstOrDefault(x => x.ModuleId == currentContent.CourseModuleId &&
                      x.ContentId == request.ContentId && x.LearnerId == learner.Id);
 
                     if (courseProgress == null)

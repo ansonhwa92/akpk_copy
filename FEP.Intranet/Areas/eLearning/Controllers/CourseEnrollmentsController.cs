@@ -17,7 +17,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
     {
         public const string EnrollAsync = "eLearning/CourseEnrollments/EnrollAsync";
         public const string UserDetails = "eLearning/CourseEnrollments/GetUserDetails";
+        public const string GetEnrollment = "eLearning/CourseEnrollments/GetEnrollment";
         public const string GetEnrollmentHistoryByCourse = "eLearning/CourseEnrollments/GetEnrollmentHistoryByCourse";
+        public const string RequestWithdraw = "eLearning/CourseEnrollments/RequestWithdraw";
     }
 
     public class CourseEnrollmentsController : FEPController
@@ -134,7 +136,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             if (response.isSuccess)
             {
-                if (response.Data)
+                //if (response.Data == false) // testing fix - CONTINuE FIX HERE
+                if (response.Data == true)
                 {
                     TempData["ErrorMessage"] = "You are already enrolled to this course.";
 
@@ -179,7 +182,7 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                             Link = this.Url.AbsoluteAction("View", "Courses", new { id = courseId }),
                         },
 
-                        LearnerUserId = currentUserId,
+                        SenderId = currentUserId,
                         ReceiverType = ReceiverType.UserIds,
                         IsNeedRemainder = false,
                     };
@@ -231,6 +234,52 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
 
             //    return RedirectToAction("Content", "Courses", new { area = "eLearning", @id = id });
             //}
+        }
+
+        /// <summary>
+        /// Participan Request to Withdraw the course
+        /// - if free course - can always withdraw
+        /// - otherwise, check agains allowable course completion before withdraw       ///
+        /// </summary>
+        /// <param name="id"></param> This is courseId
+        /// <returns></returns>
+        [HasAccess(UserAccess.CourseView)]
+        public async Task<ActionResult> RequestWithdraw(int id)
+        {
+            var currentUserId = CurrentUser.UserId.Value;
+
+            // check for allowable to withdraw
+            // check on payment
+            var response = await WepApiMethod.SendApiAsync<TrxResult<Enrollment>>(HttpVerbs.Get, CourseEnrollmentApiUrl.RequestWithdraw + $"?courseId={id}&userId={currentUserId}");
+
+            if (response.isSuccess)
+            {
+                if (response.Data.IsSuccess)
+                {
+                    await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
+
+                    await Notifier.UserWithdrawFromCourse(id, currentUserId, CurrentUser.Name,
+                         Url.AbsoluteAction("Content", "Course", new { id = id }));
+
+                    TempData["SuccessMessage"] = "You have withdrawn from the course.";
+
+                    return RedirectToAction("View", "Courses", new { area = "eLearning", @id = id });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Could not withdraw from the course.";
+                    await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, response.Data.Message, id);
+
+                    return RedirectToAction("View", "Courses", new { area = "eLearning", @id = id });
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Could not withdraw from the course.";
+                await LogActivity(Modules.Learning, ElearningActivity.UserRequestWithdrawal, "Witdrawal failed. Reason : " + response.Data, id);
+
+                return RedirectToAction("View", "Courses", new { area = "eLearning", @id = id });
+            }
         }
 
         protected override void Dispose(bool disposing)

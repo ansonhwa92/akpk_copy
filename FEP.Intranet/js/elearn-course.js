@@ -215,7 +215,6 @@ $('#Url').on('change', function () {
 
 function validateForm() {
 
-
     var contentType = $('#ContentType').val();
 
     if (contentType == 'IFrame') {

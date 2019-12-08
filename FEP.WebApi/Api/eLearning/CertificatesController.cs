@@ -68,6 +68,7 @@ namespace FEP.WebApi.Api.eLearning
             CreateBackgroundModel model = new CreateBackgroundModel
             {
                 Id = bg.Id,
+                Name = bg.Name,
                 Description = bg.Description,
                 FileUpload = bg.FileUpload,
                 TypePageOrientation = bg.TypePageOrientation
@@ -90,6 +91,7 @@ namespace FEP.WebApi.Api.eLearning
             CreateTemplateModel model = new CreateTemplateModel
             {
                 Id = temp.Id,
+                Name = temp.Name,
                 Description = temp.Description,
                 Template = temp.Template,
                 TypePageOrientation = temp.TypePageOrientation
@@ -111,6 +113,7 @@ namespace FEP.WebApi.Api.eLearning
 
             var cert = new CourseCertificate
             {
+                Name = model.Name,
                 Description = model.Description,
                 BackgroundImageFilename =  model.FileName,
                 FileUploadId = model.FileUploadId.Value,
@@ -133,6 +136,7 @@ namespace FEP.WebApi.Api.eLearning
 
             var temp = new CourseCertificateTemplate
             {
+                Name = model.Name,
                 Description = model.Description,
                 Template = model.Template,
                 TypePageOrientation = model.TypePageOrientation
@@ -156,6 +160,7 @@ namespace FEP.WebApi.Api.eLearning
 
                 if (cert != null)
                 {
+                    cert.Name = model.Name;
                     cert.Description = model.Description;
                     cert.TypePageOrientation = model.TypePageOrientation;
 
@@ -179,6 +184,7 @@ namespace FEP.WebApi.Api.eLearning
 
                 if (temp != null)
                 {
+                    temp.Name = model.Name;
                     temp.Description = model.Description;
                     temp.Template = model.Template;
                     temp.TypePageOrientation = model.TypePageOrientation;
@@ -199,7 +205,7 @@ namespace FEP.WebApi.Api.eLearning
 
             if (cert != null)
             {
-                string ptitle = cert.Description;
+                string ptitle = cert.Name;
 
                 db.CourseCertificates.Remove(cert);
 
@@ -218,7 +224,7 @@ namespace FEP.WebApi.Api.eLearning
 
             if (temp != null)
             {
-                string ptitle = temp.Description;
+                string ptitle = temp.Name;
 
                 db.CourseCertificateTemplates.Remove(temp);
 

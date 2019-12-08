@@ -1,5 +1,4 @@
 ﻿using FEP.Helper;
-using FEP.Model;
 using FEP.Model.eLearning;
 using FEP.WebApiModel.Administration;
 using System.Collections.Generic;
@@ -74,7 +73,6 @@ namespace FEP.WebApiModel.eLearning
         public string CreatedBy { get; set; }
     }
 
-
     public class ReturnListCourseEventModel
     {
         public FilterCourseEventModel Filters { get; set; }
@@ -92,8 +90,8 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public string Name { get; set; }
-        public int CourseId { get; set; }
 
+        public int CourseId { get; set; }
     }
 
     public class ReturnBriefCourseEventModel : BaseModel
@@ -109,7 +107,44 @@ namespace FEP.WebApiModel.eLearning
 
         [Display(Name = "Group", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public string Group { get; set; }
+
         [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
         public int CourseEventId { get; set; }
+
+        public string CourseTitle { get; set; }
+    }
+
+    public class ReturnListCourseInvitationModel
+    {
+        public FilterCourseInvitationModel Filters { get; set; }
+        public ReturnBriefCourseInvitationModel CourseInvitations { get; set; }
+    }
+
+    // class for setting and returning filters for the datatable list of publications
+    public class FilterCourseInvitationModel : DataTableModel
+    {
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+
+        public string Email { get; set; }
+
+        public int CourseId { get; set; }
+    }
+
+    public class ReturnBriefCourseInvitationModel : BaseModel
+    {
+        [Display(Name = "Name", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public string Name { get; set; }
+
+        public string Email { get; set; } // invited or enrolled?
+
+        public EnrollmentStatus Status { get; set; } // invited or enrolled?
+
+        [Display(Name = "Session", ResourceType = typeof(Language.eLearning.CourseEvent))]
+        public int CourseEventId { get; set; }
+
+        public string CourseTitle { get; set; }
+        public int CourseId { get; set; }
+        public int EnrollmentCode { get; set; }
     }
 }

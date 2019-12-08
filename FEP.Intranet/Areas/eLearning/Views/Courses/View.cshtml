@@ -107,7 +107,8 @@
                             {
                                 if (!String.IsNullOrEmpty(Model.EnrollmentCode))
                                 {
-                                    <label class="control-label m-2" for="EnrollmentCode" value="Enrollment Code">Enrollment Code : @Model.EnrollmentCode</label>
+                                    <label class="control-label" for="EnrollmentCode" value="Enrollment Code">Enrollment Code </label>
+                                    <input class="form-control" value="@Model.EnrollmentCode" />
                                     <br />
                                 }
                             }
@@ -128,12 +129,12 @@
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">Start the course</a>
                                 }
 
-                                @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled)
+                                @if (Model.Status == CourseStatus.Published && Model.IsUserEnrolled && ViewBag.EnrollmentStatus != EnrollmentStatus.Completed)
                                 {
                                     <button class="btn btn-secondary m-2" id="btnWithdraw" type="button" onclick="withdraw()">Withdraw</button>
                                 }
 
-                                @if (Model.Status != CourseStatus.Published || CurrentUser.HasAccess(UserAccess.CourseCreate))
+                                @if (CurrentUser.HasAccess(UserAccess.CourseNonLearnerView))
                                 {
                                     <a class="btn btn-secondary m-2" href="~/eLearning/Courses/Start/@Model.Id">View as Learner</a>
                                 }

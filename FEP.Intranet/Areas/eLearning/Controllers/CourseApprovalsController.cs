@@ -6,6 +6,7 @@ using FEP.WebApiModel.eLearning;
 using FEP.WebApiModel.SLAReminder;
 using System;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FEP.Intranet.Areas.eLearning.Controllers
@@ -33,6 +34,9 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
             }
 
             var model = await CoursesController.TryGetFrontCourse(id.Value);
+
+            model.Description = HttpUtility.HtmlDecode(model.Description);
+            model.Objectives = HttpUtility.HtmlDecode(model.Objectives);
 
             if (model == null)
             {

@@ -125,7 +125,7 @@
 
                     <div>
                         <div class="row">
-                            @if (Model.Status != CourseStatus.Cancelled)
+                            @if (Model.Status != CourseStatus.Cancelled && (CurrentUser.HasAccess(FEP.Model.UserAccess.CourseCreate) || CurrentUser.HasAccess(FEP.Model.UserAccess.CourseEdit)))
                             {
                                 <a class="btn btn-secondary m-2" href="@Url.Action("Edit", "Courses", new { area = "eLearning", id = @Model.Id })">Edit course info</a>
                             }

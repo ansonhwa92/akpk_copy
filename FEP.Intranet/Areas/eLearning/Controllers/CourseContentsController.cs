@@ -473,7 +473,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                 }
 
                 // check if user is enrolled. If not enrolled cannot see content
-                if ((content.Status == CourseStatus.Published && IsUserEnrolled) || content.Status != CourseStatus.Published || CurrentUser.HasAccess(UserAccess.CourseCreate))
+                if ((content.Status == CourseStatus.Published && IsUserEnrolled) || 
+                    (content.Status != CourseStatus.Published && CurrentUser.HasAccess(UserAccess.CourseNonLearnerView)))
                 {
                     switch (content.ContentType)
                     {

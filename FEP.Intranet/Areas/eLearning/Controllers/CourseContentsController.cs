@@ -595,9 +595,8 @@ namespace FEP.Intranet.Areas.eLearning.Controllers
                     return View(content);
                 }
             }
-            else
-            {
-                TempData["ErrorMessage"] = "Could not find the content.";
+
+            TempData["ErrorMessage"] = "Could not find the content.";
 
             return Redirect(Request.UrlReferrer.ToString());
         }

@@ -1098,6 +1098,9 @@
     <Content Include="css\fonts\TheInboxSt.ttf" />
     <Content Include="css\fonts\ZiGzAgEo-Reg-FFP.ttf" />
     <Content Include="Areas\eLearning\Views\CourseEvents\Invitation.cshtml" />
+    <Content Include="Areas\eLearning\Views\Courses\AdditionalInput.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseEnrollments\AdditionalInput.cshtml" />
+    <Content Include="Areas\eLearning\Views\CourseContents\Questions.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />

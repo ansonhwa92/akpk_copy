@@ -104,6 +104,7 @@
 
         var creatorOptions = {
             showEmbededSurveyTab: false,
+            showTestSurveyTab: false,
             showPropertyGrid: false,
             showOptions: false,
             isAutoSave: true,
@@ -111,6 +112,11 @@
             questionTypes: ["text", "checkbox", "radiogroup", "dropdown", "rating"]
         };
         var surveyCreator = new SurveyCreator.SurveyCreator("creatorElement", creatorOptions);
+
+        var curLocale = SurveyCreator.localization.currentLocale;
+        var curStrings = SurveyCreator.localization.getLocale("");
+        curStrings.ed.designer = "Question Designer";
+        curStrings.ed.jsonEditor = "Text Editor";
 
         $(document).ready(function () {
 

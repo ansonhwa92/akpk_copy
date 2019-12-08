@@ -122,9 +122,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://surveyjs.azureedge.net/1.1.6/survey-creator.js"></script>
-    <script type="text/javascript" src="@BaseURL/js/survey-builder-init.js"></script>
+    @*<script type="text/javascript" src="@BaseURL/js/survey-builder-init.js"></script>*@
 
     <script>
+
+        SurveyCreator
+            .StylesManager
+            .applyTheme("bootstrap");
+
+        var creatorOptions = {
+            showEmbededSurveyTab: false,
+            showTestSurveyTab: true,
+            showPropertyGrid: false,
+            showOptions: false,
+            isAutoSave: true,
+            showState: true
+        };
+        var surveyCreator = new SurveyCreator.SurveyCreator("creatorElement", creatorOptions);
+
+        var curLocale = SurveyCreator.localization.currentLocale;
+        var curStrings = SurveyCreator.localization.getLocale("");
+        curStrings.ed.designer = "Quiz Designer";
+        curStrings.ed.testSurvey = "Test Quiz";
+        curStrings.ed.jsonEditor = "Text Editor";
 
         var editorDefinition = SurveyCreator.SurveyQuestionEditorDefinition.definition["selectbase"];
         if (!editorDefinition.tabs) editorDefinition.tabs = [];

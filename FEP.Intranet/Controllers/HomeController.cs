@@ -3,6 +3,7 @@ using FEP.Model;
 using FEP.WebApiModel.Administration;
 using FEP.WebApiModel.Home;
 using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.Carousel;
 using FEP.WebApiModel.Setting;
 using FEP.WebApiModel.SLAReminder;
 using Newtonsoft.Json;
@@ -33,10 +34,12 @@ namespace FEP.Intranet.Controllers
 
 
             var Publications = await GetTopPublicationList(2);
+            var Carousels = await GetCarouselList();
 
             LandingPageModel model = new LandingPageModel()
             {
-                PublicationTopList = Publications
+                PublicationTopList = Publications,
+                CarouselList = Carousels
             };
 
             return View(model);
@@ -636,6 +639,18 @@ namespace FEP.Intranet.Controllers
         public async Task<List<ReturnPublicationModel>> GetTopPublicationList(int totalRecord)
         {
             var response = await WepApiMethod.SendApiAsync<List<ReturnPublicationModel>>(HttpVerbs.Get, $"RnP/Publication/PublicationTopList?totalRecord={totalRecord}");
+
+            if (response.isSuccess)
+            {
+                return response.Data;
+            }
+
+            return null;
+        }
+
+        public async Task<List<CreateCarouselModel>> GetCarouselList()
+        {
+            var response = await WepApiMethod.SendApiAsync<List<CreateCarouselModel>>(HttpVerbs.Get, $"Carousels/Carousel");
 
             if (response.isSuccess)
             {

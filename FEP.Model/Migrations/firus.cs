@@ -57,7 +57,7 @@ namespace FEP.Model.Migrations
                     Code = "MFM1234",
                     MoneyValue = 10,
                     PercentageValue = 0,
-                    ExpiryDate = DateTime.Parse("31-12-2019 23:59:59"),
+                    ExpiryDate = DateTime.Parse("2019-12-31 23:59:59"),
                     Used = false
                 });
                 db.PromotionCode.Add(new PromotionCode
@@ -65,7 +65,7 @@ namespace FEP.Model.Migrations
                     Code = "MFM5678",
                     MoneyValue = 20,
                     PercentageValue = 0,
-                    ExpiryDate = DateTime.Parse("30-09-2019 23:59:59"),
+                    ExpiryDate = DateTime.Parse("2019-09-30 23:59:59"),
                     Used = false
                 });
             }

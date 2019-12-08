@@ -245,6 +245,11 @@ namespace FEP.Model
         //CTE
         public DbSet<Months> Months { get; set; }
 
+        //Carousel
+        public DbSet<Carousel> Carousel { get; set; }
+        public DbSet<CarouselImages> CarouselImages { get; set; }
+        public DbSet<CarouselFile> CarouselFile { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

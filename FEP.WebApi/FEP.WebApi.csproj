@@ -163,6 +163,7 @@
     <Compile Include="Api\Administration\CompanyController.cs" />
     <Compile Include="Api\Administration\CountryController.cs" />
     <Compile Include="Api\Administration\DepartmentController.cs" />
+    <Compile Include="Api\Carousels\CarouselController.cs" />
     <Compile Include="Api\eEvent\EventAttendentController.cs" />
     <Compile Include="Api\eLearning\AppSettings.cs" />
     <Compile Include="Api\eLearning\CourseApprovalsApiController.cs" />

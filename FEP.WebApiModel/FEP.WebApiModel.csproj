@@ -76,6 +76,7 @@
     <Compile Include="Administration\State.cs" />
     <Compile Include="Administration\User.cs" />
     <Compile Include="Auth\Registration.cs" />
+    <Compile Include="Carousel\Carousel.cs" />
     <Compile Include="Commerce\Cart.cs" />
     <Compile Include="eEvent\DutyRoster.cs" />
     <Compile Include="eEvent\EventAgenda.cs" />

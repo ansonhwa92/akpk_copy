@@ -1,5 +1,6 @@
 ﻿using FEP.Model;
 using FEP.WebApiModel.RnP;
+using FEP.WebApiModel.Carousel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,5 +15,6 @@ namespace FEP.WebApiModel.Home
     public class LandingPageModel
     {
         public List<ReturnPublicationModel> PublicationTopList { get; set; }
+        public List<CreateCarouselModel> CarouselList { get; set; }
     }
 }

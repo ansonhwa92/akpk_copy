@@ -46,7 +46,10 @@ namespace FEP.Model
         KMC = 7,
 
         [Display(Name = "System")]
-        System = 8
+        System = 8,
+
+        [Display(Name = "Carousel Management")]
+        CarouselManagement = 9
     }
 
     public enum UserAccess
@@ -426,6 +429,25 @@ namespace FEP.Model
 
         [Display(Name = "KMC - Category - Delete")]
         KMCCategoryDelete = 8010,
+
+        //Carousel 9001 - 9500
+        [Display(Name = "Carousel Menu")]
+        CarouselMenu = 9001,
+
+        [Display(Name = "Carousel - Manage")]
+        CarouselManage = 9002,
+
+        [Display(Name = "Carousel - Manage - View")]
+        CarouselView = 9003,
+
+        [Display(Name = "Carousel - Manage - Create")]
+        CarouselAdd = 9004,
+
+        [Display(Name = "Carousel - Manage - Update")]
+        CarouselEdit = 9005,
+
+        [Display(Name = "Carousel - Manage - Delete")]
+        CarouselDelete = 9006,
 
     }
 }

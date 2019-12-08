@@ -1,5 +1,32 @@
 ﻿@model FEP.WebApiModel.RnP.ReturnListSurveyModel
 
+@using FEP.Model
+
+@{
+    UserAccess currentUser = UserAccess.HomeDashboard1; //assign dummy
+
+    if (CurrentUser.HasAccess(UserAccess.RnPSurveyEdit))
+    {
+        currentUser = UserAccess.RnPSurveyEdit;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPSurveyVerify))
+    {
+        currentUser = UserAccess.RnPSurveyVerify;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove1))
+    {
+        currentUser = UserAccess.RnPSurveyApprove1;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove2))
+    {
+        currentUser = UserAccess.RnPSurveyApprove2;
+    }
+    else if (CurrentUser.HasAccess(UserAccess.RnPSurveyApprove3))
+    {
+        currentUser = UserAccess.RnPSurveyApprove3;
+    }
+}
+
 <div class="d-flex align-items-center">
     <div class="filter dropdown">
         <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>@Language.Survey.LabelFilters</button>
@@ -33,6 +60,9 @@
                 <div>
                     <button id="btnSearch" class="btn btn-secondary">@Language.Survey.ButtonSearch</button>
                 </div>
+                @Html.HiddenFor(x => x.Filters.Status)
+                @Html.HiddenFor(x => x.Filters.ApprovalLevel)
+                @Html.HiddenFor(x => x.Filters.RequireAction)
             </div>
         </div>
     </div>
@@ -60,7 +90,9 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-        <div><a href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Survey.ButtonCreateSurvey</a></div>
+        <div class="create-new-record-button">
+            <a href="@Url.Action("SelectType", "Survey", new { area = "RnP" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Survey.ButtonCreateSurvey</a>
+        </div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
@@ -92,6 +124,10 @@
                 "data": function (filter) {
                     //filter.Type = $('#Filters_Type').val();
                     filter.Title = $('#Filters_Title').val();
+                    filter.Status = $('#Filters_Status').val();
+                    filter.ApprovalLevel = $('#Filters_ApprovalLevel').val();
+                    filter.RequireAction = $('#Filters_RequireAction').val();
+                    filter.UserAccess = "@currentUser";
                     //filter.StartDate = $('#Filters_StartDate').val();
                     //filter.EndDate = $('#Filters_EndDate').val();
                 },
@@ -300,4 +336,29 @@
 
     }
 
+
+
+    function ActionBox() {
+        $('.create-new-record-button').children('a').hide();
+        $('.create-new-record-button').append('<button class="btn btn-secondary btnRequireAction">Require Action</button>');
+        $('.create-new-record-button').append('<button class="btn btn-outline-secondary btnAll">All</button>');
+
+        $('.create-new-record-button').on('click', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("true");
+            $('.btnRequireAction').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.btnAll').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+
+
+        $('.create-new-record-button').on('blur', '.btnRequireAction', function () {
+            $('#Filters_RequireAction').val("false");
+        });
+
+        $('.create-new-record-button').on('click', '.btnAll', function () {
+            $('.btnRequireAction').removeClass('btn-secondary').addClass('btn-outline-secondary');
+            $('.btnAll').removeClass('btn-outline-secondary').addClass('btn-secondary');
+            $('.tabledata').DataTable().ajax.reload();
+        });
+    }
 </script>

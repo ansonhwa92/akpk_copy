@@ -59,6 +59,10 @@ namespace FEP.WebApi.Api.Home
             {
                 dashboardList = PublicationStatusList();
             }
+            else if (module == DashboardModule.Survey)
+            {
+                dashboardList = SurveyStatusList();
+            }
 
             dashboardList.ModuleName = module;
 
@@ -67,6 +71,7 @@ namespace FEP.WebApi.Api.Home
 
         }
 
+        #region Public Event
         private DashboardList PublicEventDashboardStatusList()
         {
             var dashboardList = new DashboardList();
@@ -105,8 +110,9 @@ namespace FEP.WebApi.Api.Home
 
             return mapping;
         }
+        #endregion
 
-
+        #region Course
         private DashboardList ELearningDashboardStatusList()
         {
             var dashboardList = new DashboardList();
@@ -142,7 +148,9 @@ namespace FEP.WebApi.Api.Home
 
             return mapping;
         }
+        #endregion
 
+        #region Media
         private Dictionary<int, string> MediaEventStatusMapping()
         {
             var mapping = new Dictionary<int, string>();
@@ -177,7 +185,9 @@ namespace FEP.WebApi.Api.Home
 
             return dashboardList;
         }
-        
+        #endregion
+
+        #region Exhibition
         private Dictionary<int, string> ExhibitionEventStatusMapping()
         {
             var mapping = new Dictionary<int, string>();
@@ -213,6 +223,9 @@ namespace FEP.WebApi.Api.Home
 
             return dashboardList;
         }
+#endregion
+
+        #region KMC
         private DashboardList KMCList()
         {
             var dashboardList = new DashboardList();
@@ -234,8 +247,9 @@ namespace FEP.WebApi.Api.Home
     
             return dashboardList;
         }
+        #endregion
 
-
+        #region Publication
         private Dictionary<int, Dictionary<int, string>> PublicationStatusMapping()
         {
             var mapping = new Dictionary<int, Dictionary<int,string>>();
@@ -308,6 +322,78 @@ namespace FEP.WebApi.Api.Home
 
             return dashboardList;
         }
+        #endregion
+        
+        #region Survey
+        private Dictionary<int, Dictionary<int, string>> SurveyStatusMapping()
+        {
+            var mapping = new Dictionary<int, Dictionary<int, string>>();
+
+            mapping.Add((int)SurveyStatus.New, new Dictionary<int, string> { { -1, "Draft" } });
+            mapping.Add((int)SurveyStatus.Submitted, new Dictionary<int, string> { { -1, "Pending Verification" } });
+            mapping.Add((int)SurveyStatus.Verified, new Dictionary<int, string> { { (int)SurveyApprovalLevels.Approver1, "Pending Approval 1" },
+                                                                                       { (int)SurveyApprovalLevels.Approver2, "Pending Approval 2" },
+                                                                                       { (int)SurveyApprovalLevels.Approver3, "Pending Approval 3" } });
+            mapping.Add((int)SurveyStatus.Published, new Dictionary<int, string> { { -1, "Published" } });
+            mapping.Add((int)SurveyStatus.VerifierRejected, new Dictionary<int, string> { { -1, "Require Amendment" } });
+            mapping.Add((int)SurveyStatus.Trashed, new Dictionary<int, string> { { -1, "Withdrawn" } });
+
+            return mapping;
+        }
+
+        private DashboardList SurveyStatusList()
+        {
+            var dashboardList = new DashboardList();
+
+            var SurveyStatusMapping = this.SurveyStatusMapping();
+
+            foreach (var item in SurveyStatusMapping)
+            {
+
+                var count = 0;
+
+                if (item.Key == (int)SurveyStatus.Verified)
+                {
+                    foreach (var _item in item.Value)
+                    {
+                        count = 0;
+                        count = db.Survey.Count(q => db.SurveyApproval.Where(pa => pa.SurveyID == q.ID && pa.Status == SurveyApprovalStatus.None).OrderByDescending(pa => pa.ApprovalDate).FirstOrDefault().Level == (SurveyApprovalLevels)_item.Key);
+
+                        dashboardList.DashboardItemList.Add(new DashboardItemList()
+                        {
+                            StatusID = item.Key,
+                            StatusName = _item.Value,
+                            Count = count,
+                            ApprovalLevel = _item.Key
+                        });
+                    }
+                }
+                else
+                {
+                    if (item.Key == (int)SurveyStatus.VerifierRejected)
+                    {
+                        count = db.Survey.Count(q => q.Status == SurveyStatus.VerifierRejected
+                                                    || q.Status == SurveyStatus.ApproverRejected);
+                    }
+                    else
+                    {
+                        count = db.Survey.Count(q => (int)q.Status == item.Key);
+                    }
+
+                    dashboardList.DashboardItemList.Add(new DashboardItemList()
+                    {
+                        StatusID = item.Key,
+                        StatusName = item.Value.First().Value,
+                        Count = count
+                    });
+                }
+            }
+
+            return dashboardList;
+        }
+        #endregion
+
+
     }
 }
 

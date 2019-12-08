@@ -201,14 +201,17 @@ else if (Model.ModuleName == FEP.WebApiModel.Home.DashboardModule.Survey)
         <script>
             $(document).ready(function () {
                 initTable();
-                //ActionBox();
+                ActionBox();
 
-                //$('.statusItem').on('click', function (e) {
-                //    var currentStatusVal = $(e.currentTarget).find('input').val()
-                //    $('#Filter_ExhibitionStatus').val(currentStatusVal);
-                //    $('.tabledata').DataTable().ajax.reload()
-                //    $('#Filter_ExhibitionStatus').val('');
-                //});
+                $('.statusItem').on('click', function (e) {
+                    var currentStatusVal = $(e.currentTarget).find('input').val()
+                    var currentApprovalLevel = $(e.currentTarget).find('input.approvalLevelValue').val()
+                    $('#Filters_Status').val(currentStatusVal);
+                    $('#Filters_ApprovalLevel').val(currentApprovalLevel);
+                    $('.tabledata').DataTable().ajax.reload()
+                    $('#Filters_Status').val('');
+                    $('#Filters_ApprovalLevel').val('');
+                });
             })
         </script>
     }

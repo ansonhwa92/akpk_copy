@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.Carousel.CarouselModel
+﻿@model FEP.WebApiModel.Carousel.ListCarouselModel
 
 @{
     ViewBag.Title = "Carousel Sequence Management";
@@ -10,13 +10,13 @@
         <div class="title-header-container">
             <div class="container">
                 <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/CarouselManagement/Carousel" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> Back</a></div>
+                <div class="header-col-right float-right mt-5"><a href="~/CarouselManagement/Carousel" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
                 <div class="header-col-left">
                     <div id="breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="~/Home">Home</a></li>
-                                <li class="breadcrumb-item"><a href="~/CarouselManagement/Carousel">Carousel Management</a></li>
+                                <li class="breadcrumb-item"><a href="~/Home">@Language.Carousel.BreadcrumbHome</a></li>
+                                <li class="breadcrumb-item"><a href="~/CarouselManagement/Carousel">@Language.Carousel.BreadcrumbManagement</a></li>
                                 <li class="breadcrumb-item"><a href="~/CarouselManagement/Carousel">Carousel Sequence Management</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
                             </ol>
@@ -29,18 +29,65 @@
         </div>
     </div>
 }
+
+<div class="d-flex align-items-center">
+    <div class="filter dropdown">
+        <button class="btn btn-default btn-rounded color-grey font-weight-normal cycle-element"><i class="la la-sliders font-icon color-secondary"></i>Filters</button>
+        <div class="dropdown-menu">
+            <div class="filter-head">Filters</div>
+            <div class="filter-body">
+                <div>@Html.DisplayNameFor(m => m.Filter.Title)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.Title, new { htmlAttributes = new { @id = "Filter_Title", @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>@Html.DisplayNameFor(m => m.Filter.Description)</div>
+                <div class="sorting-wrap">
+                    <div class="sorting-dropdown">
+                        @Html.EditorFor(m => m.Filter.Description, new { htmlAttributes = new { @id = "Filter_Description", @class = "form-control small" } })
+                    </div>
+                </div>
+                <div>
+                    <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider-vertical">&nbsp;</div>
+    <!-- Search -->
+    <div class="input-keyword col-lg-5 col-sm-12 mr-auto px-0">
+        <input id="quickSearch" type="text" class="form-control form-control-rounded" placeholder="Search" name="keyword">
+        <div class="input-group-append">
+            <button id="quickSearchBtn" class="btn btn-circle" type="button"><i class="fas fa-search text-white"></i></button>
+        </div>
+    </div>
+</div>
+<hr>
 <div class="table-responsive" data-toggle="lists">
     <div class="d-flex pb-4 align-items-center">
-        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>    </div>
+        <div>
+            <!-- Select option -->
+            <span class="select-arrow">
+                <select id="lengthChange" name="dataTable_length" aria-controls="dataTable" class="custom-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </span>
+        </div>
+        <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
+    </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
         <thead>
             <tr>
                 <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.Title)</th>
-                <th>@Html.DisplayNameFor(model => model.Description)</th>
-                <th width="150px">@Html.DisplayNameFor(model => model.CarouselImage)</th>
-                <th>@Html.DisplayNameFor(model => model.Sequence)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Description)</th>
+                <th width="150px">@Html.DisplayNameFor(model => model.List.CarouselImage)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Sequence)</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -57,13 +104,12 @@
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Carousels/Carousel/GetAll',
+                    "url": '@Url.Action("List", "Carousel", new { area = "CarouselManagement" })',
                     "data": function (filter) {
-                        filter.Title = $('#Filters_Title').val();
-                        filter.Description = $('#Filters_Description').val();
+                        filter.Title = $('#Filter_Title').val();
+                        filter.Description = $('#Filter_Description').val();
                     },
                     dataSrc: function (json) {
-                        console.log(json.data);
                         sequenceList = json.data;
                         return json.data;
                     },
@@ -102,7 +148,7 @@
                         data: 'Sequence',
                         sortable: false,
                         render: function (data, type, row, meta) {
-                            var $select = $('<select/>', { 'class': 'ctrl-status' });
+                            var $select = $('<select/>', { 'class': 'form-control ctrl-status' });
                             $.each(sequenceList, function (k, v) {
                                 var $option = $("<option/>", {
                                     "text": v.Sequence,
@@ -122,11 +168,11 @@
                         render: function (data, type, row, meta) {
 
                             var action = "";
-                            var canEdit = @Json.Encode(CurrentUser.HasAccess(UserAccess.CarouselEdit));
+                            var canView = @Json.Encode(CurrentUser.HasAccess(UserAccess.CarouselView));
 
                             action = '<div class="icon-action">';
 
-                            if (canEdit) {
+                            if (canView) {
                                 action += '<a href="@Url.Action("Details", "Carousel", new { area = "CarouselManagement" })/' + row.Id + '" data-toggle="tooltip" data-placement="top" title="View"><i class="la la-eye"></i></a>&nbsp;';
                             }
                             action += '</div>';
@@ -140,7 +186,7 @@
                 searching: true,
                 ordering: true,
                 orderMulti: false,
-                info: false,
+                info: true,
                 autoWidth: false,
                 order: [[4, 'asc']],
                 language: {
@@ -170,14 +216,16 @@
             });
 
             table.on('order.dt search.dt', function () {
+                var info = table.page.info();
+                $('#pageInfo').html('Showing ' + (info.start + 1) + ' - ' + info.end + ' of ' + info.recordsTotal + ' carousels');
                 $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
             }).draw();
 
             // Handle change event for status selection control
             $('.tabledata').on('change', '.ctrl-status', function(){
                 var data = $('.tabledata').DataTable().row($(this).closest('tr')).data();
-                
-                var URL = "@(WebApiURL)Carousels/Carousel/UpdateSequence";
+
+                var URL = '@Url.Action("UpdateSequence", "Carousel", new { area = "CarouselManagement" })';
                 var data = {
                     Id: data.Id,
                     Sequence: parseInt($(this).val())

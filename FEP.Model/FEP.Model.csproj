@@ -59,10 +59,6 @@
     <Compile Include="CTE.cs" />
     <Compile Include="elearning\Feedback.cs" />
     <Compile Include="KMC.cs" />
-    <Compile Include="Migrations\201912082011524_x.cs" />
-    <Compile Include="Migrations\201912082011524_x.designer.cs">
-      <DependentUpon>201912082011524_x.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\SeedElearningEmail.cs" />
     <Compile Include="TOT.cs" />
     <Compile Include="Client.cs" />
@@ -124,11 +120,6 @@
       <Project>{511ba85d-13b0-4657-9583-892d70535ab9}</Project>
       <Name>FEP.Language</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912082011524_x.resx">
-      <DependentUpon>201912082011524_x.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

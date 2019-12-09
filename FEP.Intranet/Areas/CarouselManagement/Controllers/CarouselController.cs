@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using FEP.Model;
 using FEP.WebApiModel.Carousel;
+using Newtonsoft.Json;
 
 namespace FEP.Intranet.Areas.CarouselManagement.Controllers
 {
@@ -18,11 +19,13 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
         private DbEntities db = new DbEntities();
 
         // GET: CarouselManagement/Carousel
+        [HasAccess(UserAccess.CarouselManage)]
         public ActionResult Index()
         {
             return View();
         }
-        
+
+        [HasAccess(UserAccess.CarouselView)]
         // GET: CarouselManagement/Carousel/SequenceList
         [Route("CarouselManagement/Carousel/SequenceList")]
         [HttpGet]
@@ -31,6 +34,7 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
             return View();
         }
 
+        [HasAccess(UserAccess.CarouselMenu)]
         //menu
         [ChildActionOnly]
         public ActionResult _Menu()
@@ -38,6 +42,16 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
             return PartialView();
         }
 
+        [HasAccess(UserAccess.CarouselView)]
+        [HttpPost]
+        public async Task<ActionResult> List(FilterCarouselModel filter)
+        {
+            var response = await WepApiMethod.SendApiAsync<DataTableResponse>(HttpVerbs.Post, $"Carousels/Carousel/GetAll", filter);
+
+            return Content(JsonConvert.SerializeObject(response.Data), "application/json");
+        }
+
+        [HasAccess(UserAccess.CarouselView)]
         // GET: CarouselManagement/Carousel/Details/5
         public async Task<ActionResult> Details(int? id)
         {
@@ -56,6 +70,7 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
             return View(resPub.Data);
         }
 
+        [HasAccess(UserAccess.CarouselAdd)]
         // GET: CarouselManagement/Carousel/Create
         public ActionResult Create()
         {
@@ -66,6 +81,7 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
         // POST: CarouselManagement/Carousel/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HasAccess(UserAccess.CarouselAdd)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateCarouselModel model, string Submittype)
@@ -131,6 +147,7 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
             return View(model);
         }
 
+        [HasAccess(UserAccess.CarouselEdit)]
         // GET: CarouselManagement/Carousel/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -152,6 +169,7 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
         // POST: CarouselManagement/Carousel/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HasAccess(UserAccess.CarouselEdit)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(CreateCarouselModel model, string Submittype)
@@ -215,9 +233,30 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
             return View(model);
         }
 
+        [HasAccess(UserAccess.CarouselEdit)]
+        [Route("CarouselManagement/Carousel/UpdateSequence")]
+        [HttpPost]
+        public async Task<bool> UpdateSequence(CarouselModel model)
+        {
+            var response = await WepApiMethod.SendApiAsync<string>(HttpVerbs.Post, $"Carousels/Carousel/UpdateSequence", model);
+
+            if (response.isSuccess)
+            {
+                await LogActivity(Modules.CarouselManagement, "Update Carousel Sequence: " + response.Data, model);
+
+                return true;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to edit Publication.";
+
+                return false;
+            }
+        }
+
         // Show delete form (only from list page)
         // GET: CarouselManagement/Carousel/Delete/5
-        //[HasAccess(UserAccess.RnPPublicationEdit)]
+        [HasAccess(UserAccess.CarouselDelete)]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -242,6 +281,7 @@ namespace FEP.Intranet.Areas.CarouselManagement.Controllers
             return View(carousel);
         }
 
+        [HasAccess(UserAccess.CarouselDelete)]
         // POST: CarouselManagement/Carousel/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

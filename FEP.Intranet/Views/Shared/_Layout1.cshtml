@@ -254,12 +254,15 @@
                         <div class="navbar-collapse collapse main-menu-dropdown">
                             <ul class="nav navbar-nav">
                                 <li class="nav-item"><a href="@Url.Action("Dashboard", "Home", new { area = ""})" class="nav-link">Dashboard</a></li>
-                                <li class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Carousel</a>
-                                    <div class="dropdown-menu">
-                                        @Html.Action("_Menu", "Carousel", new { area = "CarouselManagement" })
-                                    </div>
-                                </li>
+                                @if (CurrentUser.HasAccess(UserAccess.CarouselMenu))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Carousel</a>
+                                        <div class="dropdown-menu">
+                                            @Html.Action("_Menu", "Carousel", new { area = "CarouselManagement" })
+                                        </div>
+                                    </li>
+                                }
                                 @if (CurrentUser.HasAccess(UserAccess.LearningMenu))
                                 {
                                     <li class="nav-item dropdown">

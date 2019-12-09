@@ -1,4 +1,4 @@
-﻿@model FEP.WebApiModel.Carousel.CarouselModel
+﻿@model FEP.WebApiModel.Carousel.ListCarouselModel
 
 @{
     ViewBag.Title = "Carousel Management";
@@ -6,27 +6,27 @@
 }
 
 @section Nav{
-    <div class="title_header">
-        <div class="title-header-container">
-            <div class="container">
-                <!-- if have button -->
-                <div class="header-col-right float-right mt-5"><a href="~/CarouselManagement/Carousel" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
-                <div class="header-col-left">
-                    <div id="breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home", new { area = ""})">@Language.Carousel.BreadcrumbHome</a></li>
-                                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Carousel", new { area = "CarouselManagement"})">@Language.Carousel.BreadcrumbManagement</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <h1 class="page-title text-white">@Language.Carousel.HeadingDetailsList</h1>
-                    <div class="header-text">@Language.Carousel.HeadingDescriptionList</div>
+<div class="title_header">
+    <div class="title-header-container">
+        <div class="container">
+            <!-- if have button -->
+            <div class="header-col-right float-right mt-5"><a href="~/CarouselManagement/Carousel" class="btn btn-outline-primary text-white"><span class="align-middle"><i class="la la-long-arrow-left">&nbsp;</i></span> @Language.General.ButtonBack</a></div>
+            <div class="header-col-left">
+                <div id="breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="@Url.Action(" Index", "Home" , new { area="" })">@Language.Carousel.BreadcrumbHome</a></li>
+                            <li class="breadcrumb-item"><a href="@Url.Action(" Index", "Carousel" , new { area="CarouselManagement" })">@Language.Carousel.BreadcrumbManagement</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="#"></a></li>
+                        </ol>
+                    </nav>
                 </div>
+                <h1 class="page-title text-white">@Language.Carousel.HeadingDetailsList</h1>
+                <div class="header-text">@Language.Carousel.HeadingDescriptionList</div>
             </div>
         </div>
     </div>
+</div>
 }
 
 <div class="d-flex align-items-center">
@@ -35,41 +35,20 @@
         <div class="dropdown-menu">
             <div class="filter-head">Filters</div>
             <div class="filter-body">
-                <!--
-                <div>@*Html.DisplayNameFor(m => m.Filters.Type)*@</div>
-                    -->
-                <!--
+                <div>@Html.DisplayNameFor(m => m.Filter.Title)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        <select class="select2 form-control small" name="filter">
-                            <option value="all">All</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
+                        @Html.EditorFor(m => m.Filter.Title, new { htmlAttributes = new { @id= "Filter_Title", @class = "form-control small" } })
                     </div>
                 </div>
-                -->
-                <!--
+                <div>@Html.DisplayNameFor(m => m.Filter.Description)</div>
                 <div class="sorting-wrap">
                     <div class="sorting-dropdown">
-                        @*Html.EditorFor(m => m.Filters.Type, new { htmlAttributes = new { @class = "form-control small" } })*@
+                        @Html.EditorFor(m => m.Filter.Description, new { htmlAttributes = new {  @id= "Filter_Description", @class = "form-control small" } })
                     </div>
                 </div>
-                    -->
-                @*<div>@Html.DisplayNameFor(m => m.Filters.Title)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filters.Title, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>
-                <div>@Html.DisplayNameFor(m => m.Filters.Description)</div>
-                <div class="sorting-wrap">
-                    <div class="sorting-dropdown">
-                        @Html.EditorFor(m => m.Filters.Description, new { htmlAttributes = new { @class = "form-control small" } })
-                    </div>
-                </div>*@
                 <div>
-                    <button id="btnSearch" class="btn btn-secondary">Search</button>
+                    <button id="btnSearch" class="btn btn-secondary btn-block">Search</button>
                 </div>
             </div>
         </div>
@@ -98,16 +77,16 @@
             </span>
         </div>
         <div id="pageInfo" class="showing-result px-3 py-2 mr-auto"></div>
-        <div><a href="@Url.Action("Create", "Carousel", new { area = "CarouselManagement" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Carousel.CreateTitle</a></div>
+        <div><a href="@Url.Action(" Create", "Carousel" , new { area="CarouselManagement" })" class="btn btn-secondary"><i class="la la-plus font-icon" style="font-size: 1.5rem;"></i>@Language.Carousel.CreateTitle</a></div>
     </div>
     <!-- Table -->
     <table class="table tableStyle1 tabledata">
         <thead>
             <tr>
                 <th>#</th>
-                <th>@Html.DisplayNameFor(model => model.Title)</th>
-                <th>@Html.DisplayNameFor(model => model.Description)</th>
-                <th width="150px">@Html.DisplayNameFor(model => model.CarouselImage)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.List.Description)</th>
+                <th width="150px">@Html.DisplayNameFor(model => model.List.CarouselImage)</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -116,17 +95,17 @@
 
 @section ContentScript{
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function () {
             var table = $('.tabledata').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
                     "type": "post",
-                    "url": '@(WebApiURL)Carousels/Carousel/GetAll',
+                    "url": '@Url.Action("List", "Carousel", new { area = "CarouselManagement" })',
                     "data": function (filter) {
-                        filter.Title = $('#Filters_Title').val();
-                        filter.Description = $('#Filters_Description').val();
+                        filter.Title = $('#Filter_Title').val();
+                        filter.Description = $('#Filter_Description').val();
                     },
                     dataFilter: function (res) {
                         // do what you need to the data before it loads to the table
@@ -228,6 +207,6 @@
 
         });
 
-    </script>
+</script>
 
 }

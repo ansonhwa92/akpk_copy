@@ -147,6 +147,12 @@ namespace FEP.WebApiModel.Carousel
 
         public List<int> CoverFilesId { get; set; }
     }
+    public class ListCarouselModel
+    {
+        public FilterCarouselModel Filter { get; set; }
+
+        public CarouselModel List { get; set; }
+    }
 
     // class for setting and returning filters for the datatable list of publications
     public class FilterCarouselModel : DataTableModel

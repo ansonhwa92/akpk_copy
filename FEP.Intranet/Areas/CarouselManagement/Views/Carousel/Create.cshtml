@@ -121,7 +121,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-lg-12">
-                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.CoverPictures, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                             @Html.Partial("_CoverPicture", Model.CoverPictures)
                             @Html.ValidationMessageFor(model => model.CoverPictures, "", new { @class = "text-danger" })
                         </div>

@@ -264,6 +264,12 @@ namespace FEP.Model
         public DbSet<CarouselImages> CarouselImages { get; set; }
         public DbSet<CarouselFile> CarouselFile { get; set; }
 
+        //NewsArticle
+        public DbSet<NewsArticle> NewsArticle { get; set; }
+        public DbSet<NewsArticleImages> NewsArticleImages { get; set; }
+        public DbSet<NewsArticleFile> NewsArticleFile { get; set; }
+        public DbSet<NewsArticleCategory> NewsArticleCategory { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

@@ -75,7 +75,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        @Html.LabelFor(model => model.CarouselImage, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.CarouselImage, htmlAttributes: new { @class = "control-label" }) <span class="text-danger">*</span>
                         <img src="@Url.Content( @BaseURL + "/Data/images/carousel/" + Model.CarouselImage)" style="width:100%" />
                     </div>
                 </div>

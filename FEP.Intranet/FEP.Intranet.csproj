@@ -218,6 +218,8 @@
     <Compile Include="Areas\Logs\Controllers\ErrorLogController.cs" />
     <Compile Include="Areas\Logs\Controllers\UserLogController.cs" />
     <Compile Include="Areas\Logs\LogsAreaRegistration.cs" />
+    <Compile Include="Areas\NewsArticleManagement\Controllers\NewsArticleController.cs" />
+    <Compile Include="Areas\NewsArticleManagement\NewsArticleManagementAreaRegistration.cs" />
     <Compile Include="Areas\Reward\Controllers\RewardActivityPointsController.cs" />
     <Compile Include="Areas\Reward\Controllers\RewardRedemptionsController.cs" />
     <Compile Include="Areas\Reward\Controllers\UserRewardPointsController.cs" />
@@ -1140,6 +1142,7 @@
     <Content Include="Areas\CarouselManagement\Views\Carousel\_Menu.cshtml" />
     <Content Include="Areas\CarouselManagement\Views\Carousel\_CoverPicture.cshtml" />
     <Content Include="Areas\CarouselManagement\Views\Carousel\SequenceList.cshtml" />
+    <Content Include="Areas\NewsArticleManagement\Views\Web.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\Index.cshtml" />
     <Content Include="Areas\eEvent\Views\PublicEvent\List.cshtml" />
@@ -1773,6 +1776,7 @@
     <Folder Include="Areas\eEvent\Views\EventRefund\" />
     <Folder Include="Areas\Logs\Models\" />
     <Folder Include="Areas\Logs\Views\Shared\" />
+    <Folder Include="Areas\NewsArticleManagement\Views\NewsArticle\" />
     <Folder Include="Areas\Reward\Models\" />
     <Folder Include="Areas\Reward\Views\Shared\" />
     <Folder Include="Areas\Setting\Models\" />

@@ -139,13 +139,16 @@
     <value>Carousel</value>
   </data>
   <data name="CreateDescription" xml:space="preserve">
-    <value>Create new carousel by filling in publication details below.</value>
+    <value>Create new carousel by filling in carousel details below.</value>
   </data>
   <data name="CreateTitle" xml:space="preserve">
     <value>Create Carousel</value>
   </data>
   <data name="HeadingDescriptionCreate" xml:space="preserve">
     <value>Create new carousel by filling in carousel details below.</value>
+  </data>
+  <data name="HeadingDescriptionDelete" xml:space="preserve">
+    <value>Are you sure you want to delete this Publication?</value>
   </data>
   <data name="HeadingDescriptionEdit" xml:space="preserve">
     <value>Update carousel by filling in carousel details below.</value>
@@ -161,6 +164,9 @@
   </data>
   <data name="HeadingDetailsCreate" xml:space="preserve">
     <value>Create Carousel</value>
+  </data>
+  <data name="HeadingDetailsDelete" xml:space="preserve">
+    <value>Delete Carousel</value>
   </data>
   <data name="HeadingDetailsEdit" xml:space="preserve">
     <value>Edit Carousel</value>
@@ -185,6 +191,9 @@
   </data>
   <data name="SideBarStepCreate" xml:space="preserve">
     <value>Fill In Carousel Details</value>
+  </data>
+  <data name="SideBarStepDeleteInformation" xml:space="preserve">
+    <value>Carousel Information</value>
   </data>
   <data name="SideBarStepEdit" xml:space="preserve">
     <value>Update Carousel Details</value>

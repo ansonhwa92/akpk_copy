@@ -53,7 +53,7 @@ namespace FEP.WebApiModel.Carousel
             CoverFilesId = new List<int>();
         }
 
-        [Display(Name = "CoverPictures")]
+        [Display(Name = "Carousel Pictures")]
         public IEnumerable<Attachment> CoverPictures { get; set; }
         public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
 
@@ -73,7 +73,8 @@ namespace FEP.WebApiModel.Carousel
         [Required]
         public int ID { get; set; }
 
-        [Display(Name = "CoverPictures")]
+        [Required]
+        [Display(Name = "Carousel Pictures")]
         public IEnumerable<Attachment> CoverPictures { get; set; }
         public IEnumerable<HttpPostedFileBase> CoverPictureFiles { get; set; }
 
@@ -112,10 +113,10 @@ namespace FEP.WebApiModel.Carousel
         [Required]
         public int ID { get; set; }
 
-        [Display(Name = "CarouselPictures", ResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "Carousel Pictures", ResourceType = typeof(Language.RnPForm))]
         public IEnumerable<Attachment> CoverPictures { get; set; }
         
-        [Display(Name = "CarouselPictures", ResourceType = typeof(Language.RnPForm))]
+        [Display(Name = "Carousel Pictures", ResourceType = typeof(Language.RnPForm))]
         public string CoverPicture { get; set; }
     }
 

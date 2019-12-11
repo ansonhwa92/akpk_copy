@@ -117,8 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BreadcrumbCreate" xml:space="preserve">
+    <value>Create Carousel</value>
+  </data>
+  <data name="BreadcrumbDelete" xml:space="preserve">
+    <value>Delete Carousel</value>
+  </data>
+  <data name="BreadcrumbDetails" xml:space="preserve">
+    <value>Carousel Details</value>
+  </data>
+  <data name="BreadcrumbEdit" xml:space="preserve">
+    <value>Edit Carousel</value>
+  </data>
   <data name="BreadcrumbHome" xml:space="preserve">
     <value>Home</value>
+  </data>
+  <data name="BreadcrumbManagement" xml:space="preserve">
+    <value>Manage News &amp; Article</value>
   </data>
   <data name="BreadcrumbNewsArticle" xml:space="preserve">
     <value>News &amp; Article</value>
@@ -126,22 +141,64 @@
   <data name="BreadcrumbNewsArticleManagement" xml:space="preserve">
     <value>News &amp; Article Management</value>
   </data>
+  <data name="BreadcrumbTitle" xml:space="preserve">
+    <value>News &amp; Article</value>
+  </data>
   <data name="CreateDescription" xml:space="preserve">
-    <value>Create new publication by filling in publication details below.</value>
+    <value>Create new news &amp; article by filling in the details below.</value>
   </data>
   <data name="CreateTitle" xml:space="preserve">
     <value>Create News &amp; Article</value>
   </data>
+  <data name="HeadingDescriptionCreate" xml:space="preserve">
+    <value>Create new news &amp; article by filling in the details below.</value>
+  </data>
+  <data name="HeadingDescriptionEdit" xml:space="preserve">
+    <value>Update news &amp; article by filling in the details below.</value>
+  </data>
+  <data name="HeadingDescriptionList" xml:space="preserve">
+    <value>Create, edit, delete and manage news &amp; article.</value>
+  </data>
+  <data name="HeadingDescriptionView" xml:space="preserve">
+    <value>View news &amp; article details below.</value>
+  </data>
   <data name="HeadingDetails" xml:space="preserve">
     <value>News &amp; Article Details</value>
+  </data>
+  <data name="HeadingDetailsCreate" xml:space="preserve">
+    <value>Create News &amp; Article</value>
+  </data>
+  <data name="HeadingDetailsEdit" xml:space="preserve">
+    <value>Edit News &amp; Article</value>
+  </data>
+  <data name="HeadingDetailsList" xml:space="preserve">
+    <value>List of News &amp; Article</value>
   </data>
   <data name="HeadingSettings" xml:space="preserve">
     <value>News &amp; Article Settings</value>
   </data>
+  <data name="ManageSequence" xml:space="preserve">
+    <value>News &amp; Article Sequence</value>
+  </data>
   <data name="MandatoryPrefix" xml:space="preserve">
+    <value>Information marked with</value>
+  </data>
+  <data name="MandatoryPrefix1" xml:space="preserve">
     <value>Information marked with</value>
   </data>
   <data name="MandatorySuffix" xml:space="preserve">
     <value>is mandatory.</value>
+  </data>
+  <data name="MandatorySuffix1" xml:space="preserve">
+    <value>is mandatory.</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="SideBarStepCreate" xml:space="preserve">
+    <value>Fill In Carousel Details</value>
+  </data>
+  <data name="SideBarStepEdit" xml:space="preserve">
+    <value>Update News &amp; Article Details</value>
   </data>
 </root>

@@ -124,7 +124,7 @@ namespace Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create new carousel by filling in publication details below..
+        ///   Looks up a localized string similar to Create new carousel by filling in carousel details below..
         /// </summary>
         public static string CreateDescription {
             get {
@@ -147,6 +147,15 @@ namespace Language {
         public static string HeadingDescriptionCreate {
             get {
                 return ResourceManager.GetString("HeadingDescriptionCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this Publication?.
+        /// </summary>
+        public static string HeadingDescriptionDelete {
+            get {
+                return ResourceManager.GetString("HeadingDescriptionDelete", resourceCulture);
             }
         }
         
@@ -192,6 +201,15 @@ namespace Language {
         public static string HeadingDetailsCreate {
             get {
                 return ResourceManager.GetString("HeadingDetailsCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Carousel.
+        /// </summary>
+        public static string HeadingDetailsDelete {
+            get {
+                return ResourceManager.GetString("HeadingDetailsDelete", resourceCulture);
             }
         }
         
@@ -264,6 +282,15 @@ namespace Language {
         public static string SideBarStepCreate {
             get {
                 return ResourceManager.GetString("SideBarStepCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carousel Information.
+        /// </summary>
+        public static string SideBarStepDeleteInformation {
+            get {
+                return ResourceManager.GetString("SideBarStepDeleteInformation", resourceCulture);
             }
         }
         
